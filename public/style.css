@@ -1,0 +1,103 @@
+/* Input */
+.container-file-upload-form {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 200px;
+  margin: 20px 0;
+}
+
+.file-upload-form {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.file-upload-label input {
+  display: none;
+}
+.file-upload-label svg {
+  height: 36px;
+  fill: #007acc;
+  margin-bottom: 1px;
+}
+.file-upload-label {
+  cursor: pointer;
+  background-color: #ddd;
+  padding: 15px 35px;
+  border-radius: 40px;
+  border: 2px dashed rgb(82, 82, 82);
+  box-shadow: 0px 0px 200px -50px rgba(0, 0, 0, 0.719);
+  transition: border 0.3s ease-in-out;
+}
+/* Estilo de borde cuando se arrastra un archivo */
+.container-file-upload-form.drag-over .file-upload-label {
+  border: 2px solid #4caf50;
+}
+.container-file-upload-form.drag-over .file-upload-design {
+  opacity: 0.1;
+}
+.container-file-upload-form.drag-over::before {
+  content: 'Suelta el archivo aquí';
+  position: absolute;
+  font-family: cursive;
+  font-size: 1rem;
+  bottom: 40px;
+}
+.file-upload-design {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.browse-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 15px;
+  gap: 15px;
+  background-color: #007acc;
+  outline: 3px #007acc solid;
+  outline-offset: -3px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: 400ms;
+
+  padding: 2px 10px;
+  color: white;
+}
+.browse-button-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1em;
+  transition: 400ms;
+  margin: 0;
+}
+.browse-button:hover {
+  background-color: #fff;
+}
+.browse-button:hover .browse-button-text {
+  color: #007acc;
+}
+.file-upoad-label-text {
+  margin: 0;
+  padding: 0;
+}
+
+#nombreArchivo {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  margin-top: -12px;
+}
+
+@media print {
+  .container-principal {
+    display: none;
+  }
+}
