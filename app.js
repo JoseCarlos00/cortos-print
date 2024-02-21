@@ -80,6 +80,9 @@ async function contenido() {
 }
 
 function filtrarTabla() {
+  insertarThead();
+  ordenarTablaPorPrimeraColumna();
+
   // Busca y agregar la clase page-break para el salto de paguina
   const tablePreview = document.getElementById('tablePreview');
 
@@ -103,8 +106,6 @@ function filtrarTabla() {
       if (index > 1) filas[index - 1].querySelector('td').classList.add('page-break');
     }
   });
-
-  insertarThead();
 }
 
 function insertarThead() {
@@ -133,6 +134,23 @@ function mostrarNombreArchivo(input) {
   } else {
     nombreArchivo.textContent = '';
   }
+}
+
+function ordenarTablaPorPrimeraColumna() {
+  const table = document.getElementById('tablePreview').querySelector('table');
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+  // Ordenar las filas basadas en el contenido de la primera columna
+  rows.sort((a, b) => {
+    const aValue = a.querySelector('td:first-child').innerText;
+    const bValue = b.querySelector('td:first-child').innerText;
+    return aValue.localeCompare(bValue);
+  });
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(row => {
+    table.querySelector('tbody').appendChild(row);
+  });
 }
 
 window.addEventListener('DOMContentLoaded', contenido);
