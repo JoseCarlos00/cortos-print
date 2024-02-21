@@ -142,9 +142,29 @@ function ordenarTablaPorPrimeraColumna() {
 
   // Ordenar las filas basadas en el contenido de la primera columna
   rows.sort((a, b) => {
-    const aValue = a.querySelector('td:first-child').innerText;
-    const bValue = b.querySelector('td:first-child').innerText;
-    return aValue.localeCompare(bValue);
+    let aValue = a.querySelector('td:first-child').innerText;
+    let bValue = b.querySelector('td:first-child').innerText;
+
+    // Eliminar 'W-Mar Bodega ' de los valores si está presente
+    if (aValue.includes('W-Mar Bodega')) {
+      aValue = aValue.replace('W-Mar Bodega ', '');
+    }
+
+    if (bValue.includes('W-Mar Bodega')) {
+      bValue = bValue.replace('W-Mar Bodega ', '');
+    }
+
+    // Verificar si los valores son numéricos
+    const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
+    const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
+
+    // Comparar los valores numéricos
+    if (aValueNumeric && bValueNumeric) {
+      return parseFloat(aValue) - parseFloat(bValue);
+    } else {
+      // Si al menos uno de los valores no es numérico, comparar como cadenas
+      return aValue.localeCompare(bValue);
+    }
   });
 
   // Reinsertar las filas ordenadas en la tabla
