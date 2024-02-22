@@ -49,7 +49,7 @@ async function contenido() {
           // Verificar la extensión del archivo para determinar el tipo de parseo
           const extension = file.name.split('.').pop().toLowerCase();
 
-          if (extension === 'xlsx' || extension === 'csv') {
+          if (extension === 'xlsx' || extension === 'csv' || extension === 'xls') {
             procesarArchivo(file);
             mostrarNombreArchivo(fileInput);
           } else {
