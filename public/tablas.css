@@ -4,6 +4,8 @@ table {
   border: 1px solid;
   border-collapse: collapse;
   font-size: 14px;
+
+  animation: entradaElemento 0.5s ease-in-out;
 }
 
 th,
@@ -27,12 +29,19 @@ table thead td {
   font-weight: bold;
 }
 
-table td:nth-child(13) {
-  display: none;
-}
-
 @media print {
   .page-break {
     page-break-after: always;
+  }
+}
+
+@keyframes entradaElemento {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

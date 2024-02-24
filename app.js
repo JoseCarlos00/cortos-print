@@ -131,6 +131,11 @@ function mostrarNombreArchivo(input) {
     const nombre = input.files[0].name;
 
     nombreArchivo.textContent = nombre;
+    // nombreArchivo.style.opacity = '1';
+    nombreArchivo.classList.remove('animarTexto');
+    setTimeout(() => {
+      nombreArchivo.classList.add('animarTexto');
+    }, 50);
   } else {
     nombreArchivo.textContent = '';
   }
