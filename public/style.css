@@ -60,6 +60,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.file-upload-design svg:hover path:nth-child(1) {
+  fill: #fff !important; /* Cambia el color de relleno a blanco al hacer hover en el contenedor */
+  stroke: #000 !important;
+}
+
+.file-upload-design svg:hover path:nth-child(2) {
+  fill: #007acc !important; /* Cambia el color de relleno a azul al hacer hover en el contenedor */
+}
+
 .browse-button {
   display: flex;
   justify-content: space-around;
