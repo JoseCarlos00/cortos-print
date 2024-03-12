@@ -11,7 +11,7 @@
   flex-direction: column;
 
   width: 200px;
-  margin: 20px 0;
+  margin-top: 20px;
 
   animation: entradaElemento 0.5s ease-in-out;
 }
@@ -110,18 +110,24 @@
   margin: 0;
   padding: 0;
   margin-top: -12px;
-  opacity: 0;
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+
   transition: opacity 0.8s ease;
+  opacity: 0;
 }
 
-.nombre-de-archivo::before {
-  content: '';
+.circulo {
   width: 10px;
   height: 10px;
   background-color: #38f55b;
   clip-path: circle(50% at 50% 50%);
   display: inline-block;
   margin-right: 4px;
+  /* transition: opacity 0.8s ease;
+  opacity: 0; */
 }
 
 body {
@@ -136,6 +142,12 @@ body {
 
 .animarTexto {
   animation: entradaElemento 0.5s ease-in-out;
+}
+
+.filltes {
+  form {
+    width: 300px;
+  }
 }
 
 @media print {
@@ -154,4 +166,73 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Navbar */
+.navbar {
+  background-color: #007acc;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbar-logo a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  position: relative;
+}
+
+.navbar-nav .slide {
+  width: 47px;
+  height: 4px;
+  background: #fff;
+  position: absolute;
+  bottom: -2px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-item {
+  height: 70px;
+  line-height: 70px;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #fff;
+  padding: 0 10px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-item a:hover {
+  color: #ccc;
+  text-decoration: underline;
+}
+
+.navbar-nav .nav-item:nth-child(1) ~ .slide,
+.navbar-nav .nav-item:nth-child(1).active ~ .slide {
+  width: 52px;
+  left: 7px;
 }
