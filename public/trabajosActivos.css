@@ -12,12 +12,6 @@ table tbody {
   }
 }
 
-.filltes {
-  form {
-    width: 300px;
-  }
-}
-
 @media print {
   table thead tr {
     td[data-v='UNIDAD DE TRABAJO'] {

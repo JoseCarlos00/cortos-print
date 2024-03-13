@@ -1,4 +1,7 @@
 console.log('App.js');
+
+import { navbar } from './funcionesGlobales.js';
+
 import {
   handleFileInputChange,
   handleDragOver,
@@ -24,6 +27,8 @@ async function contenido() {
   } catch (error) {
     console.log('Error:', error.message);
   }
+
+  navbar();
 }
 
 window.addEventListener('DOMContentLoaded', contenido);
