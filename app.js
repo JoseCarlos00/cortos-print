@@ -1,6 +1,6 @@
 console.log('App.js');
 
-import { navbar } from './funcionesGlobales.js';
+import { navbar, parametrosDeLaUrl } from './funcionesGlobales.js';
 
 import {
   handleFileInputChange,
@@ -28,6 +28,7 @@ async function contenido() {
     console.log('Error:', error.message);
   }
 
+  parametrosDeLaUrl();
   navbar();
 }
 

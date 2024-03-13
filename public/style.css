@@ -260,9 +260,10 @@ footer {
 }
 
 @media print {
-  .container-principal,
+  .container-file-upload,
   header,
-  .filters {
+  .filters,
+  footer {
     display: none;
   }
 }

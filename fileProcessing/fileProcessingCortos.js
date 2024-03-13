@@ -41,8 +41,11 @@ export function handleFile(file, e, fileInput) {
 }
 
 function insertarPageBreak() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const valorDeLaURL = urlParams.get('ordenar') ?? 1;
+
   insertarThead();
-  ordenarTablaPorPrimeraColumna();
+  ordenarTabla();
 
   // Busca y agregar la clase page-break para el salto de paguina
   const tablePreview = document.getElementById('tablePreview');
@@ -57,34 +60,43 @@ function insertarPageBreak() {
     // Ignorar la primera fila (encabezados)
     if (index === 0) return;
 
-    const valorPrimeraCeldaActual = fila.querySelector('td').textContent;
+    const valorPrimerIdDelPedido = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+    console.log(valorPrimerIdDelPedido);
 
     // Obtener el valor de la primera celda de la fila anterior
-    const valorPrimeraCeldaAnterior = filas[index - 1].querySelector('td').textContent;
+    const valorDelIdAnterior = filas[index - 1].querySelector(
+      `td:nth-child(${valorDeLaURL})`
+    ).textContent;
 
     // Verificar si el valor actual es diferente al valor anterior
-    if (valorPrimeraCeldaActual !== valorPrimeraCeldaAnterior) {
+    if (valorPrimerIdDelPedido !== valorDelIdAnterior) {
       if (index > 1) filas[index - 1].querySelector('td').classList.add('page-break');
     }
   });
 }
 
-function ordenarTablaPorPrimeraColumna() {
+function ordenarTabla() {
+  // Obtener el valor de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const valorDeLaURL = urlParams.get('ordenar') ?? 1;
+
   const table = document.getElementById('tablePreview').querySelector('table');
   const rows = Array.from(table.querySelectorAll('tbody tr'));
 
   // Ordenar las filas basadas en el contenido de la primera columna
   rows.sort((a, b) => {
-    let aValue = a.querySelector('td:first-child').innerText;
-    let bValue = b.querySelector('td:first-child').innerText;
+    let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+    let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
 
-    // Eliminar 'W-Mar Bodega ' de los valores si está presente
-    if (aValue.includes('W-Mar Bodega')) {
-      aValue = aValue.replace('W-Mar Bodega ', '');
-    }
+    if (valorDeLaURL === '1') {
+      // Eliminar 'W-Mar Bodega ' de los valores si está presente
+      if (aValue.includes('W-Mar Bodega')) {
+        aValue = aValue.replace('W-Mar Bodega ', '');
+      }
 
-    if (bValue.includes('W-Mar Bodega')) {
-      bValue = bValue.replace('W-Mar Bodega ', '');
+      if (bValue.includes('W-Mar Bodega')) {
+        bValue = bValue.replace('W-Mar Bodega ', '');
+      }
     }
 
     // Verificar si los valores son numéricos
