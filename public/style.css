@@ -152,6 +152,9 @@ body {
   align-items: center;
   padding: 10px 20px;
 
+  filter: drop-shadow(2px 4px 4px black);
+  border-radius: 0 0 8px 8px;
+
   .navbar-nav {
     list-style: none;
     display: flex;
@@ -160,44 +163,47 @@ body {
 
     justify-content: center;
     align-items: center;
-    position: relative;
-  }
-
-  .navbar-nav .slide {
-    height: 4px;
-    background: #fff;
-    position: absolute;
-    bottom: -2px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    gap: 36px;
   }
 
   .nav-item a {
-    height: 40px;
-    line-height: 40px;
+    text-decoration: none;
+    height: 25px;
+    line-height: 25px;
     display: inline-block;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 15px;
     color: #fff;
-    padding: 0 10px;
     cursor: pointer;
+    position: relative;
+
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
   }
 
-  .nav-item a {
-    color: #fff;
-    text-decoration: none;
-  }
-
   .nav-item:hover a {
     color: #ccc;
   }
+
+  .nav-item.active a::before {
+    content: '';
+    width: 100%;
+    height: 4px;
+    background: #fff;
+    position: absolute;
+    bottom: -10px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    width: -webkit-fill-available;
+  }
+
+  /* Elemento slide */
+  /* 
 
   .nav-item:nth-child(1):hover ~ .slide,
   .nav-item:nth-child(1).active ~ .slide {
@@ -213,6 +219,8 @@ body {
     width: 143px;
     left: 89px;
   }
+
+   */
 }
 
 .title {
@@ -234,6 +242,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border-radius: 4px;
   }
 }
 
