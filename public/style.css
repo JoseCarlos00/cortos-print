@@ -233,6 +233,7 @@ body {
 }
 
 .filters {
+  margin-top: 19px;
   form {
     width: fit-content;
   }
