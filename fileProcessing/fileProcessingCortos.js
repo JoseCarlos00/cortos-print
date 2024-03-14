@@ -104,6 +104,8 @@ function insertarPageBreak() {
       }
     }
   });
+
+  tranformarTotalQty();
 }
 
 function ordenarTabla() {
@@ -173,4 +175,37 @@ function quitarHojaDeEstilos() {
   if (linkElement) {
     linkElement.remove();
   }
+}
+
+function tranformarTotalQty() {
+  const valorDeLaURL = getSelectedValueFromURL('ordenar');
+
+  if (!valorDeLaURL) return;
+
+  if (!valorDeLaURL === '8') return;
+
+  const filas = tablePreview.querySelectorAll('tr');
+
+  if (!filas) return;
+
+  const totalQty = filas[0].querySelector('[data-v="Total qty"]');
+
+  if (!totalQty) return;
+
+  // Iterar sobre las filas
+  filas.forEach((fila, index) => {
+    // Ignorar la primera fila (encabezados)
+    if (index === 0) return;
+    const tdTotalQty = fila.querySelector('td:nth-child(6)');
+
+    if (totalQty) {
+      const value = tdTotalQty.innerHTML;
+
+      // Verificar el valor es numérico
+      const valueNumeric = !isNaN(parseFloat(value)) && isFinite(value);
+      if (valueNumeric) {
+        tdTotalQty.innerHTML = parseFloat(value);
+      }
+    }
+  });
 }

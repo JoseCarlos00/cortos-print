@@ -44,6 +44,7 @@ body {
   }
   .file-upload-label svg {
     height: 36px;
+    width: 100%;
     fill: #007acc;
     margin-bottom: 1px;
   }
@@ -79,7 +80,8 @@ body {
 
   .file-upload-design svg:hover path:nth-child(1) {
     fill: #fff !important; /* Cambia el color de relleno a blanco al hacer hover en el contenedor */
-    stroke: #000 !important;
+    stroke: #007acc !important;
+    stroke-width: 48px;
   }
 
   .file-upload-design svg:hover path:nth-child(2) {
