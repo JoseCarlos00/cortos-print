@@ -50,13 +50,11 @@ export function navbar() {
 
 // Función para obtener el valor del input seleccionado de la URL
 export function getSelectedValueFromURL(value) {
-  console.log('Get URL');
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(value);
 }
 
 export function parametrosDeLaUrl() {
-  console.log('Parametos de la URL');
   // Función para actualizar la URL con el valor seleccionado del input
   function updateURL(selectedValue) {
     const urlParams = new URLSearchParams(window.location.search);
