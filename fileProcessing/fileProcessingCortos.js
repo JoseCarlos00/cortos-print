@@ -3,8 +3,6 @@ import { insertarThead, mostrarNombreArchivo } from '../operations.js';
 import { getSelectedValueFromURL } from '../funcionesGlobales.js';
 
 async function procesarArchivo(file) {
-  console.log('procesarArchivo');
-
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga

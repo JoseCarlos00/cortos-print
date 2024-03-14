@@ -168,11 +168,14 @@ body {
     align-items: center;
     gap: 36px;
   }
+  .nav-item {
+    cursor: pointer;
+  }
 
   .nav-item a {
     text-decoration: none;
-    height: 25px;
-    line-height: 25px;
+    height: 20px;
+    line-height: 20px;
     display: inline-block;
     font-weight: bold;
     text-transform: uppercase;
@@ -185,10 +188,15 @@ body {
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
+
+    margin-bottom: 4px;
   }
 
   .nav-item:hover a {
     color: #ccc;
+  }
+  .nav-item.active:hover a::before {
+    background-color: #ccc;
   }
 
   .nav-item.active a::before {
@@ -197,33 +205,17 @@ body {
     height: 4px;
     background: #fff;
     position: absolute;
-    bottom: -10px;
+    bottom: -8px;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    width: -webkit-fill-available;
   }
 
-  /* Elemento slide */
-  /* 
-
-  .nav-item:nth-child(1):hover ~ .slide,
-  .nav-item:nth-child(1).active ~ .slide {
-    width: 58px;
-    left: 12px;
+  .nav-item a:focus-visible {
+    outline: none;
+    opacity: 0.85;
   }
-
-  .nav-item.active:hover ~ .slide {
-    background-color: #ccc;
-  }
-
-  .nav-item:nth-child(2).active ~ .slide {
-    width: 143px;
-    left: 89px;
-  }
-
-   */
 }
 
 .title {

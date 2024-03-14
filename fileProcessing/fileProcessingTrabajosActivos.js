@@ -3,6 +3,11 @@ import { insertarThead, mostrarNombreArchivo } from '../operations.js';
 import { getSelectedValueFromURL } from '../funcionesGlobales.js';
 
 async function procesarArchivo(file) {
+  const loadingContainer = document.getElementById('loading-container');
+
+  // Mostrar la animación de carga
+  loadingContainer.style.display = 'block';
+
   try {
     const data = await file.arrayBuffer();
 
@@ -13,6 +18,10 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
+
+    // Mostrar la tabla y ocultar la animación de carga
+    tablePreview.style.display = 'block';
+    loadingContainer.style.display = 'none';
 
     modifyTable();
   } catch (error) {
@@ -75,11 +84,6 @@ function insertarPageBreak() {
     const valorDeLaFilaAnterior = filas[index - 1].querySelector(
       `td:nth-child(${valorDeLaURL})`
     ).textContent;
-
-    // Verificar si el valor actual es diferente al valor anterior
-    // if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
-    //   if (index > 1) filas[index - 1].querySelector('td').classList.add('page-break');
-    // }
 
     //  Verificar si el valor actual es diferente al valor anterior
     if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {

@@ -76,11 +76,14 @@
     </div>
   </div>
 
-  <!-- Show HTML preview -->
-  <main id="tablePreview">
-    <div class="container-load">
-      <div class="load"></div>
+  <main>
+    <div id="loading-container">
+      <div class="spinner"></div>
     </div>
+
+    <!-- Show HTML preview -->
+    <!-- Tabla oculta hasta que se complete la carga -->
+    <div id="tablePreview" style="display: none;"></div>
   </main>
 
   <footer></footer>
