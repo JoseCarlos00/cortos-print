@@ -48,13 +48,13 @@ export function navbar() {
   });
 }
 
-export function parametrosDeLaUrl() {
-  // Función para obtener el valor del input seleccionado de la URL
-  function getSelectedValueFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('ordenar');
-  }
+// Función para obtener el valor del input seleccionado de la URL
+export function getSelectedValueFromURL(value) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(value);
+}
 
+export function parametrosDeLaUrl() {
   // Función para actualizar la URL con el valor seleccionado del input
   function updateURL(selectedValue) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -69,7 +69,7 @@ export function parametrosDeLaUrl() {
     });
   });
 
-  const selectedValue = getSelectedValueFromURL();
+  const selectedValue = getSelectedValueFromURL('ordenar');
   if (selectedValue) {
     document.querySelector(`input[name="ordernar"][value="${selectedValue}"]`).checked = true;
   }

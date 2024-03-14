@@ -6,7 +6,6 @@
 
   <link rel="stylesheet" href="public/style.css">
   <link rel="stylesheet" href="public/tablas.css">
-  <link rel="stylesheet" href="./public/cortos.css">
 
   <link rel="shortcut icon" href="public/print48.png" type="image/x-icon">
 
@@ -73,8 +72,16 @@
   </div>
 
 
-  <!-- Show HTML preview -->
-  <main id="tablePreview"></main>
+  <main>
+    <div id="loading-container">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Show HTML preview -->
+    <!-- Tabla oculta hasta que se complete la carga -->
+    <div id="tablePreview" style="display: none;"></div>
+  </main>
+
 
   <footer></footer>
 

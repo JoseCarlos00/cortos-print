@@ -1,20 +1,23 @@
 // tableOperations.js
 
 export function insertarThead() {
-  const primeraFila = document.querySelector('table tbody tr:nth-child(1)');
+  return new Promise((resolve, reject) => {
+    const primeraFila = document.querySelector('table tbody tr:nth-child(1)');
 
-  // html thead
-  const thead = `
+    // html thead
+    const thead = `
   <thead>
     <tr>${primeraFila.innerHTML}</tr>
   </thead>
   `;
 
-  const table = document.querySelector('#tablePreview > table');
-  table.insertAdjacentHTML('afterbegin', thead);
+    const table = document.querySelector('#tablePreview > table');
+    table.insertAdjacentHTML('afterbegin', thead);
 
-  // Borrar el elemento primera fila
-  primeraFila.remove();
+    // Borrar el elemento primera fila
+    primeraFila.remove();
+    resolve();
+  });
 }
 
 export function mostrarNombreArchivo(fileInput) {

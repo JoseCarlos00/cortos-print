@@ -1,18 +1,23 @@
 // fileProcessing.js
 import { insertarThead, mostrarNombreArchivo } from '../operations.js';
+import { getSelectedValueFromURL } from '../funcionesGlobales.js';
 
 async function procesarArchivo(file) {
-  const data = await file.arrayBuffer();
+  try {
+    const data = await file.arrayBuffer();
 
-  // Parse and load first worksheet
-  const wb = XLSX.read(data);
-  const ws = wb.Sheets[wb.SheetNames[0]];
+    // Parse and load first worksheet
+    const wb = XLSX.read(data);
+    const ws = wb.Sheets[wb.SheetNames[0]];
 
-  // Create HTML table
-  const html = XLSX.utils.sheet_to_html(ws);
-  tablePreview.innerHTML = html;
+    // Create HTML table
+    const html = XLSX.utils.sheet_to_html(ws);
+    tablePreview.innerHTML = html;
 
-  insertarPageBreak();
+    modifyTable();
+  } catch (error) {
+    console.error('Error al procesar el archivo:', error);
+  }
 }
 
 export function handleFile(file, e, fileInput) {
@@ -40,12 +45,16 @@ export function handleFile(file, e, fileInput) {
   }
 }
 
-function insertarPageBreak() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const valorDeLaURL = urlParams.get('ordenar') ?? 3;
+function modifyTable() {
+  insertarThead().then(() => {
+    ordenarTabla().then(() => {
+      insertarPageBreak();
+    });
+  });
+}
 
-  insertarThead();
-  ordenarTabla();
+function insertarPageBreak() {
+  const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';
 
   // Busca y agregar la clase page-break para el salto de paguina
   const tablePreview = document.getElementById('tablePreview');
@@ -60,57 +69,64 @@ function insertarPageBreak() {
     // Ignorar la primera fila (encabezados)
     if (index === 0) return;
 
-    const valorPrimerIdDelPedido = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+    const valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
 
     // Obtener el valor de la primera celda de la fila anterior
-    const valorDelIdAnterior = filas[index - 1].querySelector(
+    const valorDeLaFilaAnterior = filas[index - 1].querySelector(
       `td:nth-child(${valorDeLaURL})`
     ).textContent;
 
     // Verificar si el valor actual es diferente al valor anterior
-    if (valorPrimerIdDelPedido !== valorDelIdAnterior) {
-      if (index > 1) filas[index - 1].querySelector('td').classList.add('page-break');
+    // if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
+    //   if (index > 1) filas[index - 1].querySelector('td').classList.add('page-break');
+    // }
+
+    //  Verificar si el valor actual es diferente al valor anterior
+    if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
+      if (index > 1) {
+        filas[index - 1].querySelector(`td:nth-child(${valorDeLaURL})`).classList.add('page-break');
+      }
     }
   });
 }
 
 function ordenarTabla() {
-  // Obtener el valor de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const valorDeLaURL = urlParams.get('ordenar') ?? 3;
+  return new Promise((resolve, reject) => {
+    // Obtener el valor de la URL
+    const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';
 
-  const table = document.getElementById('tablePreview').querySelector('table');
-  const rows = Array.from(table.querySelectorAll('tbody tr'));
+    const table = document.getElementById('tablePreview').querySelector('table');
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
 
-  // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
-  rows.sort((a, b) => {
-    // Utilizar el valor de la URL en el selector
-    let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-    let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+    // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
+    rows.sort((a, b) => {
+      // Utilizar el valor de la URL en el selector
+      let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+      let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
 
-    if (valorDeLaURL === '3') {
-      aValue = aValue.split('-')[3];
-    }
+      if (valorDeLaURL === '3') {
+        aValue = aValue.split('-')[3];
+        bValue = bValue.split('-')[3];
+      }
 
-    if (valorDeLaURL === '3') {
-      bValue = bValue.split('-')[3];
-    }
+      // Verificar si los valores son numéricos
+      const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
+      const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
 
-    // Verificar si los valores son numéricos
-    const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
-    const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
+      // Comparar los valores numéricos
+      if (aValueNumeric && bValueNumeric) {
+        return parseFloat(aValue) - parseFloat(bValue);
+      } else {
+        // Si al menos uno de los valores no es numérico, comparar como cadenas
+        return aValue.localeCompare(bValue);
+      }
+    });
 
-    // Comparar los valores numéricos
-    if (aValueNumeric && bValueNumeric) {
-      return parseFloat(aValue) - parseFloat(bValue);
-    } else {
-      // Si al menos uno de los valores no es numérico, comparar como cadenas
-      return aValue.localeCompare(bValue);
-    }
-  });
+    // Reinsertar las filas ordenadas en la tabla
+    rows.forEach(row => {
+      table.querySelector('tbody').appendChild(row);
+    });
 
-  // Reinsertar las filas ordenadas en la tabla
-  rows.forEach(row => {
-    table.querySelector('tbody').appendChild(row);
+    resolve();
   });
 }

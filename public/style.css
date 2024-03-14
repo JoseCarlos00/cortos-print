@@ -1,9 +1,12 @@
 /* Input */
 *,
-*::before {
-  box-sizing: border-box;
+*::before,
+::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 body {
@@ -252,6 +255,7 @@ body {
 main,
 footer {
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 footer {
@@ -265,6 +269,46 @@ footer {
   .filters,
   footer {
     display: none;
+  }
+}
+
+/* Load */
+#loading-container {
+  background-color: rgb(250, 240, 245, 0.9);
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  transition: all 0.3 ease;
+  -webkit-transition: all 0.3 ease;
+  -moz-transition: all 0.3 ease;
+  z-index: 10;
+  display: none;
+
+  .spinner {
+    border: 15px solid #ccc;
+    border-top-color: #3498db;
+    border-top-style: groove;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+
+    position: absolute;
+    left: 50%;
+    top: 10%;
+
+    animation: spin 1s linear infinite;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

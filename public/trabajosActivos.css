@@ -1,9 +1,5 @@
-table thead tr :is(td[data-v='ZONA'], td[data-v='PRIORIDAD'], td[data-v='TIPO']) {
-  display: none;
-}
-
-table tbody {
-  :is(td:nth-child(10), td:nth-child(11), td:nth-child(12)) {
+table tr {
+  :is(td:nth-child(7), td:nth-child(10), td:nth-child(11), td:nth-child(12)) {
     display: none;
   }
 
