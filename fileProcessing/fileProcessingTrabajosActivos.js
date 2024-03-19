@@ -1,6 +1,6 @@
 // fileProcessing.js
 import { insertarThead, mostrarNombreArchivo } from '../operations.js';
-import { getSelectedValueFromURL } from '../funcionesGlobales.js';
+import { getSelectedValueFromURL, createFiltersCheckbox } from '../funcionesGlobales.js';
 
 async function procesarArchivo(file) {
   const loadingContainer = document.getElementById('loading-container');
@@ -58,9 +58,13 @@ function modifyTable() {
   insertarThead().then(() => {
     ordenarTabla().then(() => {
       insertarPageBreak();
+      // Ocultar columnas por default
+      createFiltersCheckbox([6, 9, 10, 11]);
     });
   });
 }
+
+// if (i === 6 || i === 9 || i === 10 || i === 11) {
 
 function insertarPageBreak() {
   const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';

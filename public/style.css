@@ -231,6 +231,9 @@ body {
 
 .filters {
   margin-top: 19px;
+  display: flex;
+  gap: 16px;
+
   form {
     width: fit-content;
   }
@@ -314,5 +317,18 @@ footer {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Checkboox */
+#checkbox-container {
+  display: flex;
+  gap: 4px 16px;
+  flex-wrap: wrap;
+  align-self: center;
+  animation: entradaElemento 0.5s ease-in-out;
+
+  input {
+    margin-right: 2px;
   }
 }
