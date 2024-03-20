@@ -6,7 +6,7 @@ import {
   handleDragOver,
   handleDragLeave,
   handleDrop,
-} from './fileUpload.js';
+} from './public/JS/fileUpload.js';
 
 async function contenido() {
   console.log('Content');

@@ -1,4 +1,4 @@
-console.log('App.js');
+console.log('Index.js');
 
 import { navbar, parametrosDeLaUrl } from './funcionesGlobales.js';
 
@@ -7,7 +7,7 @@ import {
   handleDragOver,
   handleDragLeave,
   handleDrop,
-} from './fileUpload.js';
+} from './public/JS/fileUpload.js';
 
 async function contenido() {
   console.log('Content');

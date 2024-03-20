@@ -1,12 +1,16 @@
 // fileProcessing.js
 import { insertarThead, mostrarNombreArchivo } from '../operations.js';
-import { getSelectedValueFromURL, createFiltersCheckbox } from '../funcionesGlobales.js';
+import { getSelectedValueFromURL } from '../funcionesGlobales.js';
+import { createFiltersCheckbox } from '../public/JS/checkBox.js';
 
 async function procesarArchivo(file) {
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
   loadingContainer.style.display = 'block';
+
+  const checkboxContainer = document.getElementById('checkbox-container');
+  checkboxContainer && (checkboxContainer.innerHTML = '');
 
   try {
     const data = await file.arrayBuffer();
@@ -58,13 +62,14 @@ function modifyTable() {
   insertarThead().then(() => {
     ordenarTabla().then(() => {
       insertarPageBreak();
-      // Ocultar columnas por default
-      createFiltersCheckbox([6, 9, 10, 11]);
+      // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
+      let hideColumns = [6, 7, 10, 11, 12];
+      hideColumns = hideColumns.map(value => value - 1);
+
+      createFiltersCheckbox(hideColumns, false);
     });
   });
 }
-
-// if (i === 6 || i === 9 || i === 10 || i === 11) {
 
 function insertarPageBreak() {
   const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';
