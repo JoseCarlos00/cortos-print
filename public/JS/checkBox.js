@@ -7,8 +7,6 @@ function createCheckboxElements(columnsToShow, showColumns) {
 
     const checkboxContainer = document.getElementById('checkboxContainer');
 
-    console.log(columnsToShow);
-
     if (!checkboxContainer) {
       reject('No existe el elemento checkboxContainer');
       return; // Salir de la función si no se encontró el contenedor de checkboxes
