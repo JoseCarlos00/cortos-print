@@ -434,7 +434,7 @@ table tr th.hidden {
   overflow: hidden;
   width: fit-content;
 
-  svg {
+  svg.toggleIcon {
     width: 1.2em;
     height: 1.2em;
     margin-right: 0.1em;
