@@ -485,6 +485,26 @@ table tr th.hidden {
   }
 }
 
+/* Button go to up top  */
+#goToTopButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007acc;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0.8;
+}
+
+#goToTopButton:hover {
+  background-color: #8e2de2;
+  opacity: 1;
+}
+
 @media print {
   .container-file-upload,
   header,
