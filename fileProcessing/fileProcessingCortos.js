@@ -75,7 +75,7 @@ function modifyTable() {
       if (getSelectedValueFromURL('ordenar') === '8') {
         // Mostrar columnas por default -> Para mostrar la Columna 1 pasar el indice 0
 
-        let showColumns = [2, 3, 5, 8];
+        let showColumns = [2, 3, 6, 8];
         showColumns = showColumns.map(value => value - 1);
 
         createFiltersCheckbox(showColumns, true);
