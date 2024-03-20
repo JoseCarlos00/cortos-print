@@ -62,18 +62,19 @@ function toggleColumn() {
     for (let i = 0; i < rows.length; i++) {
       rows[i].cells[columnIndex].style.display = 'table-cell';
       rows[i].cells[columnIndex].classList.remove('hidden');
+
       if (i === 0) {
-        const checkboxContainer = this.closest('.checkboxContainer');
+        const checkboxContainer = this.closest('.checkbox-container');
         checkboxContainer && checkboxContainer.classList.toggle('checkbox-checked');
       }
     }
   } else {
     // Ocultar columna
     for (let i = 0; i < rows.length; i++) {
-      // rows[i].cells[columnIndex].style.display = 'none';
       rows[i].cells[columnIndex].classList.add('hidden');
+
       if (i === 0) {
-        const checkboxContainer = this.closest('.checkboxContainer');
+        const checkboxContainer = this.closest('.checkbox-container');
         checkboxContainer && checkboxContainer.classList.toggle('checkbox-checked');
       }
     }

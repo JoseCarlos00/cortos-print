@@ -152,8 +152,8 @@ function ordenarTabla() {
         let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
         let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
 
-        aValue = aValue.split('-')[3].pop();
-        bValue = bValue.split('-')[3].pop();
+        aValue = aValue.split('-').pop();
+        bValue = bValue.split('-').pop();
 
         // Verificar si los valores son numéricos
         const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);

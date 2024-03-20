@@ -36,7 +36,6 @@ body {
     width: fit-content;
     height: fit-content;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
   }
   .file-upload-label input {
@@ -394,7 +393,12 @@ footer {
   }
 
   .checkbox-checked {
-    opacity: 0.8;
+    opacity: 0.6;
+  }
+
+  .column-toggle:focus ~ .checkmark {
+    outline: red solid 2px;
+    outline-offset: -2px;
   }
 }
 
@@ -461,7 +465,7 @@ table tr th.hidden {
 
   &::before {
     content: '';
-    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    background: linear-gradient(to right, #8e2de2, #007acc);
     width: 120%;
     left: -10%;
     transform: skew(30deg);
