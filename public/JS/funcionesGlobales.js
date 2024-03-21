@@ -48,7 +48,12 @@ export function navbar() {
   });
 }
 
-// Función para obtener el valor del input seleccionado de la URL
+// Función para obtener el valor de ls seleccionado de la URL
+/**
+ *
+ * @param {String} value  String del parametro buscado de la URL
+ * @returns  Valor del paramtro buscado de la URL
+ */
 export function getSelectedValueFromURL(value) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(value);
@@ -73,4 +78,54 @@ export function parametrosDeLaUrl() {
   if (selectedValue) {
     document.querySelector(`input[name="ordernar"][value="${selectedValue}"]`).checked = true;
   }
+}
+
+/**
+ * resolve() si se inserta el salto de pagina
+ *
+ * reject() si no existe la tabla o el parametro de la URL a ordernar
+ * @returns Una promesa
+ */
+export function insertarPageBreak() {
+  return new Promise((resolve, reject) => {
+    const valorDeLaURL = getSelectedValueFromURL('ordenar');
+
+    // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
+    const table = document.querySelector('#tablePreview table');
+
+    if (!table) {
+      return reject('No se encontro la tabla con el id: #tablePreview');
+    }
+
+    if (!valorDeLaURL) {
+      return reject('No se encontro el valor del parametro de la URL [ordenar]');
+    }
+
+    // filtrar y agregar clase al primer TD de cada grupo
+    const filas = table.querySelectorAll('tr');
+
+    // Iterar sobre las filas
+    filas.forEach((fila, index) => {
+      // Ignorar la primera fila (encabezados)
+      if (index === 0) return;
+
+      const valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+
+      // Obtener el valor de la primera celda de la fila anterior
+      const valorDeLaFilaAnterior = filas[index - 1].querySelector(
+        `td:nth-child(${valorDeLaURL})`
+      ).textContent;
+
+      // Verificar si el valor actual es diferente al valor anterior
+      if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
+        if (index > 1) {
+          filas[index - 1]
+            .querySelector(`td:nth-child(${valorDeLaURL})`)
+            .classList.add('page-break');
+        }
+      }
+    });
+
+    resolve();
+  });
 }

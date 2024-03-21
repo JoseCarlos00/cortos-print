@@ -1,7 +1,7 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo } from '../operations.js';
-import { getSelectedValueFromURL } from '../funcionesGlobales.js';
-import { createFiltersCheckbox } from '../public/JS/checkBox.js';
+import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
+import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
+import { createFiltersCheckbox } from '../JS/checkBox.js';
 
 async function procesarArchivo(file) {
   const loadingContainer = document.getElementById('loading-container');
@@ -51,6 +51,7 @@ export function handleFile(file, e, fileInput) {
         console.log(file);
       } else {
         console.log('Formato de archivo no compatible');
+        alert('Formato de archivo no compatible');
       }
     };
 
@@ -68,8 +69,8 @@ function modifyTable() {
 
         insertarPageBreak()
           .then()
-          .catch(() => {
-            console.error('Error al insertar el salto de página:');
+          .catch(err => {
+            console.error('Error al insertar el salto de página:', err);
           });
 
         createFiltersCheckbox(hideColumns, false);
@@ -80,54 +81,15 @@ function modifyTable() {
   });
 }
 
-function insertarPageBreak() {
-  return new Promise((resolve, reject) => {
-    const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';
-
-    // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
-    const table = document.querySelector('#tablePreview table');
-
-    if (!table) {
-      return reject('No se Encontro la tabla con el id: #tablePreview');
-    }
-
-    // filtrar y agregar clase al primer TD de cada grupo
-    const filas = table.querySelectorAll('tr');
-
-    // Iterar sobre las filas
-    filas.forEach((fila, index) => {
-      // Ignorar la primera fila (encabezados)
-      if (index === 0) return;
-
-      const valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
-
-      // Obtener el valor de la primera celda de la fila anterior
-      const valorDeLaFilaAnterior = filas[index - 1].querySelector(
-        `td:nth-child(${valorDeLaURL})`
-      ).textContent;
-
-      //  Verificar si el valor actual es diferente al valor anterior
-      if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
-        if (index > 1) {
-          filas[index - 1]
-            .querySelector(`td:nth-child(${valorDeLaURL})`)
-            .classList.add('page-break');
-        }
-      }
-    });
-
-    resolve();
-  });
-}
-
 function ordenarTabla() {
   return new Promise((resolve, reject) => {
     // Obtener el valor de la URL
     const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '9';
-
     const table = document.querySelector('#tablePreview table');
-    const rows = Array.from(table.querySelectorAll('tbody tr'));
 
+    if (!valorDeLaURL || !table) return;
+
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
     const headerText = headerRow.cells[valorDeLaURL - 1];
 
