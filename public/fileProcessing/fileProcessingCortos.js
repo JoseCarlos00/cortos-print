@@ -47,7 +47,6 @@ export function handleFile(file, e, fileInput) {
       if (extension === 'xlsx' || extension === 'csv' || extension === 'xls') {
         procesarArchivo(file);
         mostrarNombreArchivo(fileInput);
-        console.log(file);
         form && form.reset();
       } else {
         console.log('Formato de archivo no compatible');

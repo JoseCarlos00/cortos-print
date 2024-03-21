@@ -48,7 +48,6 @@ export function handleFile(file, e, fileInput) {
       if (extension === 'xlsx' || extension === 'csv' || extension === 'xls') {
         procesarArchivo(file);
         mostrarNombreArchivo(fileInput);
-        console.log(file);
         form && form.reset();
       } else {
         console.log('Formato de archivo no compatible');
@@ -64,22 +63,21 @@ function modifyTable() {
   console.log('[Modify Table]');
   insertarThead()
     .then(() => {
-      const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
+      const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '';
       if (valorDeLaURL && valorDeLaURL !== 'NoOrdenar') {
         ordenarTabla()
           .then(header => {
-            if (header === 'SHIP_TO' || header === 'ID DEL PEDIDO') {
-              // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
-              let hideColumns = [6, 7, 10, 11, 12];
-              hideColumns = hideColumns.map(value => value - 1);
+            if (header === 'Location') {
+              let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13];
+              showColumns = showColumns.map(value => value - 1);
 
-              insertarPageBreak()
+              insertarPageBreakPorLocation()
                 .then()
                 .catch(err => {
                   console.error('Error al insertar el salto de página:', err);
                 });
 
-              createFiltersCheckbox(hideColumns, false);
+              createFiltersCheckbox(showColumns, true);
             } else {
               createFiltersCheckbox();
             }
@@ -89,8 +87,20 @@ function modifyTable() {
             createFiltersCheckbox();
           });
       } else {
-        createFiltersCheckbox();
+        const header = document.querySelector('#sjs-B1');
+        const headerVaule = header ? header.innerText : '';
+
+        if (headerVaule === 'Location') {
+          let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13];
+          showColumns = showColumns.map(value => value - 1);
+
+          createFiltersCheckbox(showColumns, true);
+        } else {
+          createFiltersCheckbox();
+        }
       }
+
+      tranformarValueToNumber();
     })
     .catch(err => {
       console.error('Error al insetar el Thead:', err);
@@ -118,7 +128,7 @@ function ordenarTabla() {
 
     const headerValue = header ? header.textContent : '';
 
-    if (headerValue === 'SHIP_TO') {
+    if (headerValue === 'Location') {
       // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
       rows.sort((a, b) => {
         // Utilizar el valor de la URL en el selector
@@ -132,35 +142,149 @@ function ordenarTabla() {
       rows.forEach(row => {
         table.querySelector('tbody').appendChild(row);
       });
-    } else if (headerValue === 'ID DEL PEDIDO') {
-      // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
-      rows.sort((a, b) => {
-        // Utilizar el valor de la URL en el selector
-        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-
-        aValue = aValue.split('-').pop();
-        bValue = bValue.split('-').pop();
-
-        // Verificar si los valores son numéricos
-        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
-        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
-
-        // Comparar los valores numéricos
-        if (aValueNumeric && bValueNumeric) {
-          return parseFloat(aValue) - parseFloat(bValue);
-        } else {
-          // Si al menos uno de los valores no es numérico, comparar como cadenas
-          return aValue.localeCompare(bValue);
-        }
-      });
-
-      // Reinsertar las filas ordenadas en la tabla
-      rows.forEach(row => {
-        table.querySelector('tbody').appendChild(row);
-      });
     }
 
     resolve(headerValue);
+  });
+}
+
+/**
+ * resolve() si se inserta el salto de pagina
+ *
+ * reject() si no existe la tabla o el parametro de la URL a ordernar
+ * @returns Una promesa
+ */
+function insertarPageBreakPorLocation() {
+  return new Promise((resolve, reject) => {
+    const valorDeLaURL = getSelectedValueFromURL('ordenar');
+
+    // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
+    const table = document.querySelector('#tablePreview table');
+
+    if (!table) {
+      return reject('No se encontro la tabla con el id: #tablePreview');
+    }
+
+    if (!valorDeLaURL) {
+      return reject('No se encontro el valor del parametro de la URL [ordenar]');
+    }
+
+    // filtrar y agregar clase al primer TD de cada grupo
+    const filas = table.querySelectorAll('tr');
+
+    // Iterar sobre las filas
+    filas.forEach((fila, index) => {
+      // Ignorar la primera fila (encabezados)
+      if (index === 0) return;
+
+      let valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+
+      const locationTypeActual = valorDeLaFilaActual ? valorDeLaFilaActual.split('-') : [];
+
+      if (locationTypeActual.length === 5) {
+        valorDeLaFilaActual = locationTypeActual[1];
+      }
+
+      console.log('valorDeLaFilaActual:', valorDeLaFilaActual);
+
+      // Obtener el valor de la primera celda de la fila anterior
+      let valorDeLaFilaAnterior = filas[index - 1].querySelector(
+        `td:nth-child(${valorDeLaURL})`
+      ).textContent;
+
+      const locationTypeAnterior = valorDeLaFilaAnterior ? valorDeLaFilaAnterior.split('-') : [];
+
+      if (locationTypeAnterior.length === 5) {
+        valorDeLaFilaAnterior = locationTypeAnterior[1];
+      }
+
+      console.log('valorDeLaFilaAnterior:', valorDeLaFilaAnterior);
+
+      // Verificar si el valor actual es diferente al valor anterior
+      if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
+        if (index > 1) {
+          filas[index - 1]
+            .querySelector(`td:nth-child(${valorDeLaURL})`)
+            .classList.add('page-break');
+        }
+      }
+    });
+
+    resolve();
+  });
+}
+
+function convertToNum(filas, posicion) {
+  // Iterar sobre las filas
+  filas.forEach((fila, index) => {
+    // Ignorar la primera fila (encabezados)
+    if (index === 0) return;
+    const td = fila.querySelector(`td:nth-child(${posicion})`);
+
+    if (td) {
+      const value = td.innerHTML;
+
+      // Verificar el valor es numérico
+      const valueNumeric = !isNaN(parseFloat(value)) && isFinite(value);
+      if (valueNumeric) {
+        td.innerHTML = parseFloat(value);
+      }
+    }
+  });
+}
+
+function tranformarValueToNumber() {
+  const filas = document.querySelectorAll('#tablePreview table tr');
+
+  if (!filas) return;
+
+  const primerFila = filas[0];
+
+  if (!primerFila) return;
+
+  // Definimos un array de objetos que contiene los nombres de los elementos y sus respectivos selectores
+  const elementos = [
+    { nombre: 'AV', selector: '[data-v="AV"]' },
+    { nombre: 'OH', selector: '[data-v="OH"]' },
+    { nombre: 'AL', selector: '[data-v="AL"]' },
+    { nombre: 'IT', selector: '[data-v="IT"]' },
+    { nombre: 'SU', selector: '[data-v="SU"]' },
+    { nombre: 'Description', selector: '[data-v="Description"]' },
+  ];
+
+  // Iteramos sobre cada objeto en el array de elementos
+  elementos.forEach(elemento => {
+    // Obtenemos el elemento correspondiente utilizando su selector
+    const elementoEnFila = primerFila.querySelector(elemento.selector);
+    // Verificamos si el elemento existe
+    if (elementoEnFila) {
+      // Obtenemos todos los hijos de la primera fila
+      const hijosFila = primerFila.children;
+      // Iteramos sobre los hijos de la fila
+      for (let i = 0; i < hijosFila.length; i++) {
+        // Verificamos si el hijo es el mismo que el elemento actual
+        if (hijosFila[i] === elementoEnFila) {
+          // Si encontramos la posición del elemento, la guardamos en una variable
+          const posicionDelElemento = i + 1; // Sumamos 1 porque las posiciones comienzan desde 1
+          console.log(`${elemento.nombre} se encuentra en la posición ${posicionDelElemento}`);
+          if (elemento.nombre !== 'Description') {
+            convertToNum(filas, posicionDelElemento);
+          } else if (elemento.nombre === 'Description') {
+            const style = `
+            <style>
+              @media print {
+                table tr td:nth-child(${posicionDelElemento}) {
+                  overflow: hidden;
+                  max-width: 300px;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+              }
+            </style>`;
+            document.querySelector('head').insertAdjacentHTML('beforeend', style);
+          }
+        }
+      }
+    }
   });
 }

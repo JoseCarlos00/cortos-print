@@ -92,25 +92,34 @@ function hideColumn(columnIndex) {
 }
 
 function eventoClick() {
-  const toggleButton = document.getElementById('toggleButton');
+  return new Promise((resolve, reject) => {
+    const toggleButton = document.getElementById('toggleButton');
 
-  // Obtener el elemento del path SVG
-  const togglePath = document.querySelector('.toggleIcon path');
+    // Obtener el elemento del path SVG
+    const togglePath = document.querySelector('.toggleIcon path');
 
-  if (!toggleButton) return;
-  toggleButton.removeAttribute('disabled');
-
-  toggleButton.addEventListener('click', function () {
-    const checkboxContainer = document.getElementById('checkboxContainer');
-    if (!checkboxContainer) return;
-
-    checkboxContainer.classList.toggle('mostrar');
-    // Cambiar el atributo "d" del path SVG para representar un símbolo de menos
-    if (checkboxContainer.classList.contains('mostrar')) {
-      togglePath.setAttribute('d', 'M5 12h14');
-    } else {
-      togglePath.setAttribute('d', 'M12 19v-7m0 0V5m0 7H5m7 0h7');
+    if (!toggleButton) {
+      return reject('No existe el elemento [.toggleIcon path]');
     }
+
+    toggleButton.removeAttribute('disabled');
+
+    toggleButton.addEventListener('click', function () {
+      const checkboxContainer = document.getElementById('checkboxContainer');
+      if (!checkboxContainer) {
+        return reject('No existe el elemento [#checkboxContainer]');
+      }
+
+      checkboxContainer.classList.toggle('mostrar');
+      // Cambiar el atributo "d" del path SVG para representar un símbolo de menos
+      if (checkboxContainer.classList.contains('mostrar')) {
+        togglePath.setAttribute('d', 'M5 12h14');
+      } else {
+        togglePath.setAttribute('d', 'M12 19v-7m0 0V5m0 7H5m7 0h7');
+      }
+    });
+
+    resolve('[Create Checkbox EventoClick]');
   });
 }
 
@@ -142,7 +151,9 @@ export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
         checkbox.addEventListener('change', toggleColumn);
       });
 
-      eventoClick();
+      eventoClick()
+        .then(msg => console.log(msg))
+        .catch(err => console.error('Error al crear el evento click mostrar:', err));
     })
     .catch(err => {
       console.error('Error al crear los checkboxes:', err);
