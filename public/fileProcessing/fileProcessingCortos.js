@@ -79,7 +79,7 @@ function modifyTable() {
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
-            } else if (header === 'ZONA') {
+            } else if (header === 'ZONA' || header === 'BODEGA') {
               insertarPageBreak()
                 .then()
                 .catch(err => {
@@ -95,6 +95,8 @@ function modifyTable() {
             console.error('Error al ordenar la Tabla:', err);
             createFiltersCheckbox();
           });
+      } else {
+        createFiltersCheckbox();
       }
     })
     .catch(err => {
@@ -122,6 +124,7 @@ function ordenarTabla() {
     const header = headerRow.cells[valorDeLaURL - 1];
 
     const headerValue = header ? header.textContent : '';
+    console.log('HeaderValue:', headerValue);
 
     if (headerValue === 'Erp order') {
       rows.sort((a, b) => {
@@ -149,6 +152,12 @@ function ordenarTabla() {
         table.querySelector('tbody').appendChild(row);
       });
     } else if (headerValue === 'ZONA') {
+      ordenarPorBodega();
+    } else if (headerValue === 'BODEGA') {
+      ordenarPorBodega();
+    }
+
+    function ordenarPorBodega() {
       rows.sort((a, b) => {
         let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
         let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;

@@ -88,6 +88,8 @@ function modifyTable() {
             console.error('Error al ordenar la Tabla:', err);
             createFiltersCheckbox();
           });
+      } else {
+        createFiltersCheckbox();
       }
     })
     .catch(err => {
