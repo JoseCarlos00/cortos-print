@@ -122,6 +122,11 @@ body {
     padding: 0;
   }
 
+  .browse-button:active,
+  .file-upload-design svg:active :is(path:nth-child(1), path:nth-child(2)) {
+    transform: scale(0.95);
+  }
+
   .nombre-de-archivo {
     font-size: 14px;
     margin: 0;
@@ -142,8 +147,6 @@ body {
     clip-path: circle(50% at 50% 50%);
     display: inline-block;
     margin-right: 4px;
-    /* transition: opacity 0.8s ease;
-    opacity: 0; */
   }
 }
 
@@ -331,7 +334,7 @@ footer {
   background-color: #fff;
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.589));
   border-radius: 8px;
-  padding: 4px;
+  padding: 6px 4px 8px 4px;
 
   .checkbox-container {
     display: inline-block;
@@ -370,8 +373,8 @@ footer {
     content: '';
     position: absolute;
     display: none;
-    left: 7px;
-    top: 3px;
+    left: 5.4;
+    top: 2.6;
     width: 6px;
     height: 8px;
     border: solid white;
@@ -380,8 +383,6 @@ footer {
   }
 
   .column-toggle:checked ~ .checkmark {
-    height: 18px;
-    width: 18px;
     background-color: #2196f3;
     box-shadow: 0 3px 7px rgba(33, 150, 243, 0.3);
     border: none;
@@ -485,7 +486,7 @@ table tr th.hidden {
   }
 }
 
-/* Button go to up top  */
+/* Button go to top  */
 #goToTopButton {
   position: fixed;
   bottom: 20px;
@@ -493,16 +494,20 @@ table tr th.hidden {
   background-color: #007acc;
   color: #fff;
   border: none;
-  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
   padding: 8px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   opacity: 0.8;
-}
 
-#goToTopButton:hover {
-  background-color: #8e2de2;
-  opacity: 1;
+  &:hover {
+    background-color: #8e2de2;
+    opacity: 1;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
 }
 
 @media print {
