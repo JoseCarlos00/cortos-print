@@ -1,4 +1,4 @@
-console.log('TrabajosActivos.js');
+console.log('inventory.js');
 import { navbar, parametrosDeLaUrl } from './public/JS/funcionesGlobales.js';
 
 import {
@@ -17,14 +17,12 @@ async function content() {
     if (!fileInput) return;
 
     // Agregar evento de cambio para la carga de archivos
-    fileInput.addEventListener('change', e =>
-      handleFileInputChange(e, fileInput, 'TRABAJOSACTIVOS')
-    );
+    fileInput.addEventListener('change', e => handleFileInputChange(e, fileInput, 'INVENTORY'));
 
     // Agregar eventos para arrastrar y soltar
     container.addEventListener('dragover', e => handleDragOver(e, container));
     container.addEventListener('dragleave', e => handleDragLeave(e, container));
-    container.addEventListener('drop', e => handleDrop(e, container, fileInput, 'TRABAJOSACTIVOS'));
+    container.addEventListener('drop', e => handleDrop(e, container, fileInput, 'INVENTORY'));
   } catch (error) {
     console.log('Error:', error.message);
   }

@@ -7,18 +7,20 @@
   <link rel="stylesheet" href="public/CSS/style.css">
   <link rel="stylesheet" href="public/CSS/tablas.css">
 
+
+
   <link rel="shortcut icon" href="public/print48.png" type="image/x-icon">
 
-  <title>Cortos</title>
+  <title>Inventory</title>
 </head>
 
 <body>
   <header>
     <nav class="navbar">
       <ul class="navbar-nav">
-        <li class="nav-item active"><a href="#">Cortos</a></li>
+        <li class="nav-item"><a href="./index.html?ordenar=1">Cortos</a></li>
         <li class="nav-item"><a href="./trabajosActivos.html?ordenar=9"> Trabajos Activos</a></li>
-        <li class="nav-item"><a href="./inventory.html?ordenar=2">Inventory</a></li>
+        <li class="nav-item active"><a href="#">Inventory</a></li>
       </ul>
     </nav>
 
@@ -29,22 +31,12 @@
       <fieldset>
         <legend>Ordenar por</legend>
         <label>
-          <input type="radio" name="ordernar" value="1" checked>
-          ZONA <span style="font-size: 10px;">(BODEGA)</span>
+          <input type="radio" name="ordernar" value="2" checked>
+          LOCATION
         </label>
 
         <label>
-          <input type="radio" name="ordernar" value="2">
-          BODEGA
-        </label>
-
-        <label>
-          <input type="radio" name="ordernar" value="8">
-          ERP ORDER
-        </label>
-
-        <label>
-          <input type="radio" name="ordernar" value="NoOrdenar">
+          <input type="radio" name="ordernar" value="noOrdenar">
           No Ordenar
         </label>
       </fieldset>
@@ -59,6 +51,7 @@
         Mostrar Columnas
       </span>
     </button>
+
     <div id="checkboxContainer"></div>
   </section>
 
@@ -94,7 +87,6 @@
     </div>
   </div>
 
-
   <main>
     <div id="loading-container">
       <div class="spinner"></div>
@@ -115,7 +107,8 @@
 
   <footer></footer>
 
-  <script type="module" src="./index.js"></script>
+
+  <script type="module" src="./inventory.js"></script>
   <script type="module" src="./xlsx.full.min.js"></script>
 </body>
 

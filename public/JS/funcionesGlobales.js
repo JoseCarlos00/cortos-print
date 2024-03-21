@@ -63,20 +63,28 @@ export function parametrosDeLaUrl() {
   // Función para actualizar la URL con el valor seleccionado del input
   function updateURL(selectedValue) {
     const urlParams = new URLSearchParams(window.location.search);
+
     urlParams.set('ordenar', selectedValue);
     window.history.replaceState(null, null, '?' + urlParams.toString());
   }
 
   // Event listener para los cambios en los inputs
-  document.querySelectorAll('input[name="ordernar"]').forEach(input => {
+  document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
     input.addEventListener('change', function () {
       updateURL(this.value);
     });
   });
 
   const selectedValue = getSelectedValueFromURL('ordenar');
+
   if (selectedValue) {
     document.querySelector(`input[name="ordernar"][value="${selectedValue}"]`).checked = true;
+  } else {
+    // document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+    //   input.addEventListener('change', function () {
+    //     updateURL(this.value);
+    //   });
+    // });
   }
 }
 

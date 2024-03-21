@@ -9,7 +9,7 @@ import {
   handleDrop,
 } from './public/JS/fileUpload.js';
 
-async function contenido() {
+async function content() {
   console.log('Content');
   try {
     const container = document.querySelector('.container-file-upload-form');
@@ -32,4 +32,4 @@ async function contenido() {
   navbar();
 }
 
-window.addEventListener('DOMContentLoaded', contenido);
+window.addEventListener('DOMContentLoaded', content);

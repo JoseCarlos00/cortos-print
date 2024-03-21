@@ -1,6 +1,7 @@
 // fileUpload.js
 import { handleFile as handleFileCortos } from '../fileProcessing/fileProcessingCortos.js';
 import { handleFile as handleFileTrabajosActivos } from '../fileProcessing/fileProcessingTrabajosActivos.js';
+import { handleFile as handleFileInventory } from '../fileProcessing/fileProcessingInventory.js';
 
 export function handleFileInputChange(e, fileInput, tipo) {
   const file = e.target.files[0];
@@ -9,6 +10,8 @@ export function handleFileInputChange(e, fileInput, tipo) {
     handleFileCortos(file, e, fileInput);
   } else if (tipo === 'TRABAJOSACTIVOS') {
     handleFileTrabajosActivos(file, e, fileInput);
+  } else if (tipo === 'INVENTORY') {
+    handleFileInventory(file, e, fileInput);
   }
 }
 
@@ -31,5 +34,7 @@ export function handleDrop(e, container, fileInput, tipo) {
     handleFileCortos(file, e, fileInput);
   } else if (tipo === 'TRABAJOSACTIVOS') {
     handleFileTrabajosActivos(file, e, fileInput);
+  } else if (tipo === 'INVENTORY') {
+    handleFileInventory(file, e, fileInput);
   }
 }
