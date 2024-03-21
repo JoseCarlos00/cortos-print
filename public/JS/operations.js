@@ -4,6 +4,10 @@ export function insertarThead() {
   return new Promise((resolve, reject) => {
     const primeraFila = document.querySelector('table tbody tr:nth-child(1)');
 
+    if (!primeraFila) {
+      return reject('No se encontro la primera fila el [thead]');
+    }
+
     // html thead
     const thead = `
   <thead>
@@ -12,6 +16,11 @@ export function insertarThead() {
   `;
 
     const table = document.querySelector('#tablePreview > table');
+
+    if (!table) {
+      return reject('No se encontro la tabla con el id: #tablePreview table');
+    }
+
     table.insertAdjacentHTML('afterbegin', thead);
 
     // Borrar el elemento primera fila

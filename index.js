@@ -1,6 +1,6 @@
 console.log('Index.js');
 
-import { navbar, parametrosDeLaUrl } from './funcionesGlobales.js';
+import { navbar, parametrosDeLaUrl } from './public/JS/funcionesGlobales.js';
 
 import {
   handleFileInputChange,

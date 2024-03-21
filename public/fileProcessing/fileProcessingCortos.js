@@ -60,42 +60,59 @@ export function handleFile(file, e, fileInput) {
 }
 
 function modifyTable() {
-  insertarThead().then(() => {
-    ordenarTabla().then(header => {
-      if (header === 'Erp order') {
-        let showColumns = [2, 3, 6, 8];
-        showColumns = showColumns.map(value => value - 1);
+  console.log('[Modify Table]');
+  insertarThead()
+    .then(() => {
+      ordenarTabla()
+        .then(header => {
+          console.log('Ordenar Tabla resolve');
+          if (header === 'Erp order') {
+            let showColumns = [2, 3, 6, 8];
+            showColumns = showColumns.map(value => value - 1);
 
-        insertarPageBreak()
-          .then()
-          .catch(err => {
-            console.error('Error al insertar el salto de página:', err);
-          });
+            insertarPageBreak()
+              .then()
+              .catch(err => {
+                console.error('Error al insertar el salto de página:', err);
+              });
 
-        tranformarTotalQty();
-        createFiltersCheckbox(showColumns, true);
-      } else if (header === 'ZONA') {
-        insertarPageBreak()
-          .then()
-          .catch(err => {
-            console.error('Error al insertar el salto de página:', err);
-          });
+            tranformarTotalQty();
+            createFiltersCheckbox(showColumns, true);
+          } else if (header === 'ZONA') {
+            insertarPageBreak()
+              .then()
+              .catch(err => {
+                console.error('Error al insertar el salto de página:', err);
+              });
 
-        createFiltersCheckbox();
-      } else {
-        createFiltersCheckbox();
-      }
+            createFiltersCheckbox();
+          } else {
+            createFiltersCheckbox();
+          }
+        })
+        .catch(err => {
+          console.error('Error al ordenar la Tabla:', err);
+        });
+    })
+    .catch(err => {
+      console.error('Error al insetar el Thead:', err);
     });
-  });
 }
 
 function ordenarTabla() {
+  console.log('[Ordenar tabla]');
   return new Promise((resolve, reject) => {
     // Obtener el valor de la URL
     const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
     const table = document.querySelector('#tablePreview table');
 
-    if (!valorDeLaURL || !table) return;
+    if (!table) {
+      return reject('No se encontro la tabla con el id: #tablePreview');
+    }
+
+    if (!valorDeLaURL) {
+      return reject('No se encontro el valor del parametro de la URL [ordenar]');
+    }
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)

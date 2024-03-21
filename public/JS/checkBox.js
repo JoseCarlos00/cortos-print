@@ -123,6 +123,7 @@ function eventoClick() {
  * @param {type Bolean} showColumns : Valor por defaul = true
  */
 export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
+  console.log('[Create Filters Checkbox]');
   // Esperar a que los checkboxes estén creados antes de asignar eventos
   createCheckboxElements(columnsToShow, showColumns)
     .then(() => {

@@ -1,5 +1,5 @@
 console.log('TrabajosActivos.js');
-import { navbar, parametrosDeLaUrl } from './funcionesGlobales.js';
+import { navbar, parametrosDeLaUrl } from './public/JS/funcionesGlobales.js';
 
 import {
   handleFileInputChange,
