@@ -59,6 +59,11 @@ export function getSelectedValueFromURL(value) {
   return urlParams.get(value);
 }
 
+/**
+ * Busca el parametro de la URL [ordenar]
+ *
+ * y si no lo encuentra busca el input con el atributo checked y actualiza el URL
+ */
 export function parametrosDeLaUrl() {
   // Función para actualizar la URL con el valor seleccionado del input
   function updateURL(selectedValue) {
@@ -80,11 +85,11 @@ export function parametrosDeLaUrl() {
   if (selectedValue) {
     document.querySelector(`input[name="ordernar"][value="${selectedValue}"]`).checked = true;
   } else {
-    // document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
-    //   input.addEventListener('change', function () {
-    //     updateURL(this.value);
-    //   });
-    // });
+    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+      if (input.checked) {
+        updateURL(input.value);
+      }
+    });
   }
 }
 
