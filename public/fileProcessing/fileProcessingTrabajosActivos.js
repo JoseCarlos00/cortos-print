@@ -34,6 +34,8 @@ async function procesarArchivo(file) {
 }
 
 export function handleFile(file, e, fileInput) {
+  const form = document.querySelector('.container-file-upload-form > form');
+
   if (file) {
     const reader = new FileReader();
 
@@ -49,6 +51,7 @@ export function handleFile(file, e, fileInput) {
         procesarArchivo(file);
         mostrarNombreArchivo(fileInput);
         console.log(file);
+        form && form.reset();
       } else {
         console.log('Formato de archivo no compatible');
         alert('Formato de archivo no compatible');
@@ -65,7 +68,6 @@ function modifyTable() {
     .then(() => {
       ordenarTabla()
         .then(header => {
-          console.log('Ordenar Tabla resolve');
           if (header === 'SHIP_TO' || header === 'ID DEL PEDIDO') {
             // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
             let hideColumns = [6, 7, 10, 11, 12];
@@ -108,9 +110,11 @@ function ordenarTabla() {
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-    const headerText = headerRow.cells[valorDeLaURL - 1];
+    const header = headerRow.cells[valorDeLaURL - 1];
 
-    if (headerText.textContent === 'SHIP_TO') {
+    const headerValue = header ? header.textContent : '';
+
+    if (headerValue === 'SHIP_TO') {
       // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
       rows.sort((a, b) => {
         // Utilizar el valor de la URL en el selector
@@ -124,7 +128,7 @@ function ordenarTabla() {
       rows.forEach(row => {
         table.querySelector('tbody').appendChild(row);
       });
-    } else if (headerText.textContent === 'ID DEL PEDIDO') {
+    } else if (headerValue === 'ID DEL PEDIDO') {
       // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
       rows.sort((a, b) => {
         // Utilizar el valor de la URL en el selector
@@ -153,6 +157,6 @@ function ordenarTabla() {
       });
     }
 
-    resolve(headerText.textContent);
+    resolve(headerValue);
   });
 }

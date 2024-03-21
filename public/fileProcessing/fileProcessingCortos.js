@@ -34,6 +34,7 @@ async function procesarArchivo(file) {
 }
 
 export function handleFile(file, e, fileInput) {
+  const form = document.querySelector('.container-file-upload-form > form');
   if (file) {
     const reader = new FileReader();
 
@@ -49,6 +50,7 @@ export function handleFile(file, e, fileInput) {
         procesarArchivo(file);
         mostrarNombreArchivo(fileInput);
         console.log(file);
+        form && form.reset();
       } else {
         console.log('Formato de archivo no compatible');
         alert('Formato de archivo no compatible');
@@ -65,7 +67,6 @@ function modifyTable() {
     .then(() => {
       ordenarTabla()
         .then(header => {
-          console.log('Ordenar Tabla resolve');
           if (header === 'Erp order') {
             let showColumns = [2, 3, 6, 8];
             showColumns = showColumns.map(value => value - 1);
@@ -116,9 +117,11 @@ function ordenarTabla() {
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-    const headerText = headerRow.cells[valorDeLaURL - 1];
+    const header = headerRow.cells[valorDeLaURL - 1];
 
-    if (headerText.textContent === 'Erp order') {
+    const headerValue = header ? header.textContent : '';
+
+    if (headerValue === 'Erp order') {
       rows.sort((a, b) => {
         let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
         let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
@@ -143,7 +146,7 @@ function ordenarTabla() {
       rows.forEach(row => {
         table.querySelector('tbody').appendChild(row);
       });
-    } else if (headerText.textContent === 'ZONA') {
+    } else if (headerValue === 'ZONA') {
       rows.sort((a, b) => {
         let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
         let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
@@ -178,7 +181,7 @@ function ordenarTabla() {
       });
     }
 
-    resolve(headerText.textContent);
+    resolve(headerValue);
   });
 }
 

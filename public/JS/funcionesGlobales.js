@@ -129,3 +129,7 @@ export function insertarPageBreak() {
     resolve();
   });
 }
+
+export function resetFormulario(elemento) {
+  elemento.reset();
+}
