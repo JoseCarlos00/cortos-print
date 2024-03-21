@@ -4,13 +4,11 @@ import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGloba
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 
 async function procesarArchivo(file) {
+  console.log('[Procesar Archivo]');
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
   loadingContainer.style.display = 'block';
-
-  const checkboxContainer = document.getElementById('checkbox-container');
-  checkboxContainer && (checkboxContainer.innerHTML = '');
 
   try {
     const data = await file.arrayBuffer();
@@ -66,27 +64,31 @@ function modifyTable() {
   console.log('[Modify Table]');
   insertarThead()
     .then(() => {
-      ordenarTabla()
-        .then(header => {
-          if (header === 'SHIP_TO' || header === 'ID DEL PEDIDO') {
-            // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
-            let hideColumns = [6, 7, 10, 11, 12];
-            hideColumns = hideColumns.map(value => value - 1);
+      const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
+      if (valorDeLaURL && valorDeLaURL !== 'NoOrdenar') {
+        ordenarTabla()
+          .then(header => {
+            if (header === 'SHIP_TO' || header === 'ID DEL PEDIDO') {
+              // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
+              let hideColumns = [6, 7, 10, 11, 12];
+              hideColumns = hideColumns.map(value => value - 1);
 
-            insertarPageBreak()
-              .then()
-              .catch(err => {
-                console.error('Error al insertar el salto de página:', err);
-              });
+              insertarPageBreak()
+                .then()
+                .catch(err => {
+                  console.error('Error al insertar el salto de página:', err);
+                });
 
-            createFiltersCheckbox(hideColumns, false);
-          } else {
+              createFiltersCheckbox(hideColumns, false);
+            } else {
+              createFiltersCheckbox();
+            }
+          })
+          .catch(err => {
+            console.error('Error al ordenar la Tabla:', err);
             createFiltersCheckbox();
-          }
-        })
-        .catch(err => {
-          console.error('Error al ordenar la Tabla:', err);
-        });
+          });
+      }
     })
     .catch(err => {
       console.error('Error al insetar el Thead:', err);

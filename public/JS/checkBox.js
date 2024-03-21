@@ -124,6 +124,10 @@ function eventoClick() {
  */
 export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
   console.log('[Create Filters Checkbox]');
+
+  const checkboxContainer = document.getElementById('checkboxContainer');
+  checkboxContainer && (checkboxContainer.innerHTML = '');
+
   // Esperar a que los checkboxes estén creados antes de asignar eventos
   createCheckboxElements(columnsToShow, showColumns)
     .then(() => {
