@@ -142,3 +142,45 @@ export function insertarPageBreak() {
     resolve();
   });
 }
+
+export function eventoClickCheckBox() {
+  return new Promise((resolve, reject) => {
+    const toggleButton = document.getElementById('toggleButton');
+
+    // Obtener el elemento del path SVG
+    const togglePath = document.querySelector('.toggleIcon path');
+
+    if (!toggleButton) {
+      return reject('No existe el elemento #toggleButton');
+    }
+
+    // Definir la función que se utilizará para manejar el evento 'click'
+    const toggleButtonClickHandler = function () {
+      const checkboxContainer = document.getElementById('checkboxContainer');
+      if (!checkboxContainer) {
+        return reject('No existe el elemento #checkboxContainer');
+      }
+
+      // Verificar si la clase 'mostrar' está presente en el checkboxContainer
+      if (!checkboxContainer.classList.contains('mostrar')) {
+        // Si no está presente, la agregamos
+        checkboxContainer.classList.add('mostrar');
+        // Cambiar el atributo "d" del path SVG para representar un símbolo de menos(-)
+        togglePath.setAttribute('d', 'M5 12h14');
+      } else {
+        // Si está presente, la eliminamos
+        checkboxContainer.classList.remove('mostrar');
+        // Cambiar el atributo "d" del path SVG para representar un símbolo de más(+)
+        togglePath.setAttribute('d', 'M12 19v-7m0 0V5m0 7H5m7 0h7');
+      }
+    };
+
+    toggleButton.removeEventListener('click', toggleButtonClickHandler);
+
+    // Agregar el evento 'click' al toggleButton
+    toggleButton.addEventListener('click', toggleButtonClickHandler);
+
+    // Resolver la promesa con un mensaje indicando que el evento se ha creado correctamente
+    resolve('Evento click creado correctamente');
+  });
+}

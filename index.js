@@ -1,6 +1,6 @@
 console.log('Index.js');
 
-import { navbar, parametrosDeLaUrl } from './public/JS/funcionesGlobales.js';
+import { navbar, parametrosDeLaUrl, eventoClickCheckBox } from './public/JS/funcionesGlobales.js';
 
 import {
   handleFileInputChange,
@@ -30,6 +30,10 @@ async function content() {
 
   parametrosDeLaUrl();
   navbar();
+
+  eventoClickCheckBox()
+    .then(msg => console.log(msg))
+    .catch(err => console.error('Error al crear el evento click mostrar:', err));
 }
 
 window.addEventListener('DOMContentLoaded', content);
