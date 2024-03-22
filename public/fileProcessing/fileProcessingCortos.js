@@ -79,6 +79,18 @@ function modifyTable() {
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
+            } else if (header === 'PEDIDO') {
+              let showColumns = [1, 2, 3, 4, 5];
+              showColumns = showColumns.map(value => value - 1);
+
+              insertarPageBreak()
+                .then()
+                .catch(err => {
+                  console.error('Error al insertar el salto de página:', err);
+                });
+
+              tranformarTotalQty();
+              createFiltersCheckbox(showColumns, true);
             } else if (header === 'ZONA' || header === 'BODEGA') {
               insertarPageBreak()
                 .then()
@@ -155,6 +167,31 @@ function ordenarTabla() {
       ordenarPorBodega();
     } else if (headerValue === 'BODEGA') {
       ordenarPorBodega();
+    } else if (headerValue === 'PEDIDO') {
+      rows.sort((a, b) => {
+        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+
+        aValue = aValue.split('-').pop();
+        bValue = bValue.split('-').pop();
+
+        // Verificar si los valores son numéricos
+        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
+        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
+
+        // Comparar los valores numéricos
+        if (aValueNumeric && bValueNumeric) {
+          return parseFloat(aValue) - parseFloat(bValue);
+        } else {
+          // Si al menos uno de los valores no es numérico, comparar como cadenas
+          return aValue.localeCompare(bValue);
+        }
+      });
+
+      // Reinsertar las filas ordenadas en la tabla
+      rows.forEach(row => {
+        table.querySelector('tbody').appendChild(row);
+      });
     }
 
     function ordenarPorBodega() {
