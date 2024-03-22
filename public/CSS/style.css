@@ -220,6 +220,10 @@ body {
     outline: none;
     opacity: 0.85;
   }
+
+  .nav-item:active {
+    transform: scale(0.96);
+  }
 }
 
 .title {
@@ -270,6 +274,10 @@ footer {
 
   form {
     width: fit-content;
+
+    label:active {
+      transform: scale(0.96);
+    }
   }
 
   fieldset {
