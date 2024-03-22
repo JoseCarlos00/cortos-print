@@ -14,7 +14,7 @@ body {
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.preloader {
+#preloader {
   background-color: #fff;
   height: 100%;
   width: 100%;

@@ -11,6 +11,7 @@ import {
 
 async function content() {
   console.log('Content');
+  document.getElementById('preloader').style.display = 'none';
   try {
     const container = document.querySelector('.container-file-upload-form');
     const fileInput = document.getElementById('fileInput');
