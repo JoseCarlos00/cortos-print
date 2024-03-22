@@ -8,7 +8,8 @@ async function procesarArchivo(file) {
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
-  loadingContainer.style.display = 'block';
+  loadingContainer.style.display = 'flex';
+  tablePreview.innerHTML = '';
 
   try {
     const data = await file.arrayBuffer();

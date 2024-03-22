@@ -114,10 +114,15 @@ export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
         checkbox.removeEventListener('change', toggleColumn);
       });
 
-      // Ocultar columnas
       checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', toggleColumn);
       });
+
+      const toggleButton = document.getElementById('toggleButton');
+
+      if (toggleButton) {
+        toggleButton.removeAttribute('disabled');
+      }
     })
     .catch(err => {
       console.error('Error al crear los checkboxes:', err);
