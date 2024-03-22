@@ -500,7 +500,8 @@ table tr th.hidden {
   .container-file-upload,
   header,
   .filters,
-  footer {
+  footer,
+  .button-up-container {
     display: none;
   }
 }
