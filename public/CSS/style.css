@@ -317,6 +317,10 @@ footer {
     text-overflow: ellipsis;
   }
 
+  .checkbox-container:active {
+    transform: scale(0.96);
+  }
+
   .column-toggle {
     position: absolute;
     opacity: 0;
@@ -353,7 +357,7 @@ footer {
 
   .column-toggle:checked ~ .checkmark {
     background-color: #2196f3;
-    box-shadow: 0 3px 7px rgba(33, 150, 243, 0.3);
+    box-shadow: 1px 1px 4px rgba(33, 150, 243, 0.3);
     border: none;
   }
 
