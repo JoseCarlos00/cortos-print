@@ -69,7 +69,7 @@ function modifyTable() {
         ordenarTabla()
           .then(header => {
             if (header === 'Location') {
-              let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13];
+              let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
               showColumns = showColumns.map(value => value - 1);
 
               insertarPageBreakPorLocation()
@@ -92,7 +92,7 @@ function modifyTable() {
         const headerVaule = header ? header.innerText : '';
 
         if (headerVaule === 'Location') {
-          let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13];
+          let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
           showColumns = showColumns.map(value => value - 1);
 
           createFiltersCheckbox(showColumns, true);
@@ -251,6 +251,8 @@ function tranformarValueToNumber() {
     { nombre: 'IT', selector: '[data-v="IT"]' },
     { nombre: 'SU', selector: '[data-v="SU"]' },
     { nombre: 'Description', selector: '[data-v="Description"]' },
+    { nombre: 'TrackContainers', selector: '[data-v="Track containers"]' },
+    { nombre: 'LicensePlate', selector: '[data-v="License plate"]' },
   ];
 
   // Iteramos sobre cada objeto en el array de elementos
@@ -268,7 +270,11 @@ function tranformarValueToNumber() {
           // Si encontramos la posición del elemento, la guardamos en una variable
           const posicionDelElemento = i + 1; // Sumamos 1 porque las posiciones comienzan desde 1
           console.log(`${elemento.nombre} se encuentra en la posición ${posicionDelElemento}`);
-          if (elemento.nombre !== 'Description') {
+          if (
+            elemento.nombre !== 'Description' &&
+            elemento.nombre !== 'TrackContainers' &&
+            elemento.nombre !== 'LicensePlate'
+          ) {
             convertToNum(filas, posicionDelElemento);
           } else if (elemento.nombre === 'Description') {
             const style = `
@@ -276,16 +282,52 @@ function tranformarValueToNumber() {
               @media print {
                 table tr td:nth-child(${posicionDelElemento}) {
                   overflow: hidden;
-                  max-width: 300px;
+                  max-width: 200px;
                   text-overflow: ellipsis;
                   white-space: nowrap;
                 }
               }
             </style>`;
             document.querySelector('head').insertAdjacentHTML('beforeend', style);
+          } else if (elemento.nombre === 'LicensePlate') {
+            const style = `
+            <style>
+              @media print {
+                table tr td:nth-child(${posicionDelElemento}) {
+                  overflow: hidden;
+                  max-width: 100px;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+              }
+            </style>`;
+            document.querySelector('head').insertAdjacentHTML('beforeend', style);
+          } else if (elemento.nombre === 'TrackContainers') {
+            const style = `
+            <style>
+                table tr td:nth-child(${posicionDelElemento}) {
+                  opacity: .7;
+                }
+                @media print {
+                  table tr td:nth-child(${posicionDelElemento}) {
+                   display: none;
+                  }
+                }
+            </style>`;
+            document.querySelector('head').insertAdjacentHTML('beforeend', style);
+            insetarFiltrosTrackContainer(posicionDelElemento);
           }
         }
       }
     }
   });
+}
+
+function insetarFiltrosTrackContainer() {
+  const filtersContainer = document.querySelector('section.filters');
+
+  if (filtersContainer) return;
+
+  const html = `
+  `;
 }
