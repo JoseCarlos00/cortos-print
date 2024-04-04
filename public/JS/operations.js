@@ -48,3 +48,15 @@ export function mostrarNombreArchivo(fileInput) {
     nombreArchivo.innerHTML = '';
   }
 }
+
+export function getHeaderPosition(headerRow, value) {
+  for (let i = 0; i < headerRow.length; i++) {
+    const header = headerRow[i].innerHTML;
+
+    if (header.toLowerCase() === value.toLowerCase()) {
+      console.log('getHeader:', header);
+      const positionElement = i + 1;
+      return positionElement;
+    }
+  }
+}

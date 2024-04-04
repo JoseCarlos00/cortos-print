@@ -99,7 +99,7 @@ export function parametrosDeLaUrl() {
  * reject() si no existe la tabla o el parametro de la URL a ordernar
  * @returns Una promesa
  */
-export function insertarPageBreak() {
+export function insertarPageBreak(positionElement) {
   return new Promise((resolve, reject) => {
     const valorDeLaURL = getSelectedValueFromURL('ordenar');
 
@@ -122,24 +122,26 @@ export function insertarPageBreak() {
       // Ignorar la primera fila (encabezados)
       if (index === 0) return;
 
-      const valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+      const valorDeLaFilaActual = fila.querySelector(
+        `td:nth-child(${positionElement})`
+      ).textContent;
 
       // Obtener el valor de la primera celda de la fila anterior
       const valorDeLaFilaAnterior = filas[index - 1].querySelector(
-        `td:nth-child(${valorDeLaURL})`
+        `td:nth-child(${positionElement})`
       ).textContent;
 
       // Verificar si el valor actual es diferente al valor anterior
       if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
         if (index > 1) {
           filas[index - 1]
-            .querySelector(`td:nth-child(${valorDeLaURL})`)
+            .querySelector(`td:nth-child(${positionElement})`)
             .classList.add('page-break');
         }
       }
     });
 
-    resolve();
+    resolve('Insertar PageBreak Con Exito');
   });
 }
 
