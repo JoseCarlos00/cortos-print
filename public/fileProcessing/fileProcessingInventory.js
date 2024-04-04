@@ -2,15 +2,16 @@
 import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
-import { sortValueNumeric, sortValueString, ordenarPorBodega } from '../JS/sortTable.js';
+import { sortValueString } from '../JS/sortTable.js';
+
+let dataTable = '';
 
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
-  loadingContainer.style.display = 'flex';
-  tablePreview.innerHTML = '';
+  mostrarAnimacionDeCarga(loadingContainer);
 
   try {
     const data = await file.arrayBuffer();
@@ -22,10 +23,10 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
+    dataTable = html;
 
     // Mostrar la tabla y ocultar la animación de carga
-    tablePreview.style.display = 'block';
-    loadingContainer.style.display = 'none';
+    ocultarAnimacionDeCarga(loadingContainer);
 
     modifyTable();
   } catch (error) {
@@ -78,15 +79,7 @@ function modifyTable() {
                   console.error('Error al insertar el salto de página:', err);
                 });
 
-              const header = document.querySelector('#sjs-A1');
-              const headerVaule = header ? header.innerText : '';
-
-              if (headerVaule.toLowerCase().trim() === 'frozen') {
-                let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
-                showColumns = showColumns.map(value => value - 1);
-
-                createFiltersCheckbox(showColumns, true);
-              }
+              verificarSiExtiteColumnFrozen();
             } else {
               createFiltersCheckbox();
             }
@@ -96,24 +89,34 @@ function modifyTable() {
             createFiltersCheckbox();
           });
       } else {
-        const header = document.querySelector('#sjs-A1');
-        const headerVaule = header ? header.innerText : '';
-
-        if (headerVaule.toLowerCase().trim() === 'frozen') {
-          let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
-          showColumns = showColumns.map(value => value - 1);
-
-          createFiltersCheckbox(showColumns, true);
-        } else {
-          createFiltersCheckbox();
-        }
+        verificarSiExtiteColumnFrozen();
       }
 
       tranformarValueToNumber();
+
+      eventoDeOrdenarPorParametro()
+        .then(value => console.log(value))
+        .catch(err => {
+          console.error('Error al crear el evento Ordenar Por Parametro:', err);
+        });
     })
     .catch(err => {
       console.error('Error al insetar el Thead:', err);
     });
+}
+
+function verificarSiExtiteColumnFrozen() {
+  const header = document.querySelector('#sjs-A1');
+  const headerVaule = header ? header.innerText : '';
+
+  if (headerVaule.toLowerCase().trim() === 'frozen') {
+    let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13];
+    showColumns = showColumns.map(value => value - 1);
+
+    createFiltersCheckbox(showColumns, true);
+  } else {
+    createFiltersCheckbox();
+  }
 }
 
 function ordenarTabla() {
@@ -299,7 +302,7 @@ function tranformarValueToNumber() {
               }
 
               table tr td:nth-child(${posicionDelElemento}) { 
-                // border: none;
+                border-right: none;
               }
             </style>`;
             document.querySelector('head').insertAdjacentHTML('beforeend', style);
@@ -342,7 +345,6 @@ function insetarFiltrosTrackContainer(filas, posicionDelElemento) {
   radioInputs.forEach(function (input) {
     input.addEventListener('change', function () {
       const selectedValue = this.value;
-      console.log('Valor seleccionado:', selectedValue);
 
       if (selectedValue === 'Todo') {
         ocultarFilas(filas, posicionDelElemento);
@@ -367,13 +369,50 @@ function ocultarFilas(filas, posicion, ocultar) {
       const value = td.innerHTML;
       const trSelected = td.closest('tr');
       if (value === ocultar) {
-        console.log(value);
-
-        console.log(trSelected);
         trSelected.classList.add('hidden');
       } else {
         trSelected.classList.remove('hidden');
       }
     }
   });
+}
+
+function eventoDeOrdenarPorParametro() {
+  return new Promise((resolve, reject) => {
+    const loadingContainer = document.getElementById('loading-container');
+    const radioContainer = document.querySelector('.track-container-filter');
+
+    if (!loadingContainer) {
+      return reject('Error loadingContainer no existe');
+    }
+
+    if (!radioContainer) {
+      return reject('Error trackContainer element no existe');
+    }
+
+    // Event listener para los cambios en los inputs
+    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+      input.addEventListener('change', function () {
+        const selectedValue = this.value;
+
+        mostrarAnimacionDeCarga(loadingContainer);
+        tablePreview.innerHTML = dataTable;
+        radioContainer.reset();
+        modifyTable();
+        ocultarAnimacionDeCarga(loadingContainer);
+      });
+    });
+
+    resolve('Evento para modificar la tabla  por parametro Creado con exito');
+  });
+}
+
+function mostrarAnimacionDeCarga(loadingContainer) {
+  loadingContainer.style.display = 'flex';
+  tablePreview.innerHTML = '';
+}
+
+function ocultarAnimacionDeCarga(loadingContainer) {
+  tablePreview.style.display = 'block';
+  loadingContainer.style.display = 'none';
 }

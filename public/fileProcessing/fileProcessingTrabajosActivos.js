@@ -4,13 +4,14 @@ import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGloba
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { sortValueNumeric, sortValueString } from '../JS/sortTable.js';
 
+let dataTable = '';
+
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
-  loadingContainer.style.display = 'flex';
-  tablePreview.innerHTML = '';
+  mostrarAnimacionDeCarga(loadingContainer);
 
   try {
     const data = await file.arrayBuffer();
@@ -22,10 +23,10 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
+    dataTable = html;
 
     // Mostrar la tabla y ocultar la animación de carga
-    tablePreview.style.display = 'block';
-    loadingContainer.style.display = 'none';
+    ocultarAnimacionDeCarga(loadingContainer);
 
     modifyTable();
   } catch (error) {
@@ -73,7 +74,8 @@ function modifyTable() {
 
             if (
               (header.toLowerCase().trim() === 'ship_to' ||
-                header.toLowerCase().trim() === 'id del pedido') &&
+                header.toLowerCase().trim() === 'id del pedido' ||
+                header.toLowerCase().trim() === 'pedido') &&
               position
             ) {
               // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
@@ -98,6 +100,12 @@ function modifyTable() {
       } else {
         createFiltersCheckbox();
       }
+
+      eventoDeOrdenarPorParametro()
+        .then(value => console.log(value))
+        .catch(err => {
+          console.error('Error al crear el evento Ordenar Por Parametro:', err);
+        });
     })
     .catch(err => {
       console.error('Error al insetar el Thead:', err);
@@ -122,9 +130,10 @@ function ordenarTabla() {
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
 
-    const headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
+    let headerPositionElement = null;
 
     if (valorDeLaURL.toLowerCase().trim() === 'ship_to') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
       if (headerPositionElement) {
         sortValueString(rows, table, headerPositionElement)
           .then(value => console.log(value))
@@ -133,6 +142,11 @@ function ordenarTabla() {
           });
       }
     } else if (valorDeLaURL.toLowerCase().trim() === 'id del pedido') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, [
+        'pedido',
+        'id del pedido',
+        'shipment id',
+      ]);
       if (headerPositionElement) {
         sortValueNumeric(rows, table, headerPositionElement)
           .then(value => console.log(value))
@@ -144,4 +158,38 @@ function ordenarTabla() {
 
     resolve({ header: valorDeLaURL, position: headerPositionElement });
   });
+}
+
+function eventoDeOrdenarPorParametro() {
+  return new Promise((resolve, reject) => {
+    const loadingContainer = document.getElementById('loading-container');
+
+    if (!loadingContainer) {
+      return reject('Error loadingContainer no existe');
+    }
+
+    // Event listener para los cambios en los inputs
+    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+      input.addEventListener('change', function () {
+        const selectedValue = this.value;
+
+        mostrarAnimacionDeCarga(loadingContainer);
+        tablePreview.innerHTML = dataTable;
+        modifyTable();
+        ocultarAnimacionDeCarga(loadingContainer);
+      });
+    });
+
+    resolve('Evento para modificar la tabla  por parametro Creado con exito');
+  });
+}
+
+function mostrarAnimacionDeCarga(loadingContainer) {
+  loadingContainer.style.display = 'flex';
+  tablePreview.innerHTML = '';
+}
+
+function ocultarAnimacionDeCarga(loadingContainer) {
+  tablePreview.style.display = 'block';
+  loadingContainer.style.display = 'none';
 }

@@ -4,13 +4,14 @@ import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGloba
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { sortValueNumeric, ordenarPorBodega } from '../JS/sortTable.js';
 
+let dataTable = '';
+
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
   const loadingContainer = document.getElementById('loading-container');
 
   // Mostrar la animación de carga
-  loadingContainer.style.display = 'flex';
-  tablePreview.innerHTML = '';
+  mostrarAnimacionDeCarga(loadingContainer);
 
   try {
     const data = await file.arrayBuffer();
@@ -22,10 +23,10 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
+    dataTable = html;
 
     // Mostrar la tabla y ocultar la animación de carga
-    tablePreview.style.display = 'block';
-    loadingContainer.style.display = 'none';
+    ocultarAnimacionDeCarga(loadingContainer);
 
     modifyTable();
   } catch (error) {
@@ -94,11 +95,7 @@ function modifyTable() {
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
-            } else if (
-              (header.toLowerCase().trim() === 'zona' ||
-                header.toLowerCase().trim() === 'bodega') &&
-              position
-            ) {
+            } else if (header.toLowerCase().trim() === 'bodega' && position) {
               insertarPageBreak(position)
                 .then(value => console.log(value))
                 .catch(err => {
@@ -117,6 +114,12 @@ function modifyTable() {
       } else {
         createFiltersCheckbox();
       }
+
+      eventoDeOrdenarPorParametro()
+        .then(value => console.log(value))
+        .catch(err => {
+          console.error('Error al crear el evento Ordenar Por Parametro:', err);
+        });
     })
     .catch(err => {
       console.error('Error al insetar el Thead:', err);
@@ -153,11 +156,7 @@ function ordenarTabla() {
             console.error('Error al ordenar tabla:', err);
           });
       }
-    } else if (
-      valorDeLaURL.toLowerCase().trim() === 'bodega' ||
-      valorDeLaURL.toLowerCase().trim() === 'zona' ||
-      valorDeLaURL.toLowerCase().trim() === 'work_zone'
-    ) {
+    } else if (valorDeLaURL.toLowerCase().trim() === 'bodega') {
       headerPositionElement = getHeaderPosition(headerRow.cells, ['bodega', 'zona', 'work_zone']);
 
       if (headerPositionElement) {
@@ -168,7 +167,11 @@ function ordenarTabla() {
           });
       }
     } else if (valorDeLaURL.toLowerCase().trim() === 'pedido') {
-      headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
+      headerPositionElement = getHeaderPosition(headerRow.cells, [
+        'pedido',
+        'id del pedido',
+        'shipment id',
+      ]);
 
       if (headerPositionElement) {
         sortValueNumeric(rows, table, headerPositionElement)
@@ -214,4 +217,38 @@ function tranformarTotalQty() {
       }
     }
   });
+}
+
+function eventoDeOrdenarPorParametro() {
+  return new Promise((resolve, reject) => {
+    const loadingContainer = document.getElementById('loading-container');
+
+    if (!loadingContainer) {
+      return reject('Error loadingContainer no existe');
+    }
+
+    // Event listener para los cambios en los inputs
+    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+      input.addEventListener('change', function () {
+        const selectedValue = this.value;
+
+        mostrarAnimacionDeCarga(loadingContainer);
+        tablePreview.innerHTML = dataTable;
+        modifyTable();
+        ocultarAnimacionDeCarga(loadingContainer);
+      });
+    });
+
+    resolve('Evento para modificar la tabla  por parametro Creado con exito');
+  });
+}
+
+function mostrarAnimacionDeCarga(loadingContainer) {
+  loadingContainer.style.display = 'flex';
+  tablePreview.innerHTML = '';
+}
+
+function ocultarAnimacionDeCarga(loadingContainer) {
+  tablePreview.style.display = 'block';
+  loadingContainer.style.display = 'none';
 }
