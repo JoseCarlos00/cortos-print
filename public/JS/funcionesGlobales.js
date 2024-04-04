@@ -101,8 +101,6 @@ export function parametrosDeLaUrl() {
  */
 export function insertarPageBreak(positionElement) {
   return new Promise((resolve, reject) => {
-    const valorDeLaURL = getSelectedValueFromURL('ordenar');
-
     // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
     const table = document.querySelector('#tablePreview table');
 
@@ -110,8 +108,8 @@ export function insertarPageBreak(positionElement) {
       return reject('No se encontro la tabla con el id: #tablePreview');
     }
 
-    if (!valorDeLaURL) {
-      return reject('No se encontro el valor del parametro de la URL [ordenar]');
+    if (!positionElement) {
+      return reject('No se encontro la posicion del elemento');
     }
 
     // filtrar y agregar clase al primer TD de cada grupo

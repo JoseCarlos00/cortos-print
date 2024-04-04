@@ -1,7 +1,8 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
+import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
+import { sortValueNumeric, sortValueString, ordenarPorBodega } from '../JS/sortTable.js';
 
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
@@ -66,12 +67,15 @@ function modifyTable() {
       const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
       if (valorDeLaURL && valorDeLaURL !== 'NoOrdenar') {
         ordenarTabla()
-          .then(header => {
-            if (header === 'Erp order') {
+          .then(result => {
+            const { header, position } = result;
+            console.log('header:', header, ' position:', position);
+
+            if (header.toLowerCase() === 'erp order' && position) {
               let showColumns = [2, 3, 6, 8];
               showColumns = showColumns.map(value => value - 1);
 
-              insertarPageBreak()
+              insertarPageBreak(position)
                 .then()
                 .catch(err => {
                   console.error('Error al insertar el salto de página:', err);
@@ -79,21 +83,24 @@ function modifyTable() {
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
-            } else if (header === 'PEDIDO') {
+            } else if (header.toLowerCase() === 'pedido' && position) {
               let showColumns = [1, 2, 3, 4, 5];
               showColumns = showColumns.map(value => value - 1);
 
-              insertarPageBreak()
-                .then()
+              insertarPageBreak(position)
+                .then(value => console.log(value))
                 .catch(err => {
                   console.error('Error al insertar el salto de página:', err);
                 });
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
-            } else if (header === 'ZONA' || header === 'BODEGA') {
-              insertarPageBreak()
-                .then()
+            } else if (
+              (header.toLowerCase() === 'zona' || header.toLowerCase() === 'bodega') &&
+              position
+            ) {
+              insertarPageBreak(position)
+                .then(value => console.log(value))
                 .catch(err => {
                   console.error('Error al insertar el salto de página:', err);
                 });
@@ -133,103 +140,46 @@ function ordenarTabla() {
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-    const header = headerRow.cells[valorDeLaURL - 1];
 
-    const headerValue = header ? header.textContent : '';
-    console.log('HeaderValue:', headerValue);
+    let headerPositionElement = null;
 
-    if (headerValue === 'Erp order') {
-      rows.sort((a, b) => {
-        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+    if (valorDeLaURL.toLowerCase() === 'erp order') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
-        aValue = aValue.split('-').pop();
-        bValue = bValue.split('-').pop();
+      if (headerPositionElement) {
+        sortValueNumeric(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
+      }
+    } else if (
+      valorDeLaURL.toLowerCase() === 'bodega' ||
+      valorDeLaURL.toLowerCase() === 'zona' ||
+      valorDeLaURL.toLowerCase() === 'work_zone'
+    ) {
+      headerPositionElement = getHeaderPosition(headerRow.cells, ['bodega', 'zona', 'work_zone']);
 
-        // Verificar si los valores son numéricos
-        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
-        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
+      if (headerPositionElement) {
+        ordenarPorBodega(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
+      }
+    } else if (valorDeLaURL.toLowerCase() === 'pedido') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
-        // Comparar los valores numéricos
-        if (aValueNumeric && bValueNumeric) {
-          return parseFloat(aValue) - parseFloat(bValue);
-        } else {
-          // Si al menos uno de los valores no es numérico, comparar como cadenas
-          return aValue.localeCompare(bValue);
-        }
-      });
-
-      // Reinsertar las filas ordenadas en la tabla
-      rows.forEach(row => {
-        table.querySelector('tbody').appendChild(row);
-      });
-    } else if (headerValue === 'ZONA') {
-      ordenarPorBodega();
-    } else if (headerValue === 'BODEGA') {
-      ordenarPorBodega();
-    } else if (headerValue === 'PEDIDO') {
-      rows.sort((a, b) => {
-        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-
-        aValue = aValue.split('-').pop();
-        bValue = bValue.split('-').pop();
-
-        // Verificar si los valores son numéricos
-        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
-        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
-
-        // Comparar los valores numéricos
-        if (aValueNumeric && bValueNumeric) {
-          return parseFloat(aValue) - parseFloat(bValue);
-        } else {
-          // Si al menos uno de los valores no es numérico, comparar como cadenas
-          return aValue.localeCompare(bValue);
-        }
-      });
-
-      // Reinsertar las filas ordenadas en la tabla
-      rows.forEach(row => {
-        table.querySelector('tbody').appendChild(row);
-      });
+      if (headerPositionElement) {
+        sortValueNumeric(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
+      }
     }
 
-    function ordenarPorBodega() {
-      rows.sort((a, b) => {
-        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-
-        if (valorDeLaURL === '1') {
-          // Eliminar 'W-Mar Bodega ' de los valores si está presente
-          if (aValue.includes('W-Mar Bodega')) {
-            aValue = aValue.replace('W-Mar Bodega ', '');
-          }
-
-          if (bValue.includes('W-Mar Bodega')) {
-            bValue = bValue.replace('W-Mar Bodega ', '');
-          }
-        }
-
-        // Verificar si los valores son numéricos
-        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
-        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
-
-        // Comparar los valores numéricos
-        if (aValueNumeric && bValueNumeric) {
-          return parseFloat(aValue) - parseFloat(bValue);
-        } else {
-          // Si al menos uno de los valores no es numérico, comparar como cadenas
-          return aValue.localeCompare(bValue);
-        }
-      });
-
-      // Reinsertar las filas ordenadas en la tabla
-      rows.forEach(row => {
-        table.querySelector('tbody').appendChild(row);
-      });
-    }
-
-    resolve(headerValue);
+    resolve({ header: valorDeLaURL, position: headerPositionElement });
   });
 }
 

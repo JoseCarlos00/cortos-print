@@ -49,14 +49,18 @@ export function mostrarNombreArchivo(fileInput) {
   }
 }
 
-export function getHeaderPosition(headerRow, value) {
+export function getHeaderPosition(headerRow, values) {
+  console.log('[Get Header Position]');
   for (let i = 0; i < headerRow.length; i++) {
-    const header = headerRow[i].innerHTML;
-
-    if (header.toLowerCase() === value.toLowerCase()) {
-      console.log('getHeader:', header);
-      const positionElement = i + 1;
-      return positionElement;
+    const header = headerRow[i].innerHTML.toLowerCase();
+    for (let j = 0; j < values.length; j++) {
+      const value = values[j].toLowerCase();
+      if (header === value) {
+        console.log('getHeader:', header);
+        const positionElement = i + 1;
+        return positionElement;
+      }
     }
   }
+  return null; // Si no se encuentra ninguna coincidencia
 }

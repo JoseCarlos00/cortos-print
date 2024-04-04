@@ -25,7 +25,7 @@
     <nav class="navbar">
       <ul class="navbar-nav">
         <li class="nav-item active"><a href="#">Cortos</a></li>
-        <li class="nav-item"><a href="./trabajosActivos.html?ordenar=9"> Trabajos Activos</a></li>
+        <li class="nav-item"><a href="./trabajosActivos.html?ordenar=SHIP_TO"> Trabajos Activos</a></li>
         <li class="nav-item"><a href="./inventory.html?ordenar=NoOrdenar">Inventory</a></li>
       </ul>
     </nav>
@@ -35,23 +35,19 @@
     <form>
       <fieldset>
         <legend>Ordenar por</legend>
-        <label>
-          <input type="radio" name="ordernar" value="1" checked>
-          ZONA <span style="font-size: 10px;">(BODEGA)</span>
-        </label>
 
         <label>
-          <input type="radio" name="ordernar" value="2">
+          <input type="radio" name="ordernar" value="BODEGA">
           BODEGA
         </label>
 
         <label>
-          <input type="radio" name="ordernar" value="8">
+          <input type="radio" name="ordernar" value="ERP ORDER">
           ERP ORDER
         </label>
 
         <label>
-          <input type="radio" name="ordernar" value="3">
+          <input type="radio" name="ordernar" value="PEDIDO">
           PEDIDO
         </label>
 

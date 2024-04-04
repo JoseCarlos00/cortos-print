@@ -70,19 +70,20 @@ function modifyTable() {
         ordenarTabla()
           .then(result => {
             const { header, position } = result;
-            console.log('ordenarTabla Them:', 'header:', header, '  position:', position);
-            if (header === 'SHIP_TO' || header === 'ID DEL PEDIDO') {
+
+            if (
+              (header.toLowerCase() === 'ship_to' || header.toLowerCase() === 'id del pedido') &&
+              position
+            ) {
               // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
               let hideColumns = [6, 7, 10, 11, 12];
               hideColumns = hideColumns.map(value => value - 1);
 
-              if (position) {
-                insertarPageBreak(position)
-                  .then(value => console.log(value))
-                  .catch(err => {
-                    console.error('Error al insertar el salto de página:', err);
-                  });
-              }
+              insertarPageBreak(position)
+                .then(value => console.log(value))
+                .catch(err => {
+                  console.error('Error al insertar el salto de página:', err);
+                });
 
               createFiltersCheckbox(hideColumns, false);
             } else {
@@ -119,19 +120,26 @@ function ordenarTabla() {
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-    const header = headerRow.cells[valorDeLaURL - 1];
 
-    const headerPositionElement = getHeaderPosition(headerRow.cells, valorDeLaURL);
+    const headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
-    if (valorDeLaURL === 'SHIP_TO') {
+    if (valorDeLaURL.toLowerCase() === 'ship_to') {
       // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
       if (headerPositionElement) {
-        sortValueString(rows, table, headerPositionElement);
+        sortValueString(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
       }
-    } else if (valorDeLaURL === 'ID DEL PEDIDO') {
+    } else if (valorDeLaURL.toLowerCase() === 'id del pedido') {
       // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
       if (headerPositionElement) {
-        sortValueNumeric(rows, table, headerPositionElement);
+        sortValueNumeric(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
       }
     }
 
