@@ -297,13 +297,21 @@ function tranformarValueToNumber() {
                   white-space: nowrap;
                 }
               }
+
+              table tr td:nth-child(${posicionDelElemento}) { 
+                // border: none;
+              }
             </style>`;
             document.querySelector('head').insertAdjacentHTML('beforeend', style);
           } else if (elemento.nombre === 'TrackContainers') {
             const style = `
             <style>
                 table tr td:nth-child(${posicionDelElemento}) {
-                  opacity: .7;
+                  opacity: 0;
+                  overflow: hidden;
+                  max-width: 0px;
+                  white-space: nowrap;
+                  border: none;
                 }
                 @media print {
                   table tr td:nth-child(${posicionDelElemento}) {
@@ -312,7 +320,7 @@ function tranformarValueToNumber() {
                 }
             </style>`;
             document.querySelector('head').insertAdjacentHTML('beforeend', style);
-            insetarFiltrosTrackContainer(posicionDelElemento);
+            insetarFiltrosTrackContainer(filas, posicionDelElemento);
           }
         }
       }
@@ -320,11 +328,52 @@ function tranformarValueToNumber() {
   });
 }
 
-function insetarFiltrosTrackContainer() {
-  const filtersContainer = document.querySelector('section.filters');
+function insetarFiltrosTrackContainer(filas, posicionDelElemento) {
+  console.log('[Insetar Filtros TrackContainer]');
+  const radioInputs = document.querySelectorAll('.track-container-filter input[type="radio"]');
+  const radioContainer = document.querySelector('.track-container-filter');
 
-  if (filtersContainer) return;
+  radioContainer && radioContainer.classList.add('mostrar');
 
-  const html = `
-  `;
+  if (!radioInputs) {
+    return;
+  }
+
+  radioInputs.forEach(function (input) {
+    input.addEventListener('change', function () {
+      const selectedValue = this.value;
+      console.log('Valor seleccionado:', selectedValue);
+
+      if (selectedValue === 'Todo') {
+        ocultarFilas(filas, posicionDelElemento);
+      } else if (selectedValue === 'Permanente') {
+        ocultarFilas(filas, posicionDelElemento, '1');
+        // Ejecutar algo si se selecciona 'value-2'
+      } else if (selectedValue === 'Reserva') {
+        ocultarFilas(filas, posicionDelElemento, '0');
+      }
+    });
+  });
+}
+
+function ocultarFilas(filas, posicion, ocultar) {
+  // Iterar sobre las filas
+  filas.forEach((fila, index) => {
+    // Ignorar la primera fila (encabezados)
+    if (index === 0) return;
+    const td = fila.querySelector(`td:nth-child(${posicion})`);
+
+    if (td) {
+      const value = td.innerHTML;
+      const trSelected = td.closest('tr');
+      if (value === ocultar) {
+        console.log(value);
+
+        console.log(trSelected);
+        trSelected.classList.add('hidden');
+      } else {
+        trSelected.classList.remove('hidden');
+      }
+    }
+  });
 }

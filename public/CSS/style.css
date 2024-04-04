@@ -17,6 +17,7 @@ body {
 
 .filters,
 .container-file-upload,
+.track-container-filter,
 main,
 footer {
   padding: 0 20px;
@@ -24,6 +25,17 @@ footer {
 
 main {
   overflow: auto;
+}
+
+.mostrar {
+  height: auto !important;
+  opacity: 1 !important;
+}
+
+table tr td.hidden,
+table tr th.hidden,
+table tr.hidden {
+  animation: fade-out 0.2s forwards;
 }
 
 .container-file-upload {
@@ -293,11 +305,6 @@ footer {
   }
 }
 
-.mostrar {
-  height: auto !important;
-  opacity: 1 !important;
-}
-
 /* Checkboox */
 #checkboxContainer {
   align-self: center;
@@ -388,11 +395,6 @@ footer {
   }
 }
 
-table tr td.hidden,
-table tr th.hidden {
-  animation: fade-out 0.2s forwards;
-}
-
 @keyframes checkAnim {
   0% {
     height: 0;
@@ -456,6 +458,7 @@ table tr th.hidden {
     left: -10%;
     transform: skew(30deg);
     transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+    background-color: #007acc;
   }
 
   &:not([disabled]):hover::before {
@@ -496,12 +499,82 @@ table tr th.hidden {
   }
 }
 
+/* Filtros Track Container */
+.track-container-filter {
+  margin-bottom: 16px;
+  height: 0;
+  opacity: 0;
+
+  .radio-input input {
+    display: none;
+  }
+
+  .radio-input {
+    --container_width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000000;
+    width: var(--container_width);
+    overflow: hidden;
+    border: 1px solid rgba(53, 52, 52, 35%);
+  }
+
+  .radio-input label {
+    width: 100%;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 14px;
+  }
+
+  .selection {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: calc(var(--container_width) / 3);
+    z-index: 0;
+    left: 0;
+    top: 0;
+    transition: 0.15s ease;
+  }
+
+  .radio-input label:has(input:checked) {
+    color: #fff;
+  }
+
+  .radio-input label:has(input:checked) ~ .selection {
+    background-color: #007acc;
+    display: inline-block;
+  }
+
+  .radio-input label:nth-child(1):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 0 / 3));
+  }
+
+  .radio-input label:nth-child(2):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 1 / 3));
+  }
+
+  .radio-input label:nth-child(3):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 2 / 3));
+  }
+}
+
 @media print {
   .container-file-upload,
   header,
   .filters,
   footer,
-  .button-up-container {
+  .button-up-container,
+  .track-container-filter {
     display: none;
   }
 }

@@ -33,6 +33,10 @@ table thead td {
   .page-break {
     page-break-after: always;
   }
+
+  table {
+    font-size: 13px;
+  }
 }
 
 @keyframes entradaElemento {
