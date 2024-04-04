@@ -2,7 +2,7 @@
 import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
-import { sortValueNumeric, sortValueString, ordenarPorBodega } from '../JS/sortTable.js';
+import { sortValueNumeric, ordenarPorBodega } from '../JS/sortTable.js';
 
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
@@ -69,9 +69,8 @@ function modifyTable() {
         ordenarTabla()
           .then(result => {
             const { header, position } = result;
-            console.log('header:', header, ' position:', position);
 
-            if (header.toLowerCase() === 'erp order' && position) {
+            if (header.toLowerCase().trim() === 'erp order' && position) {
               let showColumns = [2, 3, 6, 8];
               showColumns = showColumns.map(value => value - 1);
 
@@ -83,7 +82,7 @@ function modifyTable() {
 
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
-            } else if (header.toLowerCase() === 'pedido' && position) {
+            } else if (header.toLowerCase().trim() === 'pedido' && position) {
               let showColumns = [1, 2, 3, 4, 5];
               showColumns = showColumns.map(value => value - 1);
 
@@ -96,7 +95,8 @@ function modifyTable() {
               tranformarTotalQty();
               createFiltersCheckbox(showColumns, true);
             } else if (
-              (header.toLowerCase() === 'zona' || header.toLowerCase() === 'bodega') &&
+              (header.toLowerCase().trim() === 'zona' ||
+                header.toLowerCase().trim() === 'bodega') &&
               position
             ) {
               insertarPageBreak(position)
@@ -143,7 +143,7 @@ function ordenarTabla() {
 
     let headerPositionElement = null;
 
-    if (valorDeLaURL.toLowerCase() === 'erp order') {
+    if (valorDeLaURL.toLowerCase().trim() === 'erp order') {
       headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
       if (headerPositionElement) {
@@ -154,9 +154,9 @@ function ordenarTabla() {
           });
       }
     } else if (
-      valorDeLaURL.toLowerCase() === 'bodega' ||
-      valorDeLaURL.toLowerCase() === 'zona' ||
-      valorDeLaURL.toLowerCase() === 'work_zone'
+      valorDeLaURL.toLowerCase().trim() === 'bodega' ||
+      valorDeLaURL.toLowerCase().trim() === 'zona' ||
+      valorDeLaURL.toLowerCase().trim() === 'work_zone'
     ) {
       headerPositionElement = getHeaderPosition(headerRow.cells, ['bodega', 'zona', 'work_zone']);
 
@@ -167,7 +167,7 @@ function ordenarTabla() {
             console.error('Error al ordenar tabla:', err);
           });
       }
-    } else if (valorDeLaURL.toLowerCase() === 'pedido') {
+    } else if (valorDeLaURL.toLowerCase().trim() === 'pedido') {
       headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
       if (headerPositionElement) {

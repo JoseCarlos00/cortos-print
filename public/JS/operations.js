@@ -49,14 +49,19 @@ export function mostrarNombreArchivo(fileInput) {
   }
 }
 
+/**
+ * Busca la posicion del elemento dependiendo de un valor
+ * @param {HTMLCollection} headerRow Colecion de elementos HTML
+ * @param {Array} values Array con los valores buscados
+ * @returns Posicion del elemento buscado en el Array [indice]
+ */
 export function getHeaderPosition(headerRow, values) {
-  console.log('[Get Header Position]');
+  console.log('[Get Header Position]', headerRow.length);
   for (let i = 0; i < headerRow.length; i++) {
-    const header = headerRow[i].innerHTML.toLowerCase();
+    const header = headerRow[i].innerHTML.toLowerCase().trim();
     for (let j = 0; j < values.length; j++) {
-      const value = values[j].toLowerCase();
+      const value = values[j].toLowerCase().trim();
       if (header === value) {
-        console.log('getHeader:', header);
         const positionElement = i + 1;
         return positionElement;
       }

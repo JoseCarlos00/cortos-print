@@ -1,7 +1,8 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
+import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
+import { sortValueNumeric, sortValueString, ordenarPorBodega } from '../JS/sortTable.js';
 
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
@@ -67,18 +68,25 @@ function modifyTable() {
       const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '';
       if (valorDeLaURL && valorDeLaURL !== 'NoOrdenar') {
         ordenarTabla()
-          .then(header => {
-            if (header === 'Location') {
-              let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
-              showColumns = showColumns.map(value => value - 1);
+          .then(result => {
+            const { header, position } = result;
 
-              insertarPageBreakPorLocation()
+            if (header.toLowerCase().trim() === 'location' && position) {
+              insertarPageBreakPorLocation(position)
                 .then()
                 .catch(err => {
                   console.error('Error al insertar el salto de página:', err);
                 });
 
-              createFiltersCheckbox(showColumns, true);
+              const header = document.querySelector('#sjs-A1');
+              const headerVaule = header ? header.innerText : '';
+
+              if (headerVaule.toLowerCase().trim() === 'frozen') {
+                let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
+                showColumns = showColumns.map(value => value - 1);
+
+                createFiltersCheckbox(showColumns, true);
+              }
             } else {
               createFiltersCheckbox();
             }
@@ -88,10 +96,10 @@ function modifyTable() {
             createFiltersCheckbox();
           });
       } else {
-        const header = document.querySelector('#sjs-B1');
+        const header = document.querySelector('#sjs-A1');
         const headerVaule = header ? header.innerText : '';
 
-        if (headerVaule === 'Location') {
+        if (headerVaule.toLowerCase().trim() === 'frozen') {
           let showColumns = [2, 3, 4, 6, 7, 9, 10, 11, 13, 18];
           showColumns = showColumns.map(value => value - 1);
 
@@ -125,27 +133,22 @@ function ordenarTabla() {
 
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-    const header = headerRow.cells[valorDeLaURL - 1];
 
-    const headerValue = header ? header.textContent : '';
+    let headerPositionElement = null;
 
-    if (headerValue === 'Location') {
-      // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
-      rows.sort((a, b) => {
-        // Utilizar el valor de la URL en el selector
-        let aValue = a.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
-        let bValue = b.querySelector(`td:nth-child(${valorDeLaURL})`).innerText;
+    if (valorDeLaURL.toLowerCase().trim() === 'location') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, ['location', 'ubicacion']);
 
-        return aValue.localeCompare(bValue);
-      });
-
-      // Reinsertar las filas ordenadas en la tabla
-      rows.forEach(row => {
-        table.querySelector('tbody').appendChild(row);
-      });
+      if (headerPositionElement) {
+        sortValueString(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
+      }
     }
 
-    resolve(headerValue);
+    resolve({ header: valorDeLaURL, position: headerPositionElement });
   });
 }
 
@@ -155,10 +158,8 @@ function ordenarTabla() {
  * reject() si no existe la tabla o el parametro de la URL a ordernar
  * @returns Una promesa
  */
-function insertarPageBreakPorLocation() {
+function insertarPageBreakPorLocation(positionElement) {
   return new Promise((resolve, reject) => {
-    const valorDeLaURL = getSelectedValueFromURL('ordenar');
-
     // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
     const table = document.querySelector('#tablePreview table');
 
@@ -166,8 +167,8 @@ function insertarPageBreakPorLocation() {
       return reject('No se encontro la tabla con el id: #tablePreview');
     }
 
-    if (!valorDeLaURL) {
-      return reject('No se encontro el valor del parametro de la URL [ordenar]');
+    if (!positionElement) {
+      return reject('No se encontro la posicion del elemento');
     }
 
     // filtrar y agregar clase al primer TD de cada grupo
@@ -178,7 +179,7 @@ function insertarPageBreakPorLocation() {
       // Ignorar la primera fila (encabezados)
       if (index === 0) return;
 
-      let valorDeLaFilaActual = fila.querySelector(`td:nth-child(${valorDeLaURL})`).textContent;
+      let valorDeLaFilaActual = fila.querySelector(`td:nth-child(${positionElement})`).textContent;
 
       const locationTypeActual = valorDeLaFilaActual ? valorDeLaFilaActual.split('-') : [];
 
@@ -186,11 +187,9 @@ function insertarPageBreakPorLocation() {
         valorDeLaFilaActual = locationTypeActual[1];
       }
 
-      console.log('valorDeLaFilaActual:', valorDeLaFilaActual);
-
       // Obtener el valor de la primera celda de la fila anterior
       let valorDeLaFilaAnterior = filas[index - 1].querySelector(
-        `td:nth-child(${valorDeLaURL})`
+        `td:nth-child(${positionElement})`
       ).textContent;
 
       const locationTypeAnterior = valorDeLaFilaAnterior ? valorDeLaFilaAnterior.split('-') : [];
@@ -199,19 +198,17 @@ function insertarPageBreakPorLocation() {
         valorDeLaFilaAnterior = locationTypeAnterior[1];
       }
 
-      console.log('valorDeLaFilaAnterior:', valorDeLaFilaAnterior);
-
       // Verificar si el valor actual es diferente al valor anterior
       if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
         if (index > 1) {
           filas[index - 1]
-            .querySelector(`td:nth-child(${valorDeLaURL})`)
+            .querySelector(`td:nth-child(${positionElement})`)
             .classList.add('page-break');
         }
       }
     });
 
-    resolve();
+    resolve('Insertar PageBreak Por Pasillo Con Exito');
   });
 }
 

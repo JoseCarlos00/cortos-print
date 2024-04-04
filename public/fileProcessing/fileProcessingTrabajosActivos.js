@@ -72,7 +72,8 @@ function modifyTable() {
             const { header, position } = result;
 
             if (
-              (header.toLowerCase() === 'ship_to' || header.toLowerCase() === 'id del pedido') &&
+              (header.toLowerCase().trim() === 'ship_to' ||
+                header.toLowerCase().trim() === 'id del pedido') &&
               position
             ) {
               // Ocultar columnas por default ->  Para ocultar la Columna 1 pasar el indice 0
@@ -123,8 +124,7 @@ function ordenarTabla() {
 
     const headerPositionElement = getHeaderPosition(headerRow.cells, [valorDeLaURL]);
 
-    if (valorDeLaURL.toLowerCase() === 'ship_to') {
-      // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
+    if (valorDeLaURL.toLowerCase().trim() === 'ship_to') {
       if (headerPositionElement) {
         sortValueString(rows, table, headerPositionElement)
           .then(value => console.log(value))
@@ -132,8 +132,7 @@ function ordenarTabla() {
             console.error('Error al ordenar tabla:', err);
           });
       }
-    } else if (valorDeLaURL.toLowerCase() === 'id del pedido') {
-      // Ordenar las filas basadas en el contenido de la columna especificada por el valor de la URL
+    } else if (valorDeLaURL.toLowerCase().trim() === 'id del pedido') {
       if (headerPositionElement) {
         sortValueNumeric(rows, table, headerPositionElement)
           .then(value => console.log(value))
