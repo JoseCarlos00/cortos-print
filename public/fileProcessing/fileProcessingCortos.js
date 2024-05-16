@@ -72,7 +72,7 @@ function modifyTable() {
             const { header, position } = result;
 
             if (header.toLowerCase().trim() === 'erp order' && position) {
-              let showColumns = [2, 3, 6, 8];
+              let showColumns = [2, 3, 4, 6, 8];
               showColumns = showColumns.map(value => value - 1);
 
               insertarPageBreak(position)
