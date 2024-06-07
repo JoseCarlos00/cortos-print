@@ -63,6 +63,7 @@ export function mostrarNombreArchivo(fileInput) {
  */
 export function getHeaderPosition(headerRow, values) {
   console.log('[Get Header Position]', headerRow.length);
+
   for (let i = 0; i < headerRow.length; i++) {
     const header = headerRow[i].innerHTML.toLowerCase().trim();
     for (let j = 0; j < values.length; j++) {

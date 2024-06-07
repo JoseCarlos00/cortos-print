@@ -2,7 +2,8 @@
 import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
-import { sortValueNumeric, ordenarPorBodega } from '../JS/sortTable.js';
+import { sortValueNumeric, ordenarPorBodega, ordenarPorPiso } from '../JS/sortTable.js';
+import { insertarPageBreakPorPiso } from './cortos/ordenarPorPiso.js';
 
 let dataTable = '';
 
@@ -105,6 +106,15 @@ function modifyTable() {
                 });
 
               createFiltersCheckbox();
+            } else if (header.toLowerCase().trim() === 'por piso' && position) {
+              console.log('[Ordenar pos piso]');
+              insertarPageBreakPorPiso(position)
+                .then(value => console.log(value))
+                .catch(err => {
+                  console.error('Error al insertar el salto de página:', err);
+                });
+
+              createFiltersCheckbox();
             } else {
               createFiltersCheckbox();
             }
@@ -131,7 +141,6 @@ function modifyTable() {
 function ordenarTabla() {
   console.log('[Ordenar tabla]');
   return new Promise((resolve, reject) => {
-    // Obtener el valor de la URL
     const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
     const table = document.querySelector('#tablePreview table');
 
@@ -177,6 +186,16 @@ function ordenarTabla() {
 
       if (headerPositionElement) {
         sortValueNumeric(rows, table, headerPositionElement)
+          .then(value => console.log(value))
+          .catch(err => {
+            console.error('Error al ordenar tabla:', err);
+          });
+      }
+    } else if (valorDeLaURL.toLowerCase().trim() === 'por piso') {
+      headerPositionElement = getHeaderPosition(headerRow.cells, ['bodega', 'zona', 'work_zone']);
+
+      if (headerPositionElement) {
+        ordenarPorPiso(rows, table, headerPositionElement)
           .then(value => console.log(value))
           .catch(err => {
             console.error('Error al ordenar tabla:', err);
