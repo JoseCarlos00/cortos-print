@@ -21,7 +21,13 @@ export function insertarThead() {
       return reject('No se encontro la tabla con el id: #tablePreview table');
     }
 
-    table.insertAdjacentHTML('afterbegin', thead);
+    const caption = document.querySelector('#myCaption');
+
+    if (caption) {
+      caption.insertAdjacentHTML('afterend', thead);
+    } else {
+      table.insertAdjacentHTML('afterbegin', thead);
+    }
 
     // Borrar el elemento primera fila
     primeraFila.remove();

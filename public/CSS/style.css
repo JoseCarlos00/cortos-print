@@ -577,4 +577,8 @@ footer {
   .track-container-filter {
     display: none;
   }
+
+  main {
+    overflow: hidden !important;
+  }
 }

@@ -31,6 +31,9 @@ async function procesarArchivo(file) {
     modifyTable();
   } catch (error) {
     console.error('Error al procesar el archivo:', error);
+
+    // Ocultar la animación de carga en caso de error
+    ocultarAnimacionDeCarga(loadingContainer);
   }
 }
 

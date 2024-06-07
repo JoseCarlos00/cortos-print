@@ -23,15 +23,66 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
-    dataTable = html;
+
+    // Asumimos que setTitleTable es una función asíncrona
+    const tableWithTittle = await setTitleTable(tablePreview);
+
+    // Actualizar dataTable basado en el resultado de setTitleTable
+    dataTable = tableWithTittle || html;
 
     // Mostrar la tabla y ocultar la animación de carga
     ocultarAnimacionDeCarga(loadingContainer);
 
     modifyTable();
+    setEventForTittleTable();
   } catch (error) {
     console.error('Error al procesar el archivo:', error);
+
+    // Ocultar la animación de carga en caso de error
+    ocultarAnimacionDeCarga(loadingContainer);
   }
+}
+
+function setTitleTable(tablePreview) {
+  return new Promise((resolve, reject) => {
+    const table = document.querySelector('#tablePreview > table');
+
+    if (!table) reject({ message: 'Error en setTitleTable: No exite la tabla' });
+    const caption = document.createElement('caption');
+    caption.innerHTML = '<input id="captionInput" type="text" placeholder="Inserta un titulo" />';
+    caption.className = 'caption';
+    caption.id = 'myCaption';
+    caption.setAttribute('contenteditable', true);
+
+    table.insertAdjacentElement('afterbegin', caption);
+
+    resolve(tablePreview.innerHTML);
+  });
+}
+
+function setEventForTittleTable() {
+  window.addEventListener('beforeprint', function (e) {
+    const caption = document.querySelector('#myCaption');
+    const captionInput = document.querySelector('#captionInput');
+    const captionContent = captionInput ? captionInput.value.trim() : '';
+
+    if (captionContent === '') {
+      caption && (caption.style.display = 'none');
+    }
+  });
+
+  window.addEventListener('afterprint', function (e) {
+    const captionInput = document.querySelector('#myCaption');
+    captionInput && (captionInput.style.display = 'table-caption');
+  });
+
+  window.addEventListener('click', function (e) {
+    const captionInput = document.querySelector('#captionInput');
+
+    if (captionInput === e.target) {
+      captionInput && captionInput.select();
+    }
+  });
 }
 
 export function handleFile(file, e, fileInput) {

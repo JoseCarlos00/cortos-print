@@ -29,6 +29,18 @@ table thead td {
   font-weight: bold;
 }
 
+table .caption {
+  margin-bottom: 12px;
+
+  input {
+    width: 100%;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
 @media print {
   .page-break {
     page-break-after: always;
