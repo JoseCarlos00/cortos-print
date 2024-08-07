@@ -1,5 +1,6 @@
 /** CheckBook */
 // Función para mostrar u ocultar una fila específica por su value
+import { getHeaderPosition } from './operations.js';
 
 function toggleRow() {
   const table = document.querySelector('#content');
@@ -49,7 +50,7 @@ export function eventoClickCheckBoxRow() {
 
     // Definir la función que se utilizará para manejar el evento 'click'
     const toggleButtonClickHandler = function () {
-      const checkboxContainer = document.getElementById('checkboxContainerGroup');
+      const checkboxContainer = document.getElementById('checkboxContainerRow');
       if (!checkboxContainer) {
         return reject('No existe el elemento #checkboxContainer');
       }
@@ -81,8 +82,15 @@ export function eventoClickCheckBoxRow() {
 /** Filter Group */
 async function createCheckboxElementsGroup(columnsDefaul = [], show = true) {
   return new Promise((resolve, reject) => {
-    const table = document.getElementById('content');
-    const rowsGroup = Array.from(table.querySelectorAll('tbody tr td:nth-child(8)'));
+    const table = document.querySelector('#tablePreview table');
+    const headerRow = table.rows[0];
+
+    const headerPositionElement =
+      getHeaderPosition(headerRow.cells, ['ubicacion', 'location', 'localizacion', 'loc']) ?? -1;
+
+    const rowsGroup = Array.from(
+      table.querySelectorAll(`tbody tr td:nth-child(${headerPositionElement})`)
+    );
 
     if (!rowsGroup || !table) {
       reject('No se encontraron los elementos <table> and <tbody>');
@@ -94,18 +102,25 @@ async function createCheckboxElementsGroup(columnsDefaul = [], show = true) {
       return;
     }
 
-    const checkboxContainer = document.getElementById('checkboxContainerGroup');
+    const checkboxContainer = document.getElementById('checkboxContainerRow');
 
     if (!checkboxContainer) {
       reject('No existe el elemento checkboxContainer');
-      return; // Salir de la función si no se encontró el contenedor de checkboxes
+      return;
     }
 
-    const valuesGroup = rowsGroup.map(td => td.textContent.trim());
+    const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
+
+    const valuesGroup = rowsGroup.map(td => {
+      const text = td.textContent.trim();
+      const isMatch = regex.test(text);
+
+      return isMatch ? text.split('-').slice(0, 2).join('-') : text;
+    });
+
     const uniqueGroup = [...new Set(valuesGroup)];
 
     // Generar los checkboxes
-
     uniqueGroup.forEach(groupName => {
       const label = document.createElement('label');
       const checkbox = document.createElement('input');
@@ -144,14 +159,14 @@ async function createCheckboxElementsGroup(columnsDefaul = [], show = true) {
 export function createFiltersCheckboxRow(columnsToShow = [], showColumns = true) {
   console.log('[Create Filters Checkbox Row]');
 
-  const checkboxContainer = document.getElementById('checkboxContainerGroup');
+  const checkboxContainer = document.getElementById('checkboxContainerRow');
   checkboxContainer && (checkboxContainer.innerHTML = '');
 
   // Esperar a que los checkboxes estén creados antes de asignar eventos
   createCheckboxElementsGroup(columnsToShow, showColumns)
     .then(() => {
       // Eliminar eventos de cambio anteriores para evitar la duplicación
-      const checkboxes = document.querySelectorAll('#checkboxContainerGroup .column-toggle');
+      const checkboxes = document.querySelectorAll('#checkboxContainerRow .column-toggle');
       checkboxes.forEach(checkbox => {
         checkbox.removeEventListener('change', toggleRow);
       });
