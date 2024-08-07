@@ -2,6 +2,7 @@
 import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
 import { getSelectedValueFromURL } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
+import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../JS/chekBoxRow.js';
 import { sortValueNumeric, sortValueString } from '../JS/sortTable.js';
 
 let dataTable = '';
@@ -91,6 +92,7 @@ async function modifyTable() {
 
     eventoDeOrdenarPorParametro();
     markLocation();
+    eventoClickCheckBoxRow().then(() => createFiltersCheckboxRow());
   } catch (error) {
     console.error('Error:', error);
   }
@@ -232,7 +234,6 @@ async function markLocation() {
 
     const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
 
-    // Obtener los valores únicos
     const valuesGroup = rowsGroup.map(td => {
       const text = td.textContent.trim();
       const isMatch = regex.test(text);
