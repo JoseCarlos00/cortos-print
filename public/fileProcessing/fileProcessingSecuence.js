@@ -1,6 +1,6 @@
 // fileProcessing.js
 import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
-import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
+import { getSelectedValueFromURL } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { sortValueNumeric, sortValueString } from '../JS/sortTable.js';
 
@@ -77,7 +77,14 @@ async function modifyTable() {
       await ordenarTabla();
     }
 
-    let showColumns = [1, 4];
+    const table = document.querySelector('#tablePreview table');
+    const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
+
+    let showColumns = [
+      getHeaderPosition(headerRow.cells, ['ubicacion', 'location', 'localizacion', 'loc']),
+      getHeaderPosition(headerRow.cells, ['picking_seq', 'picking seq', 'seq']),
+    ];
+
     showColumns = showColumns.map(value => value - 1);
 
     createFiltersCheckbox(showColumns, true);
@@ -202,7 +209,20 @@ function ocultarAnimacionDeCarga(loadingContainer) {
 async function markLocation() {
   try {
     const table = document.querySelector('#tablePreview table');
-    const rowsGroup = Array.from(table.querySelectorAll('tbody tr td:nth-child(1)'));
+    const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
+
+    const headerPositionElement = getHeaderPosition(headerRow.cells, [
+      'ubicacion',
+      'location',
+      'localizacion',
+      'loc',
+    ]);
+
+    console.log('position:', headerPositionElement);
+
+    const rowsGroup = Array.from(
+      table.querySelectorAll(`tbody tr td:nth-child(${headerPositionElement})`)
+    );
 
     if (!rowsGroup || !table) {
       throw new Error('No se encontraron los elementos <table> y <tbody>');
