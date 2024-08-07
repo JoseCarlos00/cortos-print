@@ -3,10 +3,13 @@
 import { getHeaderPosition } from './operations.js';
 
 function toggleRow() {
-  const table = document.querySelector('#content');
+  const table = document.querySelector('#tablePreview table');
   const rows = Array.from(table.rows);
   const value = this.value;
-  const columnIndex = 8;
+
+  const headerRow = table.rows[0];
+  const columnIndex =
+    getHeaderPosition(headerRow.cells, ['ubicacion', 'location', 'localizacion', 'loc']) ?? -1;
   const checkboxContainer = this.closest('.checkbox-container');
 
   if (!table || !rows) {
@@ -19,13 +22,18 @@ function toggleRow() {
     return;
   }
 
+  const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
+
   rows.forEach(tr => {
     const grupoElement = tr.querySelector(`td:nth-child(${columnIndex})`);
 
     if (grupoElement && checkboxContainer) {
-      const grupoText = grupoElement.textContent.trim();
+      const text = grupoElement.textContent.trim();
+      const isMatch = regex.test(text);
 
-      if (grupoText === value) {
+      const prefix = isMatch ? text.split('-').slice(0, 2).join('-') : text;
+
+      if (prefix === value) {
         tr.classList.toggle('hidden', !this.checked);
         checkboxContainer.classList.toggle('checkbox-checked', !this.checked);
       }
@@ -56,14 +64,14 @@ export function eventoClickCheckBoxRow() {
       }
 
       // Verificar si la clase 'mostrar' está presente en el checkboxContainer
-      if (!checkboxContainer.classList.contains('mostrar')) {
+      if (!checkboxContainer.classList.contains('show')) {
         // Si no está presente, la agregamos
-        checkboxContainer.classList.add('mostrar');
+        checkboxContainer.classList.add('show');
         // Cambiar el atributo "d" del path SVG para representar un símbolo de menos(-)
         togglePath.setAttribute('d', 'M5 12h14');
       } else {
         // Si está presente, la eliminamos
-        checkboxContainer.classList.remove('mostrar');
+        checkboxContainer.classList.remove('show');
         // Cambiar el atributo "d" del path SVG para representar un símbolo de más(+)
         togglePath.setAttribute('d', 'M12 19v-7m0 0V5m0 7H5m7 0h7');
       }

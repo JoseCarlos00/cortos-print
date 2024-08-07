@@ -93,6 +93,9 @@ async function modifyTable() {
     eventoDeOrdenarPorParametro();
     markLocation();
     eventoClickCheckBoxRow().then(() => createFiltersCheckboxRow());
+
+    const filterTable = document.getElementById('filter-table');
+    filterTable && filterTable.classList.remove('hidden');
   } catch (error) {
     console.error('Error:', error);
   }
