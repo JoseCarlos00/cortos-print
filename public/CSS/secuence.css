@@ -181,6 +181,10 @@
   padding: 6px 4px 8px 4px !important;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* Fondos claros */
 .group-1 {
   background-color: #e0f7fa; /* Light Cyan */
