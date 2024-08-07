@@ -6,3 +6,210 @@
     text-wrap: nowrap;
   }
 }
+
+/* Clases de fondo y color para group-0 a group-30 */
+.group-0 {
+  background-color: #e0f7fa;
+  color: #004d40;
+} /* Teal Light */
+.group-1 {
+  background-color: #b9fbc0;
+  color: #004d40;
+} /* Light Green */
+.group-2 {
+  background-color: #f3e5f5;
+  color: #4a148c;
+} /* Light Purple */
+.group-3 {
+  background-color: #ffccbc;
+  color: #bf360c;
+} /* Light Orange */
+.group-4 {
+  background-color: #c5cae9;
+  color: #1a237e;
+} /* Light Blue */
+.group-5 {
+  background-color: #fff9c4;
+  color: #f57f17;
+} /* Light Yellow */
+.group-6 {
+  background-color: #d1c4e9;
+  color: #6a1b9a;
+} /* Light Lavender */
+.group-7 {
+  background-color: #ffab91;
+  color: #bf360c;
+} /* Light Coral */
+.group-8 {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+} /* Pale Green */
+.group-9 {
+  background-color: #e1bee7;
+  color: #4a148c;
+} /* Lavender */
+.group-10 {
+  background-color: #fdd835;
+  color: #ff6f00;
+} /* Bright Yellow */
+.group-11 {
+  background-color: #e0e0e0;
+  color: #212121;
+} /* Light Grey */
+.group-12 {
+  background-color: #ffebee;
+  color: #d32f2f;
+} /* Light Red */
+.group-13 {
+  background-color: #b3e5fc;
+  color: #0288d1;
+} /* Light Sky Blue */
+.group-14 {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+} /* Pale Green */
+.group-15 {
+  background-color: #ffe0b2;
+  color: #bf360c;
+} /* Light Orange */
+.group-16 {
+  background-color: #d7ccc8;
+  color: #3e2723;
+} /* Light Brown */
+.group-17 {
+  background-color: #d1c4e9;
+  color: #6a1b9a;
+} /* Light Lavender */
+.group-18 {
+  background-color: #dce775;
+  color: #33691e;
+} /* Light Lime */
+.group-19 {
+  background-color: #b9fbc0;
+  color: #004d40;
+} /* Light Green */
+.group-20 {
+  background-color: #ff8a80;
+  color: #d32f2f;
+} /* Light Pink */
+.group-21 {
+  background-color: #f48fb1;
+  color: #880e4f;
+} /* Light Pink */
+.group-22 {
+  background-color: #a5d6a7;
+  color: #1b5e20;
+} /* Light Green */
+.group-23 {
+  background-color: #f5f5f5;
+  color: #424242;
+} /* Light Grey */
+.group-24 {
+  background-color: #cfd8dc;
+  color: #263238;
+} /* Light Blue Grey */
+.group-25 {
+  background-color: #cfd8dc;
+  color: #263238;
+} /* Light Blue Grey */
+.group-26 {
+  background-color: #dcedc8;
+  color: #689f38;
+} /* Light Lime */
+.group-27 {
+  background-color: #f1f8e9;
+  color: #33691e;
+} /* Light Lime */
+.group-28 {
+  background-color: #ffebee;
+  color: #c62828;
+} /* Light Red */
+.group-29 {
+  background-color: #e3f2fd;
+  color: #0277bd;
+} /* Light Blue */
+.group-30 {
+  background-color: #fce4ec;
+  color: #c2185b;
+} /* Light Pink */
+/* Clases de fondo y color para group-31 a group-50 */
+.group-31 {
+  background-color: #dce775;
+  color: #33691e;
+} /* Light Lime */
+.group-32 {
+  background-color: #c5e1a5;
+  color: #33691e;
+} /* Light Olive Green */
+.group-33 {
+  background-color: #b3e5fc;
+  color: #0288d1;
+} /* Light Sky Blue */
+.group-34 {
+  background-color: #ffab91;
+  color: #bf360c;
+} /* Light Coral */
+.group-35 {
+  background-color: #d1c4e9;
+  color: #6a1b9a;
+} /* Light Lavender */
+.group-36 {
+  background-color: #ffecb3;
+  color: #f57f17;
+} /* Light Amber */
+.group-37 {
+  background-color: #b9fbc0;
+  color: #004d40;
+} /* Light Green */
+.group-38 {
+  background-color: #f0f4c3;
+  color: #9e9d24;
+} /* Light Lime */
+.group-39 {
+  background-color: #e0f2f1;
+  color: #004d40;
+} /* Light Teal */
+.group-40 {
+  background-color: #f5f5f5;
+  color: #424242;
+} /* Light Grey */
+.group-41 {
+  background-color: #dcedc8;
+  color: #689f38;
+} /* Light Lime */
+.group-42 {
+  background-color: #e1bee7;
+  color: #4a148c;
+} /* Light Lavender */
+.group-43 {
+  background-color: #f8bbd0;
+  color: #880e4f;
+} /* Light Pink */
+.group-44 {
+  background-color: #b3e5fc;
+  color: #0277bd;
+} /* Light Blue */
+.group-45 {
+  background-color: #ffccbc;
+  color: #bf360c;
+} /* Light Orange */
+.group-46 {
+  background-color: #d7ccc8;
+  color: #3e2723;
+} /* Light Brown */
+.group-47 {
+  background-color: #e6ee9c;
+  color: #827717;
+} /* Light Yellow Green */
+.group-48 {
+  background-color: #d1c4e9;
+  color: #6a1b9a;
+} /* Light Lavender */
+.group-49 {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+} /* Light Green */
+.group-50 {
+  background-color: #ffe0b2;
+  color: #bf360c;
+} /* Light Orange */

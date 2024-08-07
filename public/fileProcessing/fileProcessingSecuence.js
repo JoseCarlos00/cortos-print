@@ -83,6 +83,7 @@ async function modifyTable() {
     createFiltersCheckbox(showColumns, true);
 
     eventoDeOrdenarPorParametro();
+    markLocation();
   } catch (error) {
     console.error('Error:', error);
   }
@@ -196,4 +197,54 @@ function mostrarAnimacionDeCarga(loadingContainer) {
 function ocultarAnimacionDeCarga(loadingContainer) {
   tablePreview.style.display = 'block';
   loadingContainer.style.display = 'none';
+}
+
+async function markLocation() {
+  try {
+    const table = document.querySelector('#tablePreview table');
+    const rowsGroup = Array.from(table.querySelectorAll('tbody tr td:nth-child(1)'));
+
+    if (!rowsGroup || !table) {
+      throw new Error('No se encontraron los elementos <table> y <tbody>');
+    }
+
+    if (rowsGroup.length === 0) {
+      throw new Error('No hay filas en el <tbody>');
+    }
+
+    // Obtener los valores únicos
+    const valuesGroup = rowsGroup.map(td => {
+      const text = td.textContent.trim();
+      const prefix = text.split('-').slice(0, 2).join('-');
+      return prefix;
+    });
+
+    const uniqueGroup = [...new Set(valuesGroup)];
+
+    // Espera a que la promesa de highlightRowsByGroup se resuelva
+    await highlightRowsByGroup(rowsGroup, uniqueGroup);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+function highlightRowsByGroup(rowsGroup, uniqueGroup) {
+  return new Promise((resolve, reject) => {
+    if (!rowsGroup || !uniqueGroup) {
+      console.error('No se encontraron los parámetros: rowsGroup o uniqueGroup');
+      reject('Parámetros faltantes');
+      return;
+    }
+
+    rowsGroup.forEach(td => {
+      const text = td.textContent.trim();
+      const prefix = text.split('-').slice(0, 2).join('-');
+
+      if (uniqueGroup.includes(prefix)) {
+        td.classList.add('group-' + uniqueGroup.indexOf(prefix));
+      }
+    });
+
+    resolve();
+  });
 }
