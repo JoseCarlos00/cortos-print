@@ -7,6 +7,180 @@
   }
 }
 
+/* Checkboox ROW */
+#checkboxContainerRow {
+  align-self: start;
+  width: 100%;
+  margin-top: -12px;
+  margin-bottom: 32px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 6px 16px;
+  width: 50%;
+
+  height: 0;
+  opacity: 0;
+  transition: height 0.5s ease, opacity 0.5s ease;
+
+  background-color: #fff;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.589));
+  border-radius: 8px;
+  padding: 0;
+
+  .checkbox-container {
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .checkbox-container:active {
+    transform: scale(0.96);
+  }
+
+  .column-toggle {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.589);
+    border: 1px solid #0000005e;
+  }
+
+  .checkmark::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 5.4px;
+    top: 2.6px;
+    width: 6px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+
+  .column-toggle:checked ~ .checkmark {
+    background-color: #2196f3;
+    box-shadow: 1px 1px 4px rgba(33, 150, 243, 0.3);
+    border: none;
+  }
+
+  .column-toggle:checked ~ .checkmark::after {
+    display: block;
+    animation: checkAnim 0.2s forwards;
+  }
+
+  .checkbox-checked {
+    opacity: 0.6;
+  }
+
+  .column-toggle:focus ~ .checkmark {
+    outline: red solid 2px;
+    outline-offset: -2px;
+  }
+}
+
+/* Filtros Order by */
+.location-filter {
+  margin-bottom: 16px;
+  height: 0;
+  opacity: 0;
+
+  fieldset {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 0;
+
+    legend {
+      padding: 0 0.3rem;
+    }
+  }
+
+  .radio-input input {
+    display: none;
+  }
+
+  .radio-input {
+    --container_width: 150px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000000;
+    width: var(--container_width);
+    overflow: hidden;
+    border: 1px solid rgba(53, 52, 52, 35%);
+  }
+
+  .radio-input label {
+    width: 100%;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 14px;
+  }
+
+  .selection {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: calc(var(--container_width) / 2);
+    z-index: 0;
+    left: 0;
+    top: 0;
+    transition: 0.15s ease;
+  }
+
+  .radio-input label:has(input:checked) {
+    color: #fff;
+  }
+
+  .radio-input label:has(input:checked) ~ .selection {
+    background-color: #007acc;
+    display: inline-block;
+  }
+
+  .radio-input label:nth-child(1):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 0 / 2));
+  }
+
+  .radio-input label:nth-child(2):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 1 / 2));
+  }
+}
+
+.show {
+  height: auto !important;
+  opacity: 1 !important;
+  padding: 6px 4px 8px 4px !important;
+}
+
 /* Fondos claros */
 .group-1 {
   background-color: #e0f7fa; /* Light Cyan */
