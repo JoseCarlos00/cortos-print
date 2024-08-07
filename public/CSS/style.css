@@ -27,11 +27,6 @@ main {
   overflow: auto;
 }
 
-.mostrar {
-  height: auto !important;
-  opacity: 1 !important;
-}
-
 table tr td.hidden,
 table tr th.hidden,
 table tr.hidden {
@@ -294,6 +289,11 @@ footer {
     label:active {
       transform: scale(0.96);
     }
+
+    label,
+    input {
+      cursor: pointer;
+    }
   }
 
   fieldset {
@@ -303,12 +303,15 @@ footer {
     gap: 8px;
     border-radius: 4px;
   }
+
+  .wait {
+    cursor: wait !important;
+  }
 }
 
 /* Checkboox */
 #checkboxContainer {
   align-self: center;
-  transition: all 0.5s ease;
   width: 100%;
 
   display: grid;
@@ -317,12 +320,12 @@ footer {
 
   height: 0;
   opacity: 0;
-  transition: height 0.5s ease, opacity 0.5s ease;
+  transition: all 0.3s ease;
 
   background-color: #fff;
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.589));
   border-radius: 8px;
-  padding: 6px 4px 8px 4px;
+  padding: 0;
 
   .checkbox-container {
     display: inline-block;
@@ -332,7 +335,7 @@ footer {
     font-size: 16px;
     user-select: none;
 
-    overflow: hidden;
+    /* overflow: hidden; */
     text-overflow: ellipsis;
   }
 
@@ -581,4 +584,10 @@ footer {
   main {
     overflow: hidden !important;
   }
+}
+
+.mostrar {
+  height: auto !important;
+  opacity: 1 !important;
+  padding: 6px 4px 8px 4px !important;
 }
