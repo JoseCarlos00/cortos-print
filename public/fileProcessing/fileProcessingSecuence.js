@@ -218,8 +218,6 @@ async function markLocation() {
       'loc',
     ]);
 
-    console.log('position:', headerPositionElement);
-
     const rowsGroup = Array.from(
       table.querySelectorAll(`tbody tr td:nth-child(${headerPositionElement})`)
     );
@@ -232,11 +230,14 @@ async function markLocation() {
       throw new Error('No hay filas en el <tbody>');
     }
 
+    const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
+
     // Obtener los valores únicos
     const valuesGroup = rowsGroup.map(td => {
       const text = td.textContent.trim();
-      const prefix = text.split('-').slice(0, 2).join('-');
-      return prefix;
+      const isMatch = regex.test(text);
+
+      return isMatch ? text.split('-').slice(0, 2).join('-') : text;
     });
 
     const uniqueGroup = [...new Set(valuesGroup)];
@@ -256,9 +257,12 @@ function highlightRowsByGroup(rowsGroup, uniqueGroup) {
       return;
     }
 
+    const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
     rowsGroup.forEach(td => {
       const text = td.textContent.trim();
-      const prefix = text.split('-').slice(0, 2).join('-');
+      const isMatch = regex.test(text);
+
+      const prefix = isMatch ? text.split('-').slice(0, 2).join('-') : text;
 
       if (uniqueGroup.includes(prefix)) {
         td.classList.add('group-' + uniqueGroup.indexOf(prefix));
