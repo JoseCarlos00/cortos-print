@@ -1,0 +1,8 @@
+#checkboxContainer {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+  .checkbox-container {
+    display: block;
+    text-wrap: nowrap;
+  }
+}
