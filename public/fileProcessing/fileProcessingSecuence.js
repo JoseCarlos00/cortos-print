@@ -286,6 +286,12 @@ function setEventOrderBy() {
     input.addEventListener('change', e => {
       if (!e.target) return;
       sortTableOrderBy(e.target.value);
+
+      // Regresar el radio button a DEFAULT
+      const defaultInput = document.getElementById('orderByDefault');
+      if (defaultInput) {
+        setInterval(() => (defaultInput.checked = true), 500);
+      }
     });
   });
 }
