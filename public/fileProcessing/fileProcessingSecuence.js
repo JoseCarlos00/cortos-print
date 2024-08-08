@@ -5,6 +5,7 @@ import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../JS/chekBoxRow.js';
 import { sortValueNumeric } from '../JS/sortTable.js';
 import { sortValueString } from '../JS/sortTableRefactor.js';
+import { getVisibleTableData, exportTable } from '../JS/exportTable.js';
 
 // Global variables
 const columnIndex = {
@@ -96,9 +97,37 @@ async function modifyTable() {
     filterTable && filterTable.classList.remove('hidden');
 
     setEventOrderBy();
+    await setEventEportTable();
   } catch (error) {
     console.error('Error:', error);
   }
+}
+
+async function setEventEportTable() {
+  const btnExportExcel = document.getElementById('exportToExcel');
+  const btnCopyTable = document.getElementById('copyTable');
+
+  const table = document.querySelector('#tablePreview table');
+
+  if (btnExportExcel) {
+    btnExportExcel.addEventListener('click', async () => {
+      const visibleTable = await getVisibleTableData(table);
+      exportTable({ table: visibleTable, title: 'Secuencia de Surtido' });
+    });
+  } else {
+    console.error('No se encontro el boton para exportar Excel');
+  }
+
+  if (btnCopyTable) {
+    btnCopyTable.addEventListener('click', async () => {
+      const visibleTable = await getVisibleTableData(table);
+      copyValueTable({ table: visibleTable });
+    });
+  }
+}
+
+function copyValueTable({ table }) {
+  console.log('Copy table:\n', table);
 }
 
 async function setColumnIndex() {

@@ -53,8 +53,6 @@ function updateCheckboxes(checked) {
     const parent = checkbox.closest('.checkbox-container');
     checkbox.checked = checked;
 
-    console.log('parent:', parent);
-
     if (parent) {
       parent.classList.toggle('checkbox-checked', !checked);
     }
