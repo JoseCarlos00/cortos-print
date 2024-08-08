@@ -107,20 +107,26 @@
       <div class="loading"></div>
     </div>
 
-    <div class="filters hidden" id="filter-table">
+    <div class="filters " id="filter-table">
 
-      <form class="location-filter show">
+      <form class="order-by-filter show">
         <fieldset>
           <legend>Order By</legend>
 
           <div class="radio-input">
+
             <label>
-              <input type="radio" name="trackContainer" value="ASC" checked>
+              <input type="radio" name="order-by" value="DEFAULT" checked>
+              <span></span>
+            </label>
+
+            <label>
+              <input type="radio" name="order-by" value="ASC">
               <span>ASC</span>
             </label>
 
             <label>
-              <input type="radio" name="trackContainer" value="DESC">
+              <input type="radio" name="order-by" value="DESC">
               <span>DESC</span>
             </label>
 
