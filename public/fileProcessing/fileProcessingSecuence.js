@@ -1,11 +1,18 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
+import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
 import { getSelectedValueFromURL } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../JS/chekBoxRow.js';
-import { sortValueNumeric, sortValueString } from '../JS/sortTable.js';
+import { sortValueNumeric } from '../JS/sortTable.js';
+import { sortValueString } from '../JS/sortTableRefactor.js';
 
-let dataTable = '';
+// Global variables
+const columnIndex = {
+  locationIndex: -1,
+  locationPosition: -1,
+  pickingSeqIndex: -1,
+  pickingSeqPosition: -1,
+};
 
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
@@ -24,7 +31,6 @@ async function procesarArchivo(file) {
     // Create HTML table
     const html = XLSX.utils.sheet_to_html(ws);
     tablePreview.innerHTML = html;
-    dataTable = html;
 
     // Mostrar la tabla y ocultar la animación de carga
     ocultarAnimacionDeCarga(loadingContainer);
@@ -71,23 +77,15 @@ async function modifyTable() {
 
   try {
     await insertarThead();
+    await setColumnIndex();
 
-    const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
+    const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? '';
 
     if (valorDeLaURL !== 'NoOrdenar') {
-      await ordenarTabla();
+      await sortTableForUrl();
     }
 
-    const table = document.querySelector('#tablePreview table');
-    const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-
-    let showColumns = [
-      getHeaderPosition(headerRow.cells, ['ubicacion', 'location', 'localizacion', 'loc']),
-      getHeaderPosition(headerRow.cells, ['picking_seq', 'picking seq', 'seq']),
-    ];
-
-    showColumns = showColumns.map(value => value - 1);
-
+    let showColumns = [columnIndex.locationIndex, columnIndex.pickingSeqIndex];
     createFiltersCheckbox(showColumns, true);
 
     eventoDeOrdenarPorParametro();
@@ -101,68 +99,77 @@ async function modifyTable() {
   }
 }
 
-function ordenarTabla(defaulVaule) {
-  console.log('[Ordenar tabla]');
+async function setColumnIndex() {
+  const table = document.querySelector('#tablePreview table');
 
-  return new Promise((resolve, reject) => {
-    try {
-      // Obtener el valor de la URL
-      const valorDeLaURL = getSelectedValueFromURL('ordenar') ?? null;
-      const orderValue = defaulVaule ? defaulVaule : valorDeLaURL;
+  if (!table) {
+    console.error('No se encontro el elemento <table>');
+    return;
+  }
 
-      const table = document.querySelector('#tablePreview table');
+  const headerRow = table.rows[0] ? Array.from(table.rows[0].cells) : [];
 
-      if (!table) {
-        return reject('No se encontro la tabla con el id: #tablePreview');
-      }
+  if (headerRow.length === 0) {
+    console.error('No hay filas en Header Row');
+    return;
+  }
 
-      if (!valorDeLaURL) {
-        return reject('No se encontro el valor del parametro de la URL [ordenar]');
-      }
+  const pickingSeq = ['picking_seq', 'picking seq', 'seq'];
+  const loc = ['ubicacion', 'location', 'localizacion', 'loc'];
 
-      const rows = Array.from(table.querySelectorAll('tbody tr'));
-      const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
+  headerRow.forEach((th, index) => {
+    const text = th.textContent.trim().toLowerCase();
 
-      let headerPositionElement = null;
-
-      if (orderValue.toLowerCase().trim() === 'picking_seq') {
-        headerPositionElement = getHeaderPosition(headerRow.cells, [
-          'picking_seq',
-          'picking seq',
-          'seq',
-        ]);
-
-        if (headerPositionElement) {
-          sortValueNumeric(rows, table, headerPositionElement)
-            .then(value => console.log(value))
-            .catch(err => {
-              console.error('Error al ordenar tabla:', err);
-            });
-        }
-      } else if (orderValue.toLowerCase().trim() === 'location') {
-        headerPositionElement = getHeaderPosition(headerRow.cells, [
-          'ubicacion',
-          'location',
-          'localizacion',
-          'loc',
-        ]);
-
-        if (headerPositionElement) {
-          sortValueString(rows, table, headerPositionElement)
-            .then(value => console.log(value))
-            .catch(err => {
-              console.error('Error al ordenar tabla:', err);
-            });
-        }
-      }
-
-      resolve({ header: orderValue, position: headerPositionElement });
-    } catch (error) {
-      console.error('Error:', error);
-      reject();
-      return;
+    if (loc.includes(text)) {
+      columnIndex.locationIndex = index;
+      columnIndex.locationPosition = index + 1;
+    }
+    if (pickingSeq.includes(text)) {
+      columnIndex.pickingSeqIndex = index;
+      columnIndex.pickingSeqPosition = index + 1;
     }
   });
+}
+
+async function sortTableForUrl() {
+  const valorDeLaURL = getSelectedValueFromURL('ordenar');
+
+  if (!valorDeLaURL) {
+    throw new Error('No se encontro el valor de la URL');
+  }
+
+  await ordenarTabla({ orderValue: valorDeLaURL });
+}
+
+async function ordenarTabla({ orderValue: orderValueParam }) {
+  try {
+    const table = document.querySelector('#tablePreview table');
+
+    if (!table) {
+      throw new Error('No se encontro la tabla con el id: #tablePreview');
+    }
+
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    if (!rows.length) {
+      throw new Error('No hay filas en <tbody>');
+    }
+
+    const orderValue = orderValueParam ? orderValueParam.toLowerCase() : '';
+
+    const sortFunctions = {
+      picking_seq: (rows, table) => sortValueNumeric(rows, table, columnIndex.pickingSeqPosition),
+      location: (rows, table) => sortValueString(rows, table, columnIndex.locationIndex),
+    };
+
+    if (sortFunctions[orderValue]) {
+      await sortFunctions[orderValue](rows, table);
+    } else {
+      throw new Error(`No se encontró la función de ordenamiento para ${orderValue}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return;
+  }
 }
 
 function eventoDeOrdenarPorParametro() {
@@ -172,14 +179,14 @@ function eventoDeOrdenarPorParametro() {
   });
 }
 
-function handleChangeInputRadio() {
+async function handleChangeInputRadio() {
   try {
     const label = this.closest('label');
     label.classList.add('wait');
 
     const loadingContainer = document.getElementById('loading-container');
     const selectedValue = this.value;
-    console.log('value:', selectedValue);
+    console.log('selectedValue:', selectedValue);
 
     if (selectedValue === 'NoOrdenar') {
       label.classList.remove('wait');
@@ -189,13 +196,10 @@ function handleChangeInputRadio() {
     tablePreview.style.display = 'none';
     loadingContainer.style.display = 'flex';
 
-    setTimeout(() => {
-      ordenarTabla(selectedValue).then(() => {
-        loadingContainer.style.display = 'none';
-        tablePreview.style.display = 'block';
-        label.classList.remove('wait');
-      });
-    }, 50);
+    await ordenarTabla({ orderValue: selectedValue });
+
+    ocultarAnimacionDeCarga(loadingContainer);
+    label.classList.remove('wait');
   } catch (error) {
     console.error('Error:', error);
   }
@@ -214,17 +218,9 @@ function ocultarAnimacionDeCarga(loadingContainer) {
 async function markLocation() {
   try {
     const table = document.querySelector('#tablePreview table');
-    const headerRow = table.rows[0]; // Obtener la primera fila (encabezados)
-
-    const headerPositionElement = getHeaderPosition(headerRow.cells, [
-      'ubicacion',
-      'location',
-      'localizacion',
-      'loc',
-    ]);
 
     const rowsGroup = Array.from(
-      table.querySelectorAll(`tbody tr td:nth-child(${headerPositionElement})`)
+      table.querySelectorAll(`tbody tr td:nth-child(${columnIndex.locationPosition})`)
     );
 
     if (!rowsGroup || !table) {
