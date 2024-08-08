@@ -94,6 +94,8 @@ async function modifyTable() {
 
     const filterTable = document.getElementById('filter-table');
     filterTable && filterTable.classList.remove('hidden');
+
+    setEventOrderBy();
   } catch (error) {
     console.error('Error:', error);
   }
@@ -269,6 +271,113 @@ function highlightRowsByGroup(rowsGroup, uniqueGroup) {
       }
     });
 
+    resolve();
+  });
+}
+
+function setEventOrderBy() {
+  const radioInputs = document.querySelectorAll('.order-by-filter input[name="order-by" ]');
+
+  if (!radioInputs.length) return;
+
+  radioInputs.forEach(input => {
+    if (!input) return;
+
+    input.addEventListener('change', e => {
+      if (!e.target) return;
+      sortTableOrderBy(e.target.value);
+    });
+  });
+}
+
+async function sortTableOrderBy(inputValue) {
+  try {
+    if (!inputValue) return;
+    console.log(`Se ha seleccionado el orden: ${inputValue}`);
+
+    const table = document.querySelector('#tablePreview table');
+
+    if (!table) {
+      throw new Error('No se encontró la tabla con el id: #tablePreview');
+    }
+
+    const tbody = table.querySelector('tbody');
+    const visibleRows = Array.from(tbody.querySelectorAll('tr:not(.hidden)'));
+
+    if (!visibleRows.length) {
+      throw new Error('No hay filas visibles en <tbody>');
+    }
+
+    if (inputValue === 'DEFAULT') {
+      return;
+    } else if (inputValue === 'ASC') {
+      await sortValueString(visibleRows, table, columnIndex.locationIndex);
+    } else if (inputValue === 'DESC') {
+      await sortLocationDesc(visibleRows, table, columnIndex.locationIndex);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return;
+  }
+}
+
+function sortLocationDesc(visibleRows, table, columnIndex) {
+  return new Promise((resolve, reject) => {
+    // Verifica que el columnIndex sea válido
+    if (visibleRows.length === 0 || columnIndex < 0 || columnIndex >= visibleRows[0].cells.length) {
+      console.error('Índice de columna no válido o sin filas.');
+      reject();
+      return;
+    }
+
+    const tbody = table.querySelector('tbody');
+
+    if (!tbody) {
+      throw new Error('No se eencontro el elemento <tbody>');
+    }
+
+    const regex = /^\d{1}-\d{2}-\d{2}-[A-Z]{2}-\d{2}$/;
+
+    visibleRows.sort((a, b) => {
+      const aText = a.cells[columnIndex] ? a.cells[columnIndex].innerText.trim() : '';
+      const bText = b.cells[columnIndex] ? b.cells[columnIndex].innerText.trim() : '';
+
+      const aValid = regex.test(aText);
+      const bValid = regex.test(bText);
+
+      // Colocar filas válidas después de las no válidas
+      if (!aValid && bValid) return -1; // a no es válido, b sí
+      if (aValid && !bValid) return 1; // a es válido, b no
+
+      // Si ambos son válidos o ambos no válidos, proceder con el ordenamiento
+      if (aValid && bValid) {
+        const aCells = aText.split('-');
+        const bCells = bText.split('-');
+
+        // Extraer las partes para la comparación
+        const aPrefix = aCells.slice(0, 3).join('-');
+        const bPrefix = bCells.slice(0, 3).join('-');
+
+        // Comparar por [piso-pasillo-rack] '1-82-01' de Z↓A
+        if (aPrefix !== bPrefix) {
+          return bPrefix.localeCompare(aPrefix); // Z a A
+        }
+
+        // Comparar por [Nivel] 'AA' de A↑Z
+        if (aCells[3] !== bCells[3]) {
+          return aCells[3].localeCompare(bCells[3]); // A a Z
+        }
+
+        // Comparar por posición %-%-%-AA-[03] de Z↓A
+        return bCells[4].localeCompare(aCells[4]); // Z a A
+      }
+
+      // Ambos no válidos o iguales en cuanto a la validez
+      return 0;
+    });
+
+    // Reinsertar las filas ordenadas en el tbody
+    visibleRows.forEach(row => tbody.appendChild(row));
     resolve();
   });
 }
