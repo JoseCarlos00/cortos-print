@@ -39,6 +39,15 @@
 }
 
 /* Checkboox ROW */
+.container-chekbox-row {
+  position: relative;
+
+  .checkmark {
+    position: relative !important;
+    display: inline-block;
+  }
+}
+
 #checkboxContainerRow {
   align-self: start;
   width: 100%;
@@ -69,7 +78,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
 
+#checkboxContainerRow,
+.container-chekbox-row {
   .checkbox-container:active {
     transform: scale(0.96);
   }
@@ -218,7 +230,7 @@
   opacity: 1 !important;
 }
 
-.show:not(.location-filter) {
+.show:not(.order-by-filter) {
   padding: 6px 4px 8px 4px !important;
 }
 
