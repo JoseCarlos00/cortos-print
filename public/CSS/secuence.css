@@ -103,7 +103,7 @@
 }
 
 /* Filtros Order by */
-.location-filter {
+.order-by-filter {
   height: 0;
   opacity: 0;
 
@@ -152,7 +152,7 @@
     display: none;
     position: absolute;
     height: 100%;
-    width: calc(var(--container_width) / 2);
+    width: calc(var(--container_width) / 3);
     z-index: 0;
     left: 0;
     top: 0;
@@ -169,11 +169,15 @@
   }
 
   .radio-input label:nth-child(1):has(input:checked) ~ .selection {
-    transform: translateX(calc(var(--container_width) * 0 / 2));
+    transform: translateX(calc(var(--container_width) * 0 / 3));
   }
 
   .radio-input label:nth-child(2):has(input:checked) ~ .selection {
-    transform: translateX(calc(var(--container_width) * 1 / 2));
+    transform: translateX(calc(var(--container_width) * 1 / 3));
+  }
+
+  .radio-input label:nth-child(3):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 2 / 3));
   }
 }
 
