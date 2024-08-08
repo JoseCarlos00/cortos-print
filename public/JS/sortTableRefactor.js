@@ -9,6 +9,12 @@ export function sortValueString(rows, table, columnIndex) {
       return;
     }
 
+    const tbody = table.querySelector('tbody');
+
+    if (!tbody) {
+      throw new Error('No se eencontro el elemento <tbody>');
+    }
+
     // Ordena las filas basándose en el valor de la columna
     rows.sort((rowA, rowB) => {
       const cellA = rowA.cells[columnIndex] ? rowA.cells[columnIndex].innerText.trim() : '';
@@ -18,11 +24,7 @@ export function sortValueString(rows, table, columnIndex) {
       return cellA.localeCompare(cellB, undefined, { numeric: true });
     });
 
-    // Vuelve a añadir las filas ordenadas y luego las filas incompletas al tbody
-    const tbody = table.querySelector('tbody');
-    tbody.innerHTML = ''; // Limpia el tbody
     rows.forEach(row => tbody.appendChild(row));
-
     resolve();
   });
 }
