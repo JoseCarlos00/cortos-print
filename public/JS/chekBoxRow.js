@@ -41,6 +41,69 @@ function toggleRow() {
   });
 }
 
+function updateCheckboxes(checked) {
+  const checkboxes = document.querySelectorAll('#checkboxContainerRow .column-toggle');
+
+  if (!checkboxes.length) {
+    console.error('No hay elementos <input type="checkbox">');
+    return;
+  }
+
+  checkboxes.forEach(checkbox => {
+    const parent = checkbox.closest('.checkbox-container');
+    checkbox.checked = checked;
+
+    console.log('parent:', parent);
+
+    if (parent) {
+      parent.classList.toggle('checkbox-checked', !checked);
+    }
+  });
+}
+
+function toggleRowAll() {
+  const table = document.querySelector('#tablePreview table');
+  const rows = Array.from(table.rows);
+
+  if (!table || !rows) {
+    console.error('No existe el elemento <table>');
+    return;
+  }
+
+  if (rows.length === 0) {
+    console.warn('No hay filas <tr>');
+    return;
+  }
+
+  const visibleRows = Array.from(table.querySelectorAll('tbody tr:not(.hidden)'));
+  const hiddenRows = Array.from(table.querySelectorAll('tbody tr.hidden'));
+
+  const checked = this.checked;
+
+  if (checked && hiddenRows.length) {
+    hiddenRows.forEach(tr => {
+      tr.classList.remove('hidden');
+    });
+    updateCheckboxes(true);
+  } else if (!checked && visibleRows.length) {
+    visibleRows.forEach(tr => {
+      tr.classList.add('hidden');
+    });
+    updateCheckboxes(false);
+  }
+}
+
+function setEventToggleRowAll() {
+  const toggleAll = document.getElementById('inputToggleAllRow');
+
+  if (!toggleAll) {
+    console.error('No se encontro el chekBokk toggle all');
+    return;
+  }
+
+  toggleAll.addEventListener('change', toggleRowAll);
+}
+
 export function eventoClickCheckBoxRow() {
   return new Promise((resolve, reject) => {
     const toggleButton = document.getElementById('toggleButtonRow');
@@ -188,6 +251,8 @@ export function createFiltersCheckboxRow(columnsToShow = [], showColumns = true)
       if (toggleButton) {
         toggleButton.removeAttribute('disabled');
       }
+
+      setEventToggleRowAll();
     })
     .catch(err => {
       console.error('Error al crear los checkboxes:', err);
