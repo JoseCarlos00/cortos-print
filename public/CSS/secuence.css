@@ -11,12 +11,11 @@
 #checkboxContainerRow {
   align-self: start;
   width: 100%;
-  margin-top: -12px;
+  margin-top: 4px;
   margin-bottom: 32px;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 6px 16px;
   width: 50%;
 
   height: 0;
@@ -99,9 +98,12 @@
   }
 }
 
+#filter-table {
+  gap: 0;
+}
+
 /* Filtros Order by */
 .location-filter {
-  margin-bottom: 16px;
   height: 0;
   opacity: 0;
 
@@ -178,6 +180,9 @@
 .show {
   height: auto !important;
   opacity: 1 !important;
+}
+
+.show:not(.location-filter) {
   padding: 6px 4px 8px 4px !important;
 }
 
