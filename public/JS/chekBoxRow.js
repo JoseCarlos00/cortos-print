@@ -126,7 +126,7 @@ async function createCheckboxElementsGroup(columnsDefaul = [], show = true) {
       return isMatch ? text.split('-').slice(0, 2).join('-') : text;
     });
 
-    const uniqueGroup = [...new Set(valuesGroup)];
+    const uniqueGroup = [...new Set(valuesGroup)].sort();
 
     // Generar los checkboxes
     uniqueGroup.forEach(groupName => {
