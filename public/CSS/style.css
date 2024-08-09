@@ -592,3 +592,8 @@ footer {
   opacity: 1 !important;
   padding: 6px 4px 8px 4px !important;
 }
+
+.show-alert {
+  opacity: 1 !important;
+  display: flex !important;
+}

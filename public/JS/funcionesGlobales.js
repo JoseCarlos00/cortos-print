@@ -184,3 +184,19 @@ export function eventoClickCheckBox() {
     resolve('Evento click creado correctamente');
   });
 }
+
+export async function copyToClipBoard(textoACopiar) {
+  try {
+    await navigator.clipboard.writeText(textoACopiar);
+
+    const alerta = document.querySelector('#alerta-copy');
+
+    alerta && alerta.classList.add('show-alert');
+    setTimeout(() => {
+      alerta && alerta.classList.remove('show-alert');
+    }, 4000);
+  } catch (err) {
+    console.error('Error al copiar al portapapeles:', err);
+    alert('Error al copiar al portapapeles:');
+  }
+}
