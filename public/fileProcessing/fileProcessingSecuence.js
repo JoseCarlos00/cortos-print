@@ -1,6 +1,6 @@
 // fileProcessing.js
 import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
-import { getSelectedValueFromURL } from '../JS/funcionesGlobales.js';
+import { getSelectedValueFromURL, copyToClipBoard } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../JS/chekBoxRow.js';
 import { sortValueNumeric } from '../JS/sortTable.js';
@@ -131,7 +131,7 @@ async function setEventEportTable() {
       btnCopyTable.addEventListener('click', async () => {
         try {
           const visibleTable = await getVisibleTableData(table);
-          copyValueTable({ table: visibleTable });
+          await copyTableValues({ table: visibleTable });
         } catch (error) {
           console.error('Error al copiar la tabla:', error);
         }
@@ -144,8 +144,45 @@ async function setEventEportTable() {
   }
 }
 
-function copyValueTable({ table }) {
-  console.log('Copy table:\n', table);
+async function copyTableValues({ table }) {
+  if (!(table instanceof HTMLTableElement)) {
+    throw new Error('No se encontró la tabla con el id: #tablePreview');
+  }
+
+  const tbody = table.querySelector('tbody');
+  if (!tbody) {
+    throw new Error('No se encontró el elemento <tbody>');
+  }
+
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  if (rows.length === 0) {
+    throw new Error('No hay filas en <tbody>');
+  }
+
+  function procesarFila(row) {
+    const cells = Array.from(row.querySelectorAll('td'));
+
+    if (cells.length === 0) {
+      throw new Error('No se encontraron columnas <td> dentro de la fila <tr>');
+    }
+
+    return cells.map(procesarCelda).join('\t');
+  }
+
+  function procesarCelda(cell) {
+    if (!cell) {
+      throw new Error('Ocurrio un problema al aceder a contenido de la celda <td>');
+    }
+    return cell.textContent.trim();
+  }
+
+  const textToCopy = rows.map(procesarFila).join('\n');
+
+  if (textToCopy.trim() === '') {
+    throw new Error('No hay texto para copiar');
+  }
+
+  copyToClipBoard(textToCopy);
 }
 
 async function setColumnIndex() {
@@ -267,6 +304,10 @@ function ocultarAnimacionDeCarga(loadingContainer) {
 async function markLocation() {
   try {
     const table = document.querySelector('#tablePreview table');
+
+    if (!table) {
+      throw new Error('No se encontro la <table> para exportar');
+    }
 
     const rowsGroup = Array.from(
       table.querySelectorAll(`tbody tr td:nth-child(${columnIndex.locationPosition})`)
