@@ -104,25 +104,43 @@ async function modifyTable() {
 }
 
 async function setEventEportTable() {
-  const btnExportExcel = document.getElementById('exportToExcel');
-  const btnCopyTable = document.getElementById('copyTable');
+  try {
+    const btnExportExcel = document.getElementById('exportToExcel');
+    const btnCopyTable = document.getElementById('copyTable');
 
-  const table = document.querySelector('#tablePreview table');
+    const table = document.querySelector('#tablePreview table');
 
-  if (btnExportExcel) {
-    btnExportExcel.addEventListener('click', async () => {
-      const visibleTable = await getVisibleTableData(table);
-      exportTable({ table: visibleTable, title: 'Secuencia de Surtido' });
-    });
-  } else {
-    console.error('No se encontro el boton para exportar Excel');
-  }
+    if (!table) {
+      throw new Error('No se encontró la tabla');
+    }
 
-  if (btnCopyTable) {
-    btnCopyTable.addEventListener('click', async () => {
-      const visibleTable = await getVisibleTableData(table);
-      copyValueTable({ table: visibleTable });
-    });
+    if (btnExportExcel) {
+      btnExportExcel.addEventListener('click', async () => {
+        try {
+          const visibleTable = await getVisibleTableData(table);
+          exportTable({ table: visibleTable, title: 'Secuencia de Surtido' });
+        } catch (error) {
+          console.error('Error al exportar la tabla:', error);
+        }
+      });
+    } else {
+      console.error('No se encontró el botón para exportar Excel');
+    }
+
+    if (btnCopyTable) {
+      btnCopyTable.addEventListener('click', async () => {
+        try {
+          const visibleTable = await getVisibleTableData(table);
+          copyValueTable({ table: visibleTable });
+        } catch (error) {
+          console.error('Error al copiar la tabla:', error);
+        }
+      });
+    } else {
+      console.error('No se encontró el botón para copiar la tabla');
+    }
+  } catch (error) {
+    console.error('Error al configurar los eventos de la tabla:', error);
   }
 }
 
