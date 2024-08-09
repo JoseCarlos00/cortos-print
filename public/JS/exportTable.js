@@ -1,56 +1,88 @@
-export function getVisibleTableData(table) {
+export async function getVisibleTableData(table) {
+  if (!table) {
+    throw new Error('No se encontró el elemento <table>');
+  }
+
+  const tbody = table.querySelector('tbody');
+  const thead = table.querySelector('thead');
+
+  if (!tbody || !thead) {
+    throw new Error('Error al obtener el <thead> AND <tbody>');
+  }
+
+  // Crea una nueva tabla
+  const visibleTable = document.createElement('table');
+  const newThead = await createNewThead(thead);
+  const newTbody = await createNewTbody(tbody);
+
+  visibleTable.appendChild(newThead);
+  visibleTable.appendChild(newTbody);
+
+  resolve(visibleTable);
+}
+
+function createNewThead(thead) {
   return new Promise((resolve, reject) => {
-    if (!table) {
-      console.error('No se encontró el elemento <table>');
-      reject();
-      return;
+    if (!thead) {
+      reject(new Error('No se encontró el elemento <thead>'));
     }
 
-    // Obtén la tabla original
-    const tbody = table.querySelector('tbody');
-    const thead = table.querySelector('thead');
+    const newThead = document.createElement('thead');
 
-    if (!tbody || !thead) {
-      // maneja el error
-      reject(new Error('Error al obtener el <thead> AND <tbody>'));
-    }
-
-    // Crea una nueva tabla
-    const visibleTable = document.createElement('table');
-    const newTbody = document.createElement('tbody');
-
-    // Filtra las filas visibles
-    const visibleRows = Array.from(tbody.rows).filter(
-      row => !row.classList.contains('hidden') && row.style.display !== 'none'
-    );
-
-    // Recorre las filas visibles
-    visibleRows.forEach(row => {
-      const newRow = document.createElement('tr');
-
-      // Filtra las columnas visibles dentro de la fila
-      const visibleCells = Array.from(row.cells).filter(
-        cell => !cell.classList.contains('hidden') && cell.style.display !== 'none'
+    if (thead.rows && thead.rows.length > 0) {
+      const visibleColumns = Array.from(thead.rows[0].cells).filter(
+        cell => cell && !cell.classList.contains('hidden') && cell.style.display !== 'none'
       );
 
-      // Agrega las celdas visibles a la nueva fila
-      visibleCells.forEach(cell => {
-        const newCell = document.createElement('td');
-        newCell.innerHTML = cell.innerHTML; // O copia otros atributos si es necesario
-        newRow.appendChild(newCell);
+      const newRowHeader = document.createElement('tr');
+      visibleColumns.forEach(cell => {
+        const newCell = document.createElement('th');
+        newCell.textContent = cell.textContent;
+        newRowHeader.appendChild(newCell);
       });
 
-      // Agrega la fila a la nueva tabla
-      newTbody.appendChild(newRow);
-    });
+      newThead.appendChild(newRowHeader);
+    } else {
+      reject(new Error('No se encontraron filas en el elemento <thead>'));
+    }
 
-    // Agrega el tbody filtrado a la nueva tabla
-    visibleTable.appendChild(newTbody);
+    resolve(newThead);
+  });
+}
 
-    // Añade la nueva tabla al documento (por ejemplo, al final del cuerpo del documento)
-    // document.body.appendChild(visibleTable);
+function createNewTbody(tbody) {
+  return new Promise((resolve, reject) => {
+    if (!tbody) {
+      reject(new Error('No se encontró el elemento <tbody>'));
+    }
 
-    resolve(visibleTable);
+    const newTbody = document.createElement('tbody');
+
+    if (tbody.rows && tbody.rows.length > 0) {
+      const visibleRows = Array.from(tbody.rows).filter(
+        row => row && !row.classList.contains('hidden') && row.style.display !== 'none'
+      );
+
+      visibleRows.forEach(row => {
+        const newRow = document.createElement('tr');
+
+        const visibleCells = Array.from(row.cells).filter(
+          cell => cell && !cell.classList.contains('hidden') && cell.style.display !== 'none'
+        );
+
+        visibleCells.forEach(cell => {
+          const newCell = document.createElement('td');
+          newCell.textContent = cell.textContent;
+          newRow.appendChild(newCell);
+        });
+
+        newTbody.appendChild(newRow);
+      });
+    } else {
+      reject(new Error('No se encontraron filas en el elemento <tbody>'));
+    }
+
+    resolve(newTbody);
   });
 }
 
