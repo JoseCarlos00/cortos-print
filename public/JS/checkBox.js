@@ -109,7 +109,7 @@ export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
   createCheckboxElements(columnsToShow, showColumns)
     .then(() => {
       // Eliminar eventos de cambio anteriores para evitar la duplicación
-      const checkboxes = document.querySelectorAll('.column-toggle');
+      const checkboxes = document.querySelectorAll('#checkboxContainer .column-toggle');
       checkboxes.forEach(checkbox => {
         checkbox.removeEventListener('change', toggleColumn);
       });

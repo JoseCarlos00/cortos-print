@@ -1,3 +1,34 @@
+.container {
+  margin-top: 19px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-width: 950px;
+}
+
+.grid-contaner {
+  display: grid;
+  grid-template-columns: 190px 200px 1fr;
+  grid-template-rows: auto;
+
+  .filters {
+    grid-column: 1 / 2;
+  }
+
+  .container-file-upload {
+    margin: 0;
+    padding: 0;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    width: auto;
+  }
+
+  .container-show-hidden {
+    grid-column-start: 3;
+  }
+}
+
 #checkboxContainer {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 
@@ -7,209 +38,409 @@
   }
 }
 
-/* Clases de fondo y color para group-0 a group-30 */
-.group-0 {
-  background-color: #e0f7fa;
-  color: #004d40;
-} /* Teal Light */
+/* Checkboox ROW */
+.container-chekbox-row {
+  margin-top: 8px;
+  position: relative;
+
+  .checkmark {
+    position: relative !important;
+    display: inline-block;
+  }
+}
+
+#checkboxContainerRow {
+  align-self: start;
+  width: 100%;
+  margin-top: 4px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  width: 50%;
+
+  height: 0;
+  opacity: 0;
+  transition: height 0.5s ease, opacity 0.5s ease;
+
+  background-color: #fff;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.589));
+  border-radius: 8px;
+  padding: 0;
+
+  .checkbox-container {
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+#checkboxContainerRow,
+.container-chekbox-row {
+  .checkbox-container:active {
+    transform: scale(0.96);
+  }
+
+  .column-toggle {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.589);
+    border: 1px solid #0000005e;
+  }
+
+  .checkmark::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 5.4px;
+    top: 2.6px;
+    width: 6px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+
+  .column-toggle:checked ~ .checkmark {
+    background-color: #2196f3;
+    box-shadow: 1px 1px 4px rgba(33, 150, 243, 0.3);
+    border: none;
+  }
+
+  .column-toggle:checked ~ .checkmark::after {
+    display: block;
+    animation: checkAnim 0.2s forwards;
+  }
+
+  .checkbox-checked {
+    opacity: 0.6;
+  }
+
+  .column-toggle:focus ~ .checkmark {
+    outline: red solid 2px;
+    outline-offset: -2px;
+  }
+}
+
+#filter-table {
+  gap: 0;
+  margin-top: 0;
+}
+
+/* Filtros Order by */
+.order-by-filter {
+  height: 0;
+  opacity: 0;
+
+  fieldset {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 0;
+
+    padding-bottom: 0;
+    border-bottom-width: 0px;
+
+    legend {
+      padding: 0 0.3rem;
+    }
+  }
+
+  .radio-input input {
+    display: none;
+  }
+
+  .radio-input {
+    --container_width: 150px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000000;
+    width: var(--container_width);
+    overflow: hidden;
+    border: 1px solid rgba(53, 52, 52, 35%);
+  }
+
+  .radio-input label {
+    width: 100%;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 14px;
+  }
+
+  .selection {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: calc(var(--container_width) / 3);
+    z-index: 0;
+    left: 0;
+    top: 0;
+    transition: 0.15s ease;
+  }
+
+  .radio-input label:has(input:checked) {
+    color: #fff;
+  }
+
+  .radio-input label:has(input:checked) ~ .selection {
+    background-color: #007acc;
+    display: inline-block;
+  }
+
+  .radio-input label:nth-child(1):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 0 / 3));
+  }
+
+  .radio-input label:nth-child(2):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 1 / 3));
+  }
+
+  .radio-input label:nth-child(3):has(input:checked) ~ .selection {
+    transform: translateX(calc(var(--container_width) * 2 / 3));
+  }
+}
+
+.container-export-table {
+  margin: 8px 0 12px;
+  display: flex;
+  gap: 8px;
+
+  button {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: inherit;
+    overflow: visible;
+    text-transform: none;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-color: #7575a3;
+    border-color: #7575a3;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    color: #e3e4e6 !important;
+    cursor: pointer;
+  }
+
+  button:hover,
+  button:active {
+    color: #fff;
+    background-color: #616191;
+    border-color: #5c5c89;
+  }
+
+  button:active {
+    transform: scale(0.99);
+    /* box-shadow: inset 0 3px 5px rgba(0, 0,) */
+  }
+
+  button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(138, 138, 177, 0.5);
+  }
+}
+
+.show {
+  height: auto !important;
+  opacity: 1 !important;
+}
+
+.show:not(.order-by-filter) {
+  padding: 6px 4px 8px 4px !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Fondos claros */
 .group-1 {
-  background-color: #b9fbc0;
-  color: #004d40;
-} /* Light Green */
-.group-2 {
-  background-color: #f3e5f5;
-  color: #4a148c;
-} /* Light Purple */
+  background-color: #e0f7fa; /* Light Cyan */
+  color: #004d40; /* Dark Teal */
+}
+
 .group-3 {
-  background-color: #ffccbc;
-  color: #bf360c;
-} /* Light Orange */
-.group-4 {
-  background-color: #c5cae9;
-  color: #1a237e;
-} /* Light Blue */
+  background-color: #b9fbc0; /* Light Green */
+  color: #004d40; /* Dark Teal */
+}
+
 .group-5 {
-  background-color: #fff9c4;
-  color: #f57f17;
-} /* Light Yellow */
-.group-6 {
-  background-color: #d1c4e9;
-  color: #6a1b9a;
-} /* Light Lavender */
+  background-color: #fff59d; /* Light Yellow */
+  color: #f57f17; /* Dark Golden Yellow */
+}
+
 .group-7 {
-  background-color: #ffab91;
-  color: #bf360c;
-} /* Light Coral */
-.group-8 {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-} /* Pale Green */
+  background-color: #ffab91; /* Light Coral */
+  color: #bf360c; /* Dark Red */
+}
+
 .group-9 {
-  background-color: #e1bee7;
-  color: #4a148c;
-} /* Lavender */
-.group-10 {
-  background-color: #fdd835;
-  color: #ff6f00;
-} /* Bright Yellow */
+  background-color: #d1c4e9; /* Light Purple */
+  color: #4a148c; /* Dark Purple */
+}
+
 .group-11 {
-  background-color: #e0e0e0;
-  color: #212121;
-} /* Light Grey */
-.group-12 {
-  background-color: #ffebee;
-  color: #d32f2f;
-} /* Light Red */
+  background-color: #c5e1a5; /* Pale Green */
+  color: #1b5e20; /* Dark Green */
+}
+
 .group-13 {
-  background-color: #b3e5fc;
-  color: #0288d1;
-} /* Light Sky Blue */
-.group-14 {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-} /* Pale Green */
+  background-color: #64b5f6; /* Light Blue */
+  color: #0d47a1; /* Dark Blue */
+}
+
 .group-15 {
-  background-color: #ffe0b2;
-  color: #bf360c;
-} /* Light Orange */
-.group-16 {
-  background-color: #d7ccc8;
-  color: #3e2723;
-} /* Light Brown */
+  background-color: #f8bbd0; /* Light Pink */
+  color: #c2185b; /* Dark Pink */
+}
+
 .group-17 {
-  background-color: #d1c4e9;
-  color: #6a1b9a;
-} /* Light Lavender */
-.group-18 {
-  background-color: #dce775;
-  color: #33691e;
-} /* Light Lime */
+  background-color: #e1bee7; /* Light Lavender */
+  color: #4a148c; /* Dark Purple */
+}
+
 .group-19 {
-  background-color: #b9fbc0;
-  color: #004d40;
-} /* Light Green */
-.group-20 {
-  background-color: #ff8a80;
-  color: #d32f2f;
-} /* Light Pink */
+  background-color: #b2dfdb; /* Light Teal */
+  color: #004d40; /* Dark Teal */
+}
+
 .group-21 {
-  background-color: #f48fb1;
-  color: #880e4f;
-} /* Light Pink */
-.group-22 {
-  background-color: #a5d6a7;
-  color: #1b5e20;
-} /* Light Green */
+  background-color: #ffccbc; /* Light Peach */
+  color: #bf360c; /* Dark Red */
+}
+
 .group-23 {
-  background-color: #f5f5f5;
-  color: #424242;
-} /* Light Grey */
-.group-24 {
-  background-color: #cfd8dc;
-  color: #263238;
-} /* Light Blue Grey */
+  background-color: #ffecb3; /* Light Amber */
+  color: #f57f17; /* Dark Golden Yellow */
+}
+
 .group-25 {
-  background-color: #cfd8dc;
-  color: #263238;
-} /* Light Blue Grey */
-.group-26 {
-  background-color: #dcedc8;
-  color: #689f38;
-} /* Light Lime */
+  background-color: #c5cae9; /* Light Blue Gray */
+  color: #3f51b5; /* Dark Blue */
+}
+
 .group-27 {
-  background-color: #f1f8e9;
-  color: #33691e;
-} /* Light Lime */
-.group-28 {
-  background-color: #ffebee;
-  color: #c62828;
-} /* Light Red */
+  background-color: #b9fbc0; /* Light Green */
+  color: #004d40; /* Dark Teal */
+}
+
 .group-29 {
-  background-color: #e3f2fd;
-  color: #0277bd;
-} /* Light Blue */
+  background-color: #e0f7fa; /* Light Cyan */
+  color: #004d40; /* Dark Teal */
+}
+
+/* Fondos fuertes */
+.group-0 {
+  background-color: #004d40; /* Dark Teal */
+  color: #e0f7fa; /* Light Cyan */
+}
+
+.group-2 {
+  background-color: #f57f17; /* Dark Golden Yellow */
+  color: #fff59d; /* Light Yellow */
+}
+
+.group-4 {
+  background-color: #bf360c; /* Dark Red */
+  color: #ffab91; /* Light Coral */
+}
+
+.group-6 {
+  background-color: #6a1b9a; /* Dark Purple */
+  color: #b39ddb; /* Light Purple */
+}
+
+.group-8 {
+  background-color: #c2185b; /* Dark Pink */
+  color: #f8bbd0; /* Light Pink */
+}
+
+.group-10 {
+  background-color: #1b5e20; /* Dark Green */
+  color: #c5e1a5; /* Pale Green */
+}
+
+.group-12 {
+  background-color: #ff8a65; /* Deep Orange */
+  color: #f57f17; /* Dark Golden Yellow */
+}
+
+.group-14 {
+  background-color: #0d47a1; /* Dark Blue */
+  color: #64b5f6; /* Light Blue */
+}
+
+.group-16 {
+  background-color: #4a148c; /* Dark Purple */
+  color: #e1bee7; /* Light Lavender */
+}
+
+.group-18 {
+  background-color: #004d40; /* Dark Teal */
+  color: #b2dfdb; /* Light Teal */
+}
+
+.group-20 {
+  background-color: #bf360c; /* Dark Red */
+  color: #ffccbc; /* Light Peach */
+}
+
+.group-22 {
+  background-color: #f57f17; /* Dark Golden Yellow */
+  color: #ffecb3; /* Light Amber */
+}
+
+.group-24 {
+  background-color: #3f51b5; /* Dark Blue */
+  color: #c5cae9; /* Light Blue Gray */
+}
+
+.group-26 {
+  background-color: #004d40; /* Dark Teal */
+  color: #b9fbc0; /* Light Green */
+}
+
+.group-28 {
+  background-color: #e0f7fa; /* Light Cyan */
+  color: #004d40; /* Dark Teal */
+}
+
 .group-30 {
-  background-color: #fce4ec;
-  color: #c2185b;
-} /* Light Pink */
-/* Clases de fondo y color para group-31 a group-50 */
-.group-31 {
-  background-color: #dce775;
-  color: #33691e;
-} /* Light Lime */
-.group-32 {
-  background-color: #c5e1a5;
-  color: #33691e;
-} /* Light Olive Green */
-.group-33 {
-  background-color: #b3e5fc;
-  color: #0288d1;
-} /* Light Sky Blue */
-.group-34 {
-  background-color: #ffab91;
-  color: #bf360c;
-} /* Light Coral */
-.group-35 {
-  background-color: #d1c4e9;
-  color: #6a1b9a;
-} /* Light Lavender */
-.group-36 {
-  background-color: #ffecb3;
-  color: #f57f17;
-} /* Light Amber */
-.group-37 {
-  background-color: #b9fbc0;
-  color: #004d40;
-} /* Light Green */
-.group-38 {
-  background-color: #f0f4c3;
-  color: #9e9d24;
-} /* Light Lime */
-.group-39 {
-  background-color: #e0f2f1;
-  color: #004d40;
-} /* Light Teal */
-.group-40 {
-  background-color: #f5f5f5;
-  color: #424242;
-} /* Light Grey */
-.group-41 {
-  background-color: #dcedc8;
-  color: #689f38;
-} /* Light Lime */
-.group-42 {
-  background-color: #e1bee7;
-  color: #4a148c;
-} /* Light Lavender */
-.group-43 {
-  background-color: #f8bbd0;
-  color: #880e4f;
-} /* Light Pink */
-.group-44 {
-  background-color: #b3e5fc;
-  color: #0277bd;
-} /* Light Blue */
-.group-45 {
-  background-color: #ffccbc;
-  color: #bf360c;
-} /* Light Orange */
-.group-46 {
-  background-color: #d7ccc8;
-  color: #3e2723;
-} /* Light Brown */
-.group-47 {
-  background-color: #e6ee9c;
-  color: #827717;
-} /* Light Yellow Green */
-.group-48 {
-  background-color: #d1c4e9;
-  color: #6a1b9a;
-} /* Light Lavender */
-.group-49 {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-} /* Light Green */
-.group-50 {
-  background-color: #ffe0b2;
-  color: #bf360c;
-} /* Light Orange */
+  background-color: #c5e1a5; /* Pale Green */
+  color: #1b5e20; /* Dark Green */
+}
