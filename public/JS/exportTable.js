@@ -18,7 +18,7 @@ export async function getVisibleTableData(table) {
   visibleTable.appendChild(newThead);
   visibleTable.appendChild(newTbody);
 
-  resolve(visibleTable);
+  return visibleTable;
 }
 
 function createNewThead(thead) {
