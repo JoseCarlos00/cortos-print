@@ -336,7 +336,7 @@ footer {
 }
 
 /* Checkboox */
-#checkboxContainer {
+#checkboxContainer:not(.container) {
   align-self: center;
   width: 100%;
 
@@ -344,8 +344,8 @@ footer {
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 6px 16px;
 
-  height: 0;
-  opacity: 0;
+  height: auto;
+  opacity: 1;
   transition: all 0.3s ease;
 
   background-color: #fff;
@@ -421,6 +421,16 @@ footer {
   .column-toggle:focus ~ .checkmark {
     outline: red solid 2px;
     outline-offset: -2px;
+  }
+}
+
+.form-check-label {
+  .d-inline-flex {
+    gap: 3px;
+  }
+
+  span {
+    text-wrap: nowrap;
   }
 }
 

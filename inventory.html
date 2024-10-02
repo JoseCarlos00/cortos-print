@@ -29,6 +29,7 @@
     <menu-nav page-active="Inventory"></menu-nav>
   </header>
 
+
   <section class="filters">
     <form>
       <fieldset>
@@ -45,17 +46,73 @@
       </fieldset>
     </form>
 
-    <button id="toggleButton" class="btn-ver-mas" disabled>
-      <span>
-        <svg class="toggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-          stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          <path d="M12 19v-7m0 0V5m0 7H5m7 0h7"></path>
-        </svg>
-        Mostrar Columnas
-      </span>
+    <button id="toggleButton" class="btn btn-primary collapse-button collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#collapseShow-Hideen-Columns" aria-expanded="false" aria-controls="collapseShow-Hideen-Columns">
+      Mostrar/Ocultar Columnas
     </button>
 
-    <div id="checkboxContainer"></div>
+    <div class="collapse" id="collapseShow-Hideen-Columns">
+      <div class="card card-body">
+        <div id="checkboxContainer" class="container">
+          <div class="row">
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="0">
+                  <span>Checked checkbox</span>
+                </div>
+              </label>
+            </div>
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="0">
+                  <span>No.</span>
+                </div>
+              </label>
+            </div>
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="1">
+                  <span>Username</span>
+                </div>
+
+              </label>
+            </div>
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="1">
+                  <span>Username</span>
+                </div>
+
+              </label>
+            </div>
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="3">
+                  <span>Description</span>
+                </div>
+
+              </label>
+            </div>
+            <div class="col">
+              <label class="form-check-label">
+                <div class="d-inline-flex">
+                  <input type="checkbox" class="form-check-input" value="4">
+                  <span>Default warehouse</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
   </section>
 
   <container-file-upload></container-file-upload>

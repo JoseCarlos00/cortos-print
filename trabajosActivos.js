@@ -32,11 +32,6 @@ async function content() {
   }
 
   parametrosDeLaUrl();
-  navbar();
-
-  eventoClickCheckBox()
-    .then(msg => console.log(msg))
-    .catch(err => console.error('Error al crear el evento click mostrar:', err));
 }
 
 window.addEventListener('DOMContentLoaded', content);

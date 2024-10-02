@@ -4657,7 +4657,8 @@ fieldset:disabled .btn {
   }
 }
 
-.accordion {
+.accordion,
+.collapse-button {
   --bs-accordion-color: var(--bs-body-color);
   --bs-accordion-bg: var(--bs-body-bg);
   --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -4697,21 +4698,34 @@ fieldset:disabled .btn {
   overflow-anchor: none;
   transition: var(--bs-accordion-transition);
 }
+
+.collapse-button {
+  --with-button: 245px;
+  position: relative;
+  display: flex;
+  width: var(--with-button);
+  transition: var(--bs-accordion-transition);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .accordion-button {
+  .accordion-button,
+  .collapse-button {
     transition: none;
   }
 }
-.accordion-button:not(.collapsed) {
+.accordion-button:not(.collapsed),
+.collapse-button:not(.collapsed) {
   color: var(--bs-accordion-active-color);
   background-color: var(--bs-accordion-active-bg);
   box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
-.accordion-button:not(.collapsed)::after {
+.accordion-button:not(.collapsed)::after,
+.collapse-button:not(.collapsed)::after {
   background-image: var(--bs-accordion-btn-active-icon);
   transform: var(--bs-accordion-btn-icon-transform);
 }
-.accordion-button::after {
+.accordion-button::after,
+.collapse-button::after {
   flex-shrink: 0;
   width: var(--bs-accordion-btn-icon-width);
   height: var(--bs-accordion-btn-icon-width);
