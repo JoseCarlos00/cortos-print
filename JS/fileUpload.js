@@ -1,8 +1,8 @@
 // fileUpload.js
-import { handleFile as handleFileCortos } from '../fileProcessing/fileProcessingCortos.js';
-import { handleFile as handleFileTrabajosActivos } from '../fileProcessing/fileProcessingTrabajosActivos.js';
-import { handleFile as handleFileInventory } from '../fileProcessing/fileProcessingInventory.js';
-import { handleFile as handleFileSecuence } from '../fileProcessing/fileProcessingSecuence.js';
+import { handleFile as handleFileCortos } from '../JS/fileProcessing/fileProcessingCortos.js';
+import { handleFile as handleFileTrabajosActivos } from '../JS/fileProcessing/fileProcessingTrabajosActivos.js';
+import { handleFile as handleFileInventory } from '../JS/fileProcessing/fileProcessingInventory.js';
+import { handleFile as handleFileSecuence } from '../JS/fileProcessing/fileProcessingSecuence.js';
 
 export function handleFileInputChange(e, fileInput, tipo) {
   const file = e.target.files[0];

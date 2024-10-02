@@ -1,13 +1,13 @@
 console.log('Index.js');
 
-import { navbar, parametrosDeLaUrl, eventoClickCheckBox } from './public/JS/funcionesGlobales.js';
+import { navbar, parametrosDeLaUrl, eventoClickCheckBox } from '../funcionesGlobales.js';
 
 import {
   handleFileInputChange,
   handleDragOver,
   handleDragLeave,
   handleDrop,
-} from './public/JS/fileUpload.js';
+} from '../fileUpload.js';
 
 async function content() {
   console.log('Content');

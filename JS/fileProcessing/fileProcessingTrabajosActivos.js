@@ -1,8 +1,8 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
-import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
-import { createFiltersCheckbox } from '../JS/checkBox.js';
-import { sortValueNumeric, sortValueString } from '../JS/sortTable.js';
+import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../operations.js';
+import { getSelectedValueFromURL, insertarPageBreak } from '../funcionesGlobales.js';
+import { createFiltersCheckbox } from '../checkBox.js';
+import { sortValueNumeric, sortValueString } from '../sortTable.js';
 
 let dataTable = '';
 

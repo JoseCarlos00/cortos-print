@@ -1,6 +1,6 @@
 /** CheckBook */
 // Función para mostrar u ocultar una fila específica por su value
-import { getHeaderPosition } from './operations.js';
+import { getHeaderPosition } from '../JS/operations.js';
 
 function toggleRow() {
   const table = document.querySelector('#tablePreview table');

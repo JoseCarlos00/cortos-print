@@ -1,11 +1,11 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo } from '../JS/operations.js';
-import { getSelectedValueFromURL, copyToClipBoard } from '../JS/funcionesGlobales.js';
-import { createFiltersCheckbox } from '../JS/checkBox.js';
-import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../JS/chekBoxRow.js';
-import { sortValueNumeric } from '../JS/sortTable.js';
-import { sortValueString } from '../JS/sortTableRefactor.js';
-import { getVisibleTableData, exportTable } from '../JS/exportTable.js';
+import { insertarThead, mostrarNombreArchivo } from '../operations.js';
+import { getSelectedValueFromURL, copyToClipBoard } from '../funcionesGlobales.js';
+import { createFiltersCheckbox } from '../checkBox.js';
+import { eventoClickCheckBoxRow, createFiltersCheckboxRow } from '../chekBoxRow.js';
+import { sortValueNumeric } from '../sortTable.js';
+import { sortValueString } from '../sortTableRefactor.js';
+import { getVisibleTableData, exportTable } from '../exportTable.js';
 
 // Global variables
 const columnIndex = {
