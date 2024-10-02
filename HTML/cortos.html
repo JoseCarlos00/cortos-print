@@ -1,0 +1,99 @@
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="../public/bootstrap/bootstrap.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../CSS/preloader.css">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/tablas.css">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="../public/images/favicon.png" type="image/x-icon">
+
+  <!-- JS -->
+  <script type="module" src="../componentes/componentes.js"></script>
+
+  <title>Cortos</title>
+</head>
+
+<body>
+  <page-pre-loader></page-pre-loader>
+
+  <header>
+    <header>
+      <menu-nav page-active="Cortos"></menu-nav>
+    </header>
+  </header>
+
+  <section class="filters">
+    <form>
+      <fieldset>
+        <legend>Ordenar por</legend>
+
+        <label>
+          <input type="radio" name="ordernar" value="BODEGA" checked>
+          BODEGA
+        </label>
+
+        <label>
+          <input type="radio" name="ordernar" value="ERP ORDER">
+          ERP ORDER
+        </label>
+
+        <label>
+          <input type="radio" name="ordernar" value="PEDIDO">
+          PEDIDO
+        </label>
+
+        <label>
+          <input type="radio" name="ordernar" value="POR PISO">
+          POR PISO
+        </label>
+
+        <label>
+          <input type="radio" name="ordernar" value="NoOrdenar">
+          No Ordenar
+        </label>
+      </fieldset>
+    </form>
+
+    <button id="toggleButton" class="btn-ver-mas" disabled>
+      <span>
+        <svg class="toggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+          stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+          <path d="M12 19v-7m0 0V5m0 7H5m7 0h7"></path>
+        </svg>
+        Mostrar Columnas
+      </span>
+    </button>
+    <div id="checkboxContainer"></div>
+  </section>
+
+
+  <container-file-upload></container-file-upload>
+
+  <main>
+    <loading-content></loading-content>
+
+    <!-- Show HTML preview -->
+    <!-- Tabla oculta hasta que se complete la carga -->
+    <div id="tablePreview" style="display: none;"></div>
+  </main>
+
+
+  <button-up></button-up>
+  <footer></footer>
+
+  <script type="module" src="../JS/index/index.js"></script>
+  <script type="module" src="../public/xlsx.full.min.js"></script>
+
+  <!-- Bootstrap -->
+  <script src="../public/bootstrap/bootstrap.min.js"></script>
+</body>
+
+</html>
