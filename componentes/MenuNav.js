@@ -2,7 +2,7 @@ export default class MenuNav extends HTMLElement {
   static nameElement = 'menu-nav'
 
   static get observedAttributes() {
-    return ['active'];
+    return ['page-active'];
   }
 
 
