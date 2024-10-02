@@ -171,7 +171,7 @@ table tr.hidden {
 }
 
 /* Navbar */
-.navbar {
+.navbar-1 {
   background-color: #007acc;
   color: #fff;
   display: flex;
@@ -239,6 +239,31 @@ table tr.hidden {
   .nav-item a:focus-visible {
     outline: none;
     opacity: 0.85;
+  }
+
+  .nav-item:active {
+    transform: scale(0.96);
+  }
+}
+
+.navbar {
+  filter: drop-shadow(2px 4px 4px black);
+  border-radius: 0 0 8px 8px;
+
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    line-height: 20px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 15px;
+    cursor: pointer;
+    border-width: 3px;
+  }
+
+  .nav-item:hover a {
+    opacity: 0.8;
   }
 
   .nav-item:active {
@@ -591,6 +616,10 @@ footer {
   height: auto !important;
   opacity: 1 !important;
   padding: 6px 4px 8px 4px !important;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .show-alert {
