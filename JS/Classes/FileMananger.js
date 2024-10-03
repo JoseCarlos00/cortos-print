@@ -52,8 +52,6 @@ export class FileMananger {
       // Mostrar la tabla y ocultar la animación de carga
       this.tablePreview.classList.remove('hidden');
       await this.fadeLoaderTable();
-
-      await this.insertTheadInTable();
     } catch (error) {
       console.error('Error: [proccesFile]', error);
       this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
@@ -61,6 +59,10 @@ export class FileMananger {
     }
   }
 
+  /**
+   * Retorna un String con el contenido innerHTML de un elemento table
+   * @returns  {Promise<string>}
+   */
   async parseExcel() {
     try {
       const { fileActive: file } = this;
@@ -82,18 +84,20 @@ export class FileMananger {
       temporalElement.innerHTML = html;
 
       // Seleccion y asingacion de la tabla
-      const tableContent = temporalElement.querySelector('table');
+      const tableContent = await this.insertTagThead(temporalElement.querySelector('table'));
 
-      return tableContent.innerHTML;
+      return tableContent ? tableContent.innerHTML : null;
     } catch (error) {
       console.error('Error al procesar el archivo:', error);
     }
   }
 
-  async insertTheadInTable() {
-    const { tablePreview } = this;
+  async insertTagThead(table) {
+    if (!table) {
+      throw new Error("[insertTagTheadInTable]: 'No table found");
+    }
 
-    const firstRow = tablePreview.rows[0];
+    const firstRow = table.rows[0];
 
     if (!firstRow) {
       console.error('Error: no se encontro "firstRow"');
@@ -107,7 +111,7 @@ export class FileMananger {
       return;
     }
 
-    const thead = tablePreview.createTHead();
+    const thead = table.createTHead();
     const row = thead.insertRow(0);
 
     rowsHeaders.forEach(td => {
@@ -117,7 +121,9 @@ export class FileMananger {
     });
 
     firstRow.remove();
-    tablePreview.insertAdjacentElement('afterbegin', thead);
+    table.insertAdjacentElement('afterbegin', thead);
+
+    return table;
   }
 
   async showLoaderTable() {
