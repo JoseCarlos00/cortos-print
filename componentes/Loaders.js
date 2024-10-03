@@ -1,4 +1,4 @@
-export class PageLoader extends HTMLElement {
+export class LoaderPage extends HTMLElement {
   static nameElement = 'page-pre-loader';
   static loader = null;
 
@@ -26,12 +26,12 @@ export class PageLoader extends HTMLElement {
   }
 }
 
-export class LoaderPage extends HTMLElement {
+export class LoaderContent extends HTMLElement {
   static nameElement = 'loading-content';
 
   connectedCallback() {
     this.innerHTML = /*html*/ `
-      <div id="loading-container">
+      <div id="loading-container" class="hidden">
         <label>Cargando...</label>
         <div class="loading"></div>
       </div>    

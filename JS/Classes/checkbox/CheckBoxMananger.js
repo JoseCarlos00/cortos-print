@@ -2,7 +2,7 @@ import { CreateCheckboxElements } from './CreateElemetCheckBox.js';
 
 class CheckBoxMananger {
   constructor() {
-    this.table = document.querySelector('#content');
+    this.table = document.querySelector('#tablePreview');
     this.togleHandleWrapper = null;
     this.checkboxContainer = null;
     this.toggleButton = null;
