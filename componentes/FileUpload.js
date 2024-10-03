@@ -22,7 +22,7 @@ export default class FileUpload extends HTMLElement {
                 <span class="browse-button-text">Browse file</span>
               </span>
             </div>
-            <input id="fileInput" type="file" />
+            <input id="fileInput" type="file" accept=".xlsx, .xls, .csv" />
           </label>
           </form>
         </div>
