@@ -1,5 +1,4 @@
 export class FileMananger {
-
   handleFile(file, showFileName) {
     try {
       if (!file) {
@@ -10,17 +9,16 @@ export class FileMananger {
       const extension = file.name.split('.').pop().toLowerCase();
 
       if (extension === 'xlsx' || extension === 'csv' || extension === 'xls') {
-        this.proccesFile(file)
-        showFileName({ statusCode: 'ok', file })
+        this.proccesFile(file);
+        showFileName({ statusCode: 'ok', file });
       } else {
         console.log('Formato de archivo no compatible');
         alert('Formato de archivo no compatible');
-        showFileName({ statusCode: 'error' })
+        showFileName({ statusCode: 'error' });
       }
-
     } catch (error) {
       console.error('Error:', error);
-      showFileName({ statusCode: 'error' })
+      showFileName({ statusCode: 'error' });
     }
   }
 
@@ -42,13 +40,13 @@ export class FileMananger {
       // Create HTML table
       const html = XLSX.utils.sheet_to_html(ws);
 
-      const temporalElement = document.createElement('div')
-      temporalElement.innerHTML = html
+      const temporalElement = document.createElement('div');
+      temporalElement.innerHTML = html;
 
-      const tableContent = temporalElement.querySelector('table')
+      const tableContent = temporalElement.querySelector('table');
 
       tablePreview.appendChild(tableContent);
-      tablePreview.style.display = 'initial'
+      tablePreview.style.display = 'initial';
 
       // Mostrar la tabla y ocultar la animación de carga
       // ocultarAnimacionDeCarga(loadingContainer);
@@ -59,6 +57,5 @@ export class FileMananger {
       // Ocultar la animación de carga en caso de error
       // ocultarAnimacionDeCarga(loadingContainer);
     }
-
   }
 }

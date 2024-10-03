@@ -9,11 +9,11 @@ export class PageLoader extends HTMLElement {
       if (this.loader) {
         this.loader.style.display = 'none';
       }
-    })
+    });
   }
 
   connectedCallback() {
-    this.innerHTML = /*html*/`
+    this.innerHTML = /*html*/ `
     <div id="preloader">
     <div class="container">
     <label>Cargando...</label>
@@ -22,16 +22,15 @@ export class PageLoader extends HTMLElement {
     </div>     
     `;
 
-    this.loader = document.querySelector('#preloader')
+    this.loader = document.querySelector('#preloader');
   }
 }
-
 
 export class LoaderPage extends HTMLElement {
   static nameElement = 'loading-content';
 
   connectedCallback() {
-    this.innerHTML = /*html*/`
+    this.innerHTML = /*html*/ `
       <div id="loading-container">
         <label>Cargando...</label>
         <div class="loading"></div>
@@ -39,5 +38,3 @@ export class LoaderPage extends HTMLElement {
     `;
   }
 }
-
-

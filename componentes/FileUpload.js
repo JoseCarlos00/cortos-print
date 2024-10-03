@@ -1,5 +1,5 @@
 export default class FileUpload extends HTMLElement {
-  static nameElement = 'container-file-upload'
+  static nameElement = 'container-file-upload';
 
   connectedCallback() {
     this.innerHTML = /*html*/ `

@@ -31,7 +31,6 @@ export class FileUpload {
     }
   }
 
-
   #setUpEventListener() {
     const { container, fileInput } = this;
 
@@ -63,7 +62,7 @@ export class FileUpload {
     }
 
     const { files } = target;
-    this.sendFileToHandler(files)
+    this.sendFileToHandler(files);
   }
 
   onDrop(e) {
@@ -78,7 +77,7 @@ export class FileUpload {
     }
 
     const { files } = dataTransfer;
-    this.sendFileToHandler(files)
+    this.sendFileToHandler(files);
   }
 
   sendFileToHandler(files) {
@@ -118,7 +117,5 @@ export class FileUpload {
     }
 
     form && form.reset();
-
-  }
-
+  };
 }

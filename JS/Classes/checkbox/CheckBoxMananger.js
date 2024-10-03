@@ -8,7 +8,6 @@ class CheckBoxMananger {
     this.toggleButton = null;
   }
 
-
   setEventChangeTogle({ togleHandle }) {
     console.log('setEventChangeTogle');
 
@@ -135,8 +134,11 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
 
   #createCheckboxElements(columnsDefault = [], isShow = true) {
     return new Promise((resolve, reject) => {
-      const createElement = new CreateCheckboxElements({ table: this.table, checkboxContainer: this.checkboxContainer })
-      createElement.createCheckboxElements(columnsDefault, isShow)
+      const createElement = new CreateCheckboxElements({
+        table: this.table,
+        checkboxContainer: this.checkboxContainer,
+      });
+      createElement.createCheckboxElements(columnsDefault, isShow);
 
       // Ocultar / Mosatra columnas en el DOM
       this.hideColumns(columnsDefault, isShow);

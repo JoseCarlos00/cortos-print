@@ -69,9 +69,9 @@ export class CreateCheckboxElements {
 
       // Añadir el checkbox y el texto al contenedor
       divContainer.appendChild(checkbox);
-      divContainer.appendChild(span)
+      divContainer.appendChild(span);
 
-      label.appendChild(divContainer)
+      label.appendChild(divContainer);
       col.appendChild(label);
 
       row.appendChild(col);
