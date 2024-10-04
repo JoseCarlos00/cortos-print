@@ -1,4 +1,7 @@
-/* Input */
+@import url('./preloader.css');
+@import url('./checkbox.css');
+@import url('./tablas.css');
+
 *,
 *::before,
 ::after {
@@ -26,12 +29,6 @@ footer {
 
 main {
   overflow: auto;
-}
-
-table tr td.hidden,
-table tr th.hidden,
-table tr.hidden {
-  animation: fade-out 0.2s forwards;
 }
 
 .container-file-upload {
@@ -171,84 +168,10 @@ table tr.hidden {
 }
 
 /* Navbar */
-.navbar-1 {
-  background-color: #007acc;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 20px;
-
-  filter: drop-shadow(2px 4px 4px black);
-  border-radius: 0 0 8px 8px;
-
-  .navbar-nav {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-
-    justify-content: center;
-    align-items: center;
-    gap: 36px;
-  }
-  .nav-item {
-    cursor: pointer;
-  }
-
-  .nav-item a {
-    text-decoration: none;
-    height: 20px;
-    line-height: 20px;
-    display: inline-block;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 15px;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-
-    margin-bottom: 4px;
-  }
-
-  .nav-item:hover a {
-    color: #ccc;
-  }
-  .nav-item.active:hover a::before {
-    background-color: #ccc;
-  }
-
-  .nav-item.active a::before {
-    content: '';
-    width: 100%;
-    height: 4px;
-    background: #fff;
-    position: absolute;
-    bottom: -8px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .nav-item a:focus-visible {
-    outline: none;
-    opacity: 0.85;
-  }
-
-  .nav-item:active {
-    transform: scale(0.96);
-  }
-}
-
 .navbar {
   filter: drop-shadow(2px 4px 4px black);
   border-radius: 0 0 8px 8px;
+  --bs-link-active-color: #fff;
 
   .nav-link {
     color: #fff;
@@ -260,6 +183,12 @@ table tr.hidden {
     font-size: 15px;
     cursor: pointer;
     border-width: 3px;
+  }
+
+  .nav-link.active {
+    color: var(--bs-link-active-color);
+    text-shadow: rgb(0, 0, 0) 0px 0px 9px;
+    /* text-shadow: 2px 1.5px 0px rgba(0, 0, 0, 0.6); */
   }
 
   .nav-item:hover a {
