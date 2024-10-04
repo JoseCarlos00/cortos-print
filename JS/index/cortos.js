@@ -1,4 +1,3 @@
-console.log('Cortos.js');
 import { parametrosDeLaUrl } from '../funcionesGlobales.js';
 
 import { FileUpload } from '../Classes/FileUpload.js';
