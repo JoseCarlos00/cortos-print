@@ -3,8 +3,8 @@ export default class FileUpload extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = /*html*/ `
-      <div class="container-file-upload">
-        <div class="container-file-upload-form"">
+      <div class="container-file-upload ps-4">
+        <div class="container-file-upload-form">
           <form class=" file-upload-form">
           <label for="fileInput" class="file-upload-label">
             <div class="file-upload-design">

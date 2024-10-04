@@ -25,6 +25,9 @@ export class ButtonShowColumn extends HTMLButtonElement {
   }
 }
 
+/**
+ * Crear componente para mostrar contendido del collapse
+ */
 export class CheckboxContainer extends HTMLElement {
   static nameElement = 'checkbox-container';
   constructor() {
@@ -35,14 +38,9 @@ export class CheckboxContainer extends HTMLElement {
     this.id = 'collapseShow-Hideen-Columns';
     this.className = 'collapse collapse-container';
 
-    this.setAttribute('data-bs-toggle', 'collapse');
-    this.setAttribute('data-bs-target', '#collapseShow-Hideen-Columns');
-    this.setAttribute('aria-expanded', 'false');
-    this.setAttribute('aria-controls', 'collapseShow-Hideen-Columns');
-
     this.innerHTML = /*html*/ `
       <div class="card card-body">
-        <div id="checkboxContainer" class="checkbox-container"></div>
+      <div id="checkboxContainer" class="checkbox-container"></div>
       </div>
     `;
   }

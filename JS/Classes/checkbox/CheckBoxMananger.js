@@ -52,6 +52,7 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
   }
 
   toggleColumn(e) {
+    e.stopPropagation();
     const { target } = e;
     if (!target) {
       console.warn('[toggleColumn] No se encontro el elemento target ');
