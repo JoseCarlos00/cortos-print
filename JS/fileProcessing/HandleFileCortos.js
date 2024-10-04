@@ -1,9 +1,11 @@
 import { FileManager } from '../Classes/FileManager.js';
-import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxMananger.js';
+import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxManangerColumn.js';
 
 export class HandleFile extends FileManager {
   constructor() {
     super();
+
+    this.checkBoxMananger = new CheckBoxManangerColumn();
   }
 
   async processFile() {
@@ -17,8 +19,7 @@ export class HandleFile extends FileManager {
 
   async checkBoxColumn() {
     try {
-      const checkBoxMananger = new CheckBoxManangerColumn();
-      await checkBoxMananger.setCheckBoxColumn();
+      await this.checkBoxMananger.setCheckBoxColumn();
     } catch (error) {}
   }
 }
