@@ -206,6 +206,7 @@ main {
   flex-wrap: wrap;
   flex-direction: column;
   max-width: 950px;
+  user-select: none;
 
   form {
     width: fit-content;

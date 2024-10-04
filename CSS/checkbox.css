@@ -1,5 +1,7 @@
 /* Checkboox */
 .collapse-container {
+  user-select: none;
+
   .card-body {
     padding: 4px;
     width: min-content;

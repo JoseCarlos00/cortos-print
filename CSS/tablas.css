@@ -17,6 +17,7 @@ table {
 
   & th {
     background-color: #bebebe;
+    user-select: none;
   }
 
   & a {
