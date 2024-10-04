@@ -1,4 +1,4 @@
-export class FileMananger {
+export class FileManager {
   constructor() {
     this.loadingContainer = document.getElementById('loading-container');
     this.tablePreview = document.getElementById('tablePreview');
@@ -24,36 +24,40 @@ export class FileMananger {
       }
 
       this.fileActive = file;
-      this.proccesFile();
+      this.processFile();
       callback({ statusCode: 'ok', file });
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:[FileManager]:[handleFile]:', error);
       callback({ statusCode: 'error' });
     }
   }
 
-  async proccesFile() {
+  async render() {
+    // Mostrar la animación de carga
+    await this.showLoaderTable();
+
+    if (!this.tablePreview) {
+      throw new Error("[proccesFile]: 'tablePreview' is null");
+    }
+
+    const tableContent = await this.parseExcel();
+
+    if (!tableContent) {
+      throw new Error('Error al parsear el archivo');
+    }
+
+    this.tablePreview.innerHTML = tableContent;
+
+    // Mostrar la tabla y ocultar la animación de carga
+    this.tablePreview.classList.remove('hidden');
+    await this.fadeLoaderTable();
+  }
+
+  async processFile() {
     try {
-      // Mostrar la animación de carga
-      await this.showLoaderTable();
-
-      if (!this.tablePreview) {
-        throw new Error("[proccesFile]: 'tablePreview' is null");
-      }
-
-      const tableConten = await this.parseExcel();
-
-      if (!tableConten) {
-        throw new Error('Error al parsear el archivo');
-      }
-
-      this.tablePreview.innerHTML = tableConten;
-
-      // Mostrar la tabla y ocultar la animación de carga
-      this.tablePreview.classList.remove('hidden');
-      await this.fadeLoaderTable();
+      await this.render();
     } catch (error) {
-      console.error('Error: [proccesFile]', error);
+      console.error('Error: [FileMananger]:[proccesFile]', error);
       this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
       await this.fadeLoaderTable();
     }
@@ -88,42 +92,51 @@ export class FileMananger {
 
       return tableContent ? tableContent.innerHTML : null;
     } catch (error) {
-      console.error('Error al procesar el archivo:', error);
+      console.error('Error: [FileManager]:[parseExcel]:Error al procesar el archivo:', error);
+      return null;
     }
   }
 
+  /**
+   *  A partir de la tabla obtenida se recupera
+   *  la primera row para los Headers
+   *  se crea un elemento thead y se inserta en la tabla
+   * @param {HTMLTableElement} table
+   * @returns HTMLTableElement
+   */
   async insertTagThead(table) {
-    if (!table) {
-      throw new Error("[insertTagTheadInTable]: 'No table found");
+    try {
+      if (!table) {
+        throw new Error("[FileManager]:[insertTagThead]: 'No table found'");
+      }
+
+      const firstRow = table.rows[0];
+      if (!firstRow) {
+        throw new Error("[FileManager]:[insertTagThead]: 'No rows found'");
+      }
+
+      const rowsHeaders = Array.from(firstRow.cells);
+      if (rowsHeaders.length === 0) {
+        throw new Error("[FileManager]:[insertTagThead]: 'No cells found'");
+      }
+
+      const thead = table.createTHead();
+      const row = thead.insertRow(0);
+
+      rowsHeaders.forEach(td => {
+        const th = document.createElement('th');
+        th.textContent = td.textContent;
+        row.appendChild(th);
+      });
+
+      firstRow.remove();
+      table.insertAdjacentElement('afterbegin', thead);
+
+      return table;
+    } catch (error) {
+      console.error('Error en [FileManager]:[insertTagThead]: Error al procesar la tabla:', error);
+      return null;
     }
-
-    const firstRow = table.rows[0];
-
-    if (!firstRow) {
-      console.error('Error: no se encontro "firstRow"');
-      return;
-    }
-
-    const rowsHeaders = Array.from(firstRow.cells);
-
-    if (rowsHeaders.length == 0) {
-      console.error('Error: no se encontro "rowHeaders"');
-      return;
-    }
-
-    const thead = table.createTHead();
-    const row = thead.insertRow(0);
-
-    rowsHeaders.forEach(td => {
-      const th = document.createElement('th');
-      th.textContent = td.textContent;
-      row.appendChild(th);
-    });
-
-    firstRow.remove();
-    table.insertAdjacentElement('afterbegin', thead);
-
-    return table;
   }
 
   async showLoaderTable() {
