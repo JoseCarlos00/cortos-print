@@ -5,81 +5,86 @@ export class CreateCheckboxElements {
   }
 
   createCheckboxElements(columnsDefault = [], isShow = true) {
-    // Validar si el elemento de la tabla existe
-    if (!this.table) {
-      console.error('[createCheckboxElements] No existe el elemento <table>');
-      return;
-    }
-
-    // Validar si el contenedor de checkboxes existe
-    if (!this.checkboxContainer) {
-      console.error('[createCheckboxElements] No existe el elemento checkboxContainer');
-      return;
-    }
-
-    // Obtener los encabezados de la tabla
-    const headerRows = Array.from(this.table.querySelectorAll('thead tr td'));
-    if (headerRows.length === 0) {
-      console.warn('No hay encabezados en la tabla');
-      return;
-    }
-
-    const row = document.createElement('div');
-    row.classList.add('row');
-
-    headerRows.forEach((header, index) => {
-      const headerText = header.textContent.trim();
-
-      // Crear el componente Checkbox
-      const col = document.createElement('div');
-      col.className = 'col';
-
-      // Crear el checkbox
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'form-check-input';
-      checkbox.value = index + 1;
-
-      // Configurar el estado del checkbox
-      if (columnsDefault.length === 0 && isShow) {
-        // Todas las columnas habilitadas
-        checkbox.checked = true;
-      } else if (
-        (columnsDefault.includes(index) && isShow) ||
-        (!columnsDefault.includes(index) && !isShow)
-      ) {
-        // Habilitar Columna
-        checkbox.checked = true;
-      } else {
-        // Deshabilitar Columna
-        checkbox.checked = false;
+    try {
+      // Validar si el elemento de la tabla existe
+      if (!this.table) {
+        throw new Error('[createCheckboxElements] No existe el elemento <table>');
       }
 
-      // Crear la etiqueta del checkbox
-      const label = document.createElement('label');
-      label.className = 'form-check-label';
+      // Validar si el contenedor de checkboxes existe
+      if (!this.checkboxContainer) {
+        throw new Error('[createCheckboxElements] No existe el elemento <checkboxContainer>');
+      }
 
-      // Crear el contenedor d-inline-felx
-      const divContainer = document.createElement('div');
-      divContainer.className = 'd-inline-flex';
+      this.checkboxContainer.innerHTML = '';
 
-      // Crear elemento span
-      const span = document.createElement('span');
-      span.textContent = headerText;
+      // Obtener los encabezados de la tabla
+      const headerRows = Array.from(this.table.rows[0].cells);
 
-      // Añadir el checkbox y el texto al contenedor
-      divContainer.appendChild(checkbox);
-      divContainer.appendChild(span);
+      if (headerRows.length === 0) {
+        throw new Error('[createCheckboxElements] No hay encabezados en la tabla');
+      }
 
-      label.appendChild(divContainer);
-      col.appendChild(label);
+      const gridContainer = document.createElement('div');
+      gridContainer.classList.add('grid');
+      gridContainer.style = '--bs-columns: 5;gap: 6px 12px;';
 
-      row.appendChild(col);
-    });
+      headerRows.forEach((header, index) => {
+        const headerText = header.textContent.trim();
 
-    // Añadir elementos al DOM
-    // this.checkboxContainer.appendChild(row);
-    console.log('ROW');
-    console.log(row);
+        // Crear el componente Checkbox
+        const div = document.createElement('div');
+
+        // Crear el checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'form-check-input';
+        checkbox.value = index + 1;
+
+        // Configurar el estado del checkbox
+        if (columnsDefault.length === 0 && isShow) {
+          // Todas las columnas habilitadas
+          checkbox.checked = true;
+        } else if (
+          (columnsDefault.includes(index) && isShow) ||
+          (!columnsDefault.includes(index) && !isShow)
+        ) {
+          // Habilitar Columna
+          checkbox.checked = true;
+        } else {
+          // Deshabilitar Columna
+          checkbox.checked = false;
+        }
+
+        // Crear la etiqueta del checkbox
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+
+        // Crear el contenedor d-inline-felx
+        const divContainer = document.createElement('div');
+        divContainer.className = 'd-inline-flex';
+
+        // Crear elemento span
+        const span = document.createElement('span');
+        span.textContent = headerText;
+
+        // Añadir el checkbox y el texto al contenedor
+        divContainer.appendChild(checkbox);
+        divContainer.appendChild(span);
+
+        label.appendChild(divContainer);
+        div.appendChild(label);
+
+        gridContainer.appendChild(div);
+      });
+
+      // Añadir elementos al DOM
+      this.checkboxContainer.appendChild(gridContainer);
+    } catch (error) {
+      console.error(
+        'Error: [CreateCheckboxElements]: Error al crear e insertar los elementos checkboxea',
+        error
+      );
+    }
   }
 }

@@ -47,7 +47,7 @@ class CheckBoxMananger {
 export class CheckBoxManangerColumn extends CheckBoxMananger {
   constructor() {
     super();
-    this.checkboxContainer = document.getElementById('checkboxContainerColumn');
+    this.checkboxContainer = document.getElementById('checkboxContainer');
     this.toggleButton = document.getElementById('toggleButton');
   }
 
@@ -124,26 +124,25 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
   }
 
   /**
-   * Crea input type="CheckBook" para cada columna de la tabla
+   * Crea input type="CheckBook" para cada Header de la tabla
    *
    * Al no pasar ningun parametro se muestran todas las columnas
    *
    * @param {type Array} columnsDefault : Indice de Columnas a ocultar
    * @param {type Bolean} isShow : Valor por defaul = true
    */
-
   #createCheckboxElements(columnsDefault = [], isShow = true) {
     return new Promise((resolve, reject) => {
-      const createElement = new CreateCheckboxElements({
-        table: this.table,
-        checkboxContainer: this.checkboxContainer,
-      });
+      const { table, checkboxContainer } = this;
+
+      // intanciar la clase para crear e insertar los elementos checkbox
+      const createElement = new CreateCheckboxElements({ table, checkboxContainer });
       createElement.createCheckboxElements(columnsDefault, isShow);
 
       // Ocultar / Mosatra columnas en el DOM
       this.hideColumns(columnsDefault, isShow);
 
-      resolve(); // Resolver la promesa cuando todo ha sido exitoso
+      resolve();
     });
   }
 
@@ -152,7 +151,7 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
    * @param {Array} columnsToShow Indice de columnas a ocultar/mostar
    * @param {Bolean} showColumns Si es TRUE los indices solo mostraran esas columnas si es FALSE se ocultaran
    */
-  async createFiltersCheckbox(columnsToShow = [], showColumns = true) {
+  async setCheckBoxColumn(columnsToShow = [], showColumns = true) {
     console.log('[Create Filters Checkbox]');
 
     try {
@@ -160,15 +159,13 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
 
       // Validar si el contenedor de checkboxes existe
       if (!checkboxContainer) {
-        console.error('[createFiltersCheckbox] No existe el elemento #checkboxContainer');
+        console.error('[Create Filters Checkbox] Error: El contenedor de checkboxes no existe.');
         return;
       }
 
-      checkboxContainer.innerHTML = '';
-
       // Esperar a que los checkboxes estén creados antes de asignar eventos
       await this.#createCheckboxElements(columnsToShow, showColumns);
-      this.setEventChangeTogle({ togleHandle: this.toggleColumn });
+      // this.setEventChangeTogle({ togleHandle: this.toggleColumn });
 
       if (toggleButton) {
         toggleButton.removeAttribute('disabled');
