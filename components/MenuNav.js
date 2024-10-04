@@ -37,14 +37,13 @@ export default class MenuNav extends HTMLElement {
   }
 
   connectedCallback() {
+    this.className = 'navbar navbar-expand-lg bg-primary';
     this.innerHTML = /*html*/ `
-      <nav class="navbar navbar-expand-lg bg-primary">
       <div class="container-fluid justify-content-center">
         <ul class="nav nav-underline">
           ${this.createUlElement().innerHTML}
         </ul>
       </div>
-    </nav>
     `;
   }
 
