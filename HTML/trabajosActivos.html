@@ -15,7 +15,7 @@
   <link rel="shortcut icon" href="../public/images/favicon.png" type="image/x-icon">
 
   <!-- JS -->
-  <script type="module" src="../componentes/componentes.js"></script>
+  <script type="module" src="../components/components.js"></script>
 
   <title>Trabajos Activos</title>
 </head>
@@ -48,18 +48,8 @@
       </fieldset>
     </form>
 
-    <button disabled id="toggleButton" class="btn btn-primary collapse-button collapsed" type="button"
-      data-bs-toggle="collapse" data-bs-target="#collapseShow-Hideen-Columns" aria-expanded="false"
-      aria-controls="collapseShow-Hideen-Columns">
-      Mostrar/Ocultar Columnas
-    </button>
-
-    <div class="collapse collapse-container" id="collapseShow-Hideen-Columns">
-      <div class="card card-body">
-        <div id="checkboxContainer" class="checkbox-container"></div>
-      </div>
-    </div>
-
+    <button disabled is="button-show-column" text-content="Mostrar/Ocultar Columnas"></button>
+    <checkbox-container></checkbox-container>
   </section>
 
   <container-file-upload></container-file-upload>
@@ -74,7 +64,7 @@
 
 
   <button-up></button-up>
-  <footer></footer>
+  <footer is="footer-personality"></footer>
 
 
   <script type="module" src="../JS/index/trabajosActivos.js"></script>
