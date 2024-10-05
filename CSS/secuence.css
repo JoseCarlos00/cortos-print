@@ -18,7 +18,7 @@
 
   .container-file-upload {
     margin: 0;
-    padding: 0;
+    padding: 0 !important;
     grid-column-start: 2;
     grid-row-start: 1;
     width: auto;

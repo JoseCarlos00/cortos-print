@@ -1,10 +1,12 @@
+import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxManangerColumn.js';
+
 export class FileManager {
   constructor() {
     this.loadingContainer = document.getElementById('loading-container');
     this.tablePreview = document.getElementById('tablePreview');
     this.fileActive = null;
-
     this.fileExtensionsSupported = ['xls', 'csv', 'xlsx'];
+    this.checkBoxMananger = new CheckBoxManangerColumn();
   }
 
   handleFile(file, callback) {
@@ -51,16 +53,6 @@ export class FileManager {
     // Mostrar la tabla y ocultar la animación de carga
     this.tablePreview.classList.remove('hidden');
     await this.fadeLoaderTable();
-  }
-
-  async processFile() {
-    try {
-      await this.render();
-    } catch (error) {
-      console.error('Error: [FileMananger]:[proccesFile]', error);
-      this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
-      await this.fadeLoaderTable();
-    }
   }
 
   /**
@@ -147,5 +139,27 @@ export class FileManager {
   async fadeLoaderTable() {
     this.loadingContainer.classList.add('hidden');
     this.tablePreview.classList.remove('hidden');
+  }
+
+  async checkBoxColumn() {
+    try {
+      await this.checkBoxMananger.setCheckBoxColumn();
+    } catch (error) {
+      console.error(
+        'Error en [FileManager]:[checkBoxColumn]: Error al crear checkboxes column:',
+        error
+      );
+    }
+  }
+
+  async processFile() {
+    try {
+      await this.render();
+      await this.checkBoxColumn();
+    } catch (error) {
+      console.error('Error: [FileMananger]:[proccesFile]', error);
+      this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
+      await this.fadeLoaderTable();
+    }
   }
 }
