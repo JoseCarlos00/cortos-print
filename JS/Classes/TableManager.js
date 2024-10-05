@@ -3,19 +3,36 @@ export class TableManager {
     this.table = table;
   }
 
-  changesortOrder(target) {
+  async changeState(target) {
     const { sortOrder } = target.dataset;
 
-    if (sortOrder === 'ascending') {
-      target.setAttribute('title', 'ordenado descendente');
-      target.setAttribute('aria-sort', 'descending');
-    } else {
+    console.log('[changeState] 1:', target);
+
+    const setAscendig = () => {
       target.setAttribute('title', 'ordenado ascendente');
-      target.setAttribute('aria-sort', 'ascending');
+      target.dataset.sortOrder = 'ascending';
+      target.dataset.ariaSort = 'ascending';
+    };
+
+    const toggleMap = {
+      ascending: () => {
+        target.setAttribute('title', 'ordenado descendente');
+        target.dataset.sortOrder = 'descending';
+        target.dataset.ariaSort = 'descending';
+      },
+      initial: setAscendig,
+      descending: setAscendig,
+    };
+
+    if (toggleMap[sortOrder]) {
+      toggleMap[sortOrder]();
+      console.log('[changeState] 2:', target);
+    } else {
+      console.log('[changeState] 3:', target);
     }
   }
 
-  sortTable(target) {
+  async sortTable(target) {
     try {
       if (!this.table) {
         throw new Error('Table is not initialized');
@@ -31,6 +48,8 @@ export class TableManager {
         throw new Error('Sort order is not provided');
       }
 
+      await this.changeState(target);
+
       const tbody = this.table.tBodies[0];
       const rows = Array.from(tbody.querySelectorAll('tr'));
 
@@ -41,7 +60,9 @@ export class TableManager {
         const cellA = a.cells[colIndex].innerText;
         const cellB = b.cells[colIndex].innerText;
 
-        if (sortOrder === 'ascending') {
+        console.log('[sortedRows]:', sortOrder);
+
+        if (sortOrder === 'ascending' || sortOrder === 'initial') {
           return cellA.localeCompare(cellB, undefined, { numeric: true });
         } else {
           return cellB.localeCompare(cellA, undefined, { numeric: true });
@@ -50,8 +71,6 @@ export class TableManager {
 
       // Volver a añadir las filas ordenadas
       sortedRows.forEach(row => tbody.appendChild(row));
-
-      this.changesortOrder(target);
     } catch (error) {
       console.error('Error: al ordenar la tabla:', error);
     }
@@ -67,7 +86,7 @@ export class TableManager {
     const { nodeName, type, dataset } = target;
 
     console.group();
-    console.log('target', target);
+    console.log('[handleClick] : target', target);
     console.log('nodeName', nodeName);
     console.log('type', type);
     console.log('dataset', dataset);

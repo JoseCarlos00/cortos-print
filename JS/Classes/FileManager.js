@@ -127,7 +127,7 @@ export class FileManager {
         th.title = 'haga clic para ordenar la columna';
         th.innerHTML = td.textContent + `<div class="ui-iggrid-indicatorcontainer"></div>`;
         th.dataset.colIndex = index;
-        th.dataset.sortOrder = 'ascending';
+        th.dataset.sortOrder = 'initial';
 
         row.appendChild(th);
       });
