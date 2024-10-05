@@ -2,7 +2,7 @@ import { LoaderContent, LoaderPage } from './Loaders.js';
 import MenuNav from './MenuNav.js';
 import FileUpload from './FileUpload.js';
 import ButtonUp from './ButtonUp.js';
-import { FooterPersonality } from './Footer.js';
+import FooterPersonality from './Footer.js';
 import { ButtonShowColumn, CheckboxContainer } from './ShowColumn.js';
 
 customElements.define(LoaderPage.nameElement, LoaderPage);

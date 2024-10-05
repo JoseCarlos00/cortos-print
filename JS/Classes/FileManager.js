@@ -1,4 +1,5 @@
 import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxManangerColumn.js';
+import { TableManager } from '../Classes/TableManager.js';
 
 export class FileManager {
   constructor() {
@@ -6,7 +7,11 @@ export class FileManager {
     this.tablePreview = document.getElementById('tablePreview');
     this.fileActive = null;
     this.fileExtensionsSupported = ['xls', 'csv', 'xlsx'];
+
+    // Intanciar classes manejadoras
     this.checkBoxMananger = new CheckBoxManangerColumn();
+    this.tableManager = new TableManager({ table: this.tablePreview });
+    this.tableManager.init();
   }
 
   handleFile(file, callback) {
@@ -115,9 +120,15 @@ export class FileManager {
       const thead = table.createTHead();
       const row = thead.insertRow(0);
 
-      rowsHeaders.forEach(td => {
+      rowsHeaders.forEach((td, index) => {
         const th = document.createElement('th');
-        th.textContent = td.textContent;
+
+        th.className = 'position-relative';
+        th.title = 'haga clic para ordenar la columna';
+        th.innerHTML = td.textContent + `<div class="ui-iggrid-indicatorcontainer"></div>`;
+        th.dataset.colIndex = index;
+        th.dataset.sortOrder = 'ascending';
+
         row.appendChild(th);
       });
 

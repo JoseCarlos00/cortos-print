@@ -1,4 +1,4 @@
-export class FooterPersonality extends HTMLElement {
+export default class FooterPersonality extends HTMLElement {
   static nameElement = 'footer-personality';
   constructor() {
     super();
