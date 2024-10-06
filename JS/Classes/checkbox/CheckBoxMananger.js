@@ -5,10 +5,10 @@ export class CheckBoxMananger {
     this.toggleButton = null;
   }
 
-  setEventChangeTogle() {
+  setEventChangeToggle() {
     // Validar si el contenedor de checkboxes existe
     if (!this.checkboxContainer) {
-      console.error('[setEventChangeTogle] No existe el elemento #checkboxContainer');
+      console.error('[setEventChangeToggle] No existe el elemento #checkboxContainer');
       return;
     }
   }

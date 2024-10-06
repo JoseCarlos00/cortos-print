@@ -12,17 +12,17 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
       checkboxContainer: this.checkboxContainer,
     });
 
-    this.setEventChangeTogle();
+    this.setEventChangeToggle();
   }
 
-  setEventChangeTogle() {
-    super.setEventChangeTogle();
+  setEventChangeToggle() {
+    super.setEventChangeToggle();
 
     this.checkboxContainer.addEventListener('click', e => {
       const { target } = e;
 
       if (!target) {
-        console.error('[setEventChangeTogle] Error: El target no existe.');
+        console.error('[setEventChangeToggle] Error: El target no existe.');
         return;
       }
 
@@ -131,8 +131,6 @@ export class CheckBoxManangerColumn extends CheckBoxMananger {
    * @param {Bolean} showColumns Si es TRUE los indices solo mostraran esas columnas si es FALSE se ocultaran
    */
   async setCheckBoxColumn(columnsToShow = [], showColumns = true) {
-    console.log('[Create Filters Checkbox]');
-
     try {
       const { checkboxContainer, toggleButton } = this;
 

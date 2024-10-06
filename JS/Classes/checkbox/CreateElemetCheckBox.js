@@ -16,6 +16,7 @@ export class CreateCheckboxElements {
         throw new Error('[createCheckboxElements] No existe el elemento <checkboxContainer>');
       }
 
+      // Limpirar contenedor
       this.checkboxContainer.innerHTML = '';
 
       // Obtener los encabezados de la tabla
