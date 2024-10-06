@@ -3,36 +3,7 @@ export class TableManager {
     this.table = table;
   }
 
-  async changeState(target) {
-    const { sortOrder } = target.dataset;
-
-    console.log('[changeState] 1:', target);
-
-    const setAscendig = () => {
-      target.setAttribute('title', 'ordenado ascendente');
-      target.dataset.sortOrder = 'ascending';
-      target.dataset.ariaSort = 'ascending';
-    };
-
-    const toggleMap = {
-      ascending: () => {
-        target.setAttribute('title', 'ordenado descendente');
-        target.dataset.sortOrder = 'descending';
-        target.dataset.ariaSort = 'descending';
-      },
-      initial: setAscendig,
-      descending: setAscendig,
-    };
-
-    if (toggleMap[sortOrder]) {
-      toggleMap[sortOrder]();
-      console.log('[changeState] 2:', target);
-    } else {
-      console.log('[changeState] 3:', target);
-    }
-  }
-
-  async sortTable(target) {
+  #sortTable(target) {
     try {
       if (!this.table) {
         throw new Error('Table is not initialized');
@@ -48,19 +19,13 @@ export class TableManager {
         throw new Error('Sort order is not provided');
       }
 
-      await this.changeState(target);
-
       const tbody = this.table.tBodies[0];
       const rows = Array.from(tbody.querySelectorAll('tr'));
-
-      // Obtener el valor del radio button seleccionado
 
       // Ordenar las filas
       const sortedRows = rows.sort((a, b) => {
         const cellA = a.cells[colIndex].innerText;
         const cellB = b.cells[colIndex].innerText;
-
-        console.log('[sortedRows]:', sortOrder);
 
         if (sortOrder === 'ascending' || sortOrder === 'initial') {
           return cellA.localeCompare(cellB, undefined, { numeric: true });
@@ -76,30 +41,60 @@ export class TableManager {
     }
   }
 
-  handleClick(e) {
+  #onClickChangeIndicator(target) {
+    if (!target) {
+      throw new Error('Error:[handleClick]: No se encotro el elemento "target"');
+    }
+
+    const { sortOrder } = target.dataset;
+
+    const setAscendig = () => {
+      target.setAttribute('title', 'ordenado ascendente');
+      target.dataset.sortOrder = 'ascending';
+      target.dataset.ariaSort = 'ascending';
+    };
+
+    const setDescending = () => {
+      target.setAttribute('title', 'ordenado descendente');
+      target.dataset.sortOrder = 'descending';
+      target.dataset.ariaSort = 'descending';
+    };
+
+    const toggleMap = {
+      ascending: setDescending,
+      initial: setAscendig,
+      descending: setAscendig,
+    };
+
+    if (toggleMap[sortOrder]) {
+      toggleMap[sortOrder]();
+    } else {
+      console.warn('no se encotro el dataset [sortOrder]');
+    }
+  }
+
+  #handleClick(e) {
     const { target } = e;
 
     if (!target) {
       throw new Error('Error:[handleClick]: No se encotro el elemento "target"');
     }
 
-    const { nodeName, type, dataset } = target;
-
-    console.group();
-    console.log('[handleClick] : target', target);
-    console.log('nodeName', nodeName);
-    console.log('type', type);
-    console.log('dataset', dataset);
-    console.groupEnd();
+    const { nodeName } = target;
 
     if (nodeName == 'TH') {
-      this.sortTable(target);
+      this.#onClickChangeIndicator(target);
+      this.#sortTable(target);
     }
   }
 
-  setEventListener() {
+  #setEventListener() {
     try {
-      this.table.addEventListener('click', e => this.handleClick(e));
+      if (!this.table) {
+        throw new Error('Error:[setEventListener]: No se encontró la tabla');
+      }
+
+      this.table.addEventListener('click', e => this.#handleClick(e));
     } catch (error) {
       console.error('Error setting event listener:', error);
     }
@@ -107,7 +102,7 @@ export class TableManager {
 
   init() {
     try {
-      this.setEventListener();
+      this.#setEventListener();
     } catch (error) {
       console.error('Error initializing [TableManager]:', error);
     }
