@@ -14,7 +14,7 @@ export class FileManager {
     this.tableManager.init();
   }
 
-  handleFile(file, callback) {
+  handleFile({ file, callback }) {
     try {
       if (!file) {
         throw new Error("[handleFile]: 'No file selected");

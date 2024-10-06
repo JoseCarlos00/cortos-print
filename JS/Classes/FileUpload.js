@@ -1,6 +1,10 @@
 export class FileUpload {
-  constructor({ handleFile }) {
-    this.handleFile = handleFile;
+  /**Clase manejadora de upload file
+   *
+   * @param { Class } FileMananger Clase manejadora de archivo
+   */
+  constructor({ FileMananger }) {
+    this.FileMananger = FileMananger;
     this.container = document.querySelector('.container-file-upload-form');
     this.fileInput = document.getElementById('fileInput');
 
@@ -11,7 +15,7 @@ export class FileUpload {
 
   init() {
     try {
-      const { container, fileInput, handleFile } = this;
+      const { container, fileInput, FileMananger } = this;
 
       if (!container) {
         throw new Error('Container element not found.');
@@ -21,8 +25,8 @@ export class FileUpload {
         throw new Error('File input element not found.');
       }
 
-      if (!handleFile) {
-        throw new Error('handleFile function not provided.');
+      if (!FileMananger) {
+        throw new Error('FileMananger class not provided.');
       }
 
       this.#setUpEventListener();
@@ -35,25 +39,25 @@ export class FileUpload {
     const { container, fileInput } = this;
 
     // Agregar evento de cambio para la carga de archivos
-    fileInput.addEventListener('change', e => this.onFileChange(e));
+    fileInput.addEventListener('change', e => this.#onFileChange(e));
 
     // Agregar eventos para arrastrar y soltar
-    container.addEventListener('dragover', e => this.onDragOver(e));
-    container.addEventListener('dragleave', e => this.onDragLeave(e));
-    container.addEventListener('drop', e => this.onDrop(e));
+    container.addEventListener('dragover', e => this.#onDragOver(e));
+    container.addEventListener('dragleave', e => this.#onDragLeave(e));
+    container.addEventListener('drop', e => this.#onDrop(e));
   }
 
-  onDragOver(e) {
+  #onDragOver(e) {
     e.preventDefault();
     this.container.classList.add('drag-over');
   }
 
-  onDragLeave(e) {
+  #onDragLeave(e) {
     e.preventDefault();
     this.container.classList.remove('drag-over');
   }
 
-  onFileChange(e) {
+  #onFileChange(e) {
     const { target } = e;
 
     if (!target) {
@@ -62,10 +66,10 @@ export class FileUpload {
     }
 
     const { files } = target;
-    this.sendFileToHandler(files);
+    this.#sendFileToHandler(files);
   }
 
-  onDrop(e) {
+  #onDrop(e) {
     e.preventDefault();
     this.container.classList.remove('drag-over');
 
@@ -77,23 +81,7 @@ export class FileUpload {
     }
 
     const { files } = dataTransfer;
-    this.sendFileToHandler(files);
-  }
-
-  sendFileToHandler(files) {
-    if (!files) {
-      console.error('Error: [sendFileToHandler] No "files" available.');
-      return;
-    }
-
-    const file = files[0];
-
-    if (!file) {
-      console.error('Error: [sendFileToHandler] no se encontro el archivo cargado "file"');
-      return;
-    }
-
-    this.handleFile.handleFile(file, this.showFileName);
+    this.#sendFileToHandler(files);
   }
 
   showFileName = ({ statusCode, file }) => {
@@ -118,4 +106,20 @@ export class FileUpload {
 
     form && form.reset();
   };
+
+  #sendFileToHandler(files) {
+    if (!files) {
+      console.error('Error: [sendFileToHandler] No "files" available.');
+      return;
+    }
+
+    const file = files[0];
+
+    if (!file) {
+      console.error('Error: [sendFileToHandler] no se encontro el archivo cargado "file"');
+      return;
+    }
+
+    this.FileMananger.handleFile({ file, callback: this.showFileName });
+  }
 }
