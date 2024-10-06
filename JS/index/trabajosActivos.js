@@ -1,12 +1,12 @@
 import { parametrosDeLaUrl } from '../funcionesGlobales.js';
 
 import { FileUpload } from '../Classes/FileUpload.js';
-import { HandleFile } from '../fileProcessing/HandleFileTrabajosActivos.js';
+import { FileManagerTrabajosActivos } from '../fileProcessing/FileManagerTrabajosActivos.js';
 
 window.addEventListener('DOMContentLoaded', () => {
-  const handleFile = new HandleFile();
+  const fileManagerTrabajosActivos = new FileManagerTrabajosActivos();
 
-  const fileUpload = new FileUpload({ handleFile });
+  const fileUpload = new FileUpload({ FileManager: fileManagerTrabajosActivos });
   fileUpload.init();
 
   parametrosDeLaUrl();

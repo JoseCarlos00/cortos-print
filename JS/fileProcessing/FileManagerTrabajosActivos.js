@@ -1,6 +1,6 @@
 import { FileManager } from '../Classes/FileManager.js';
 
-export class HandleFile extends FileManager {
+export class FileManagerTrabajosActivos extends FileManager {
   constructor() {
     super();
   }
@@ -9,7 +9,7 @@ export class HandleFile extends FileManager {
     try {
       await super.processFile();
     } catch (error) {
-      console.error('Error:[HandleFile]:[proccesFile]:', error);
+      console.error('Error:[FileManagerTrabajosActivos]:[proccesFile]:', error);
     }
   }
 }

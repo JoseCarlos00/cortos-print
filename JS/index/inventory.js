@@ -1,12 +1,12 @@
 import { parametrosDeLaUrl } from '../funcionesGlobales.js';
 
 import { FileUpload } from '../Classes/FileUpload.js';
-import { HandleFile } from '../fileProcessing/HandleFileInventory.js';
+import { FileManagerInventory } from '../fileProcessing/FileManagerInventory.js';
 
 window.addEventListener('DOMContentLoaded', () => {
-  const handleFile = new HandleFile();
+  const fileManagerInventory = new FileManagerInventory();
 
-  const fileUpload = new FileUpload({ handleFile });
+  const fileUpload = new FileUpload({ FileManager: fileManagerInventory });
   fileUpload.init();
 
   parametrosDeLaUrl();
