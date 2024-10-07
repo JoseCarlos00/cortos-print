@@ -3,6 +3,6 @@ export default class FooterPersonality extends HTMLElement {
   constructor() {
     super();
 
-    this.innerHTML = `<small style="color: rgb(43, 41, 41);">Create by @Jose Carlos</small>`;
+    // this.innerHTML = `<small style="color: rgb(43, 41, 41);">Create by @Jose Carlos</small>`;
   }
 }

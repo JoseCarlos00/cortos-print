@@ -30,33 +30,20 @@ export class InsertPageBreak {
           return reject('La tabla no contiene suficientes filas para agrupar.');
         }
 
-        // Iterar sobre las filas, comenzando desde la segunda (ignorando encabezado)
         filas.forEach((fila, index) => {
           if (index === 0) return; // Saltar la primera fila (encabezados)
 
           // Obtener el valor actual de la celda especificada en `positionElement`
           const celdaActual = fila.querySelector(`td:nth-child(${positionElement})`);
-          if (!celdaActual)
-            return reject(
-              `No se encontró la celda en la posición ${positionElement} en la fila ${index + 1}.`
-            );
-
-          const valorDeLaFilaActual = celdaActual.textContent.trim();
+          const valorDeLaFilaActual = celdaActual?.textContent?.trim() ?? '';
 
           // Obtener el valor de la primera celda de la fila anterior
           const celdaAnterior = filas[index - 1].querySelector(`td:nth-child(${positionElement})`);
-          if (!celdaAnterior)
-            return reject(
-              `No se encontró la celda en la posición ${positionElement} en la fila ${index}.`
-            );
-
-          const valorDeLaFilaAnterior = celdaAnterior.textContent.trim();
+          const valorDeLaFilaAnterior = celdaAnterior?.textContent?.trim() ?? '';
 
           // Agregar clase `page-break` si los valores de las celdas cambian entre filas
-          if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
-            if (index > 1) {
-              celdaAnterior.classList.add('page-break');
-            }
+          if (valorDeLaFilaActual !== valorDeLaFilaAnterior && index > 1) {
+            celdaAnterior.classList.add('page-break');
           }
         });
 
@@ -69,51 +56,3 @@ export class InsertPageBreak {
     });
   }
 }
-
-/**
-  insertarPageBreak(positionElement) {
-    return new Promise((resolve, reject) => {
-      // Busca y agregar la clase page-break para el salto de paguina por el valor de la url
-      const table = document.querySelector('#tablePreview table');
-
-      if (!table) {
-        return reject('No se encontro la tabla con el id: #tablePreview');
-      }
-
-      if (!positionElement) {
-        return reject('No se encontro la posicion del elemento');
-      }
-
-      // filtrar y agregar clase al primer TD de cada grupo
-      const filas = table.querySelectorAll('tr');
-
-      // Iterar sobre las filas
-      filas.forEach((fila, index) => {
-        // Ignorar la primera fila (encabezados)
-        if (index === 0) return;
-
-        const valorDeLaFilaActual = fila.querySelector(
-          `td:nth-child(${positionElement})`
-        ).textContent;
-
-        // Obtener el valor de la primera celda de la fila anterior
-        const valorDeLaFilaAnterior = filas[index - 1].querySelector(
-          `td:nth-child(${positionElement})`
-        ).textContent;
-
-        // Verificar si el valor actual es diferente al valor anterior
-        if (valorDeLaFilaActual !== valorDeLaFilaAnterior) {
-          if (index > 1) {
-            filas[index - 1]
-              .querySelector(`td:nth-child(${positionElement})`)
-              .classList.add('page-break');
-          }
-        }
-      });
-
-      console.log('Insertar PageBreak Con Exito');
-      resolve();
-    });
-  }
-
- */
