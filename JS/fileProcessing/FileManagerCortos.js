@@ -23,6 +23,7 @@ export class FileManagerCortos extends FileManager {
     try {
       await super.processFile();
       console.log('columnIndex:\n', this.columnIndex);
+      console.log('Valor de oedenacion actual:', this.valueOrderBy);
     } catch (error) {
       console.error('Error:[FileManagerCortos]:[proccesFile]:', error);
     }

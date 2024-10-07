@@ -1,5 +1,8 @@
 import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxManangerColumn.js';
 import { TableManager } from '../Classes/TableManager.js';
+import { SortByManager } from './SortByManager.js';
+
+import { urlParameters } from '../utils/URL.js';
 
 export class FileManager {
   constructor() {
@@ -11,13 +14,16 @@ export class FileManager {
     // Intanciar classes manejadoras
     this.checkBoxMananger = new CheckBoxManangerColumn();
     this.tableManager = new TableManager({ table: this.tablePreview });
+    this.SortByManager = new SortByManager({ table: this.tableManager });
 
     this.columnIndex = {
       status1: -1,
     };
     this.mapIndex = [{ key: 'status1', values: ['status 1'] }];
+  }
 
-    this.tableManager.init();
+  get valueOrderBy() {
+    return urlParameters.getQueryParamValue('ordenar');
   }
 
   handleFile({ file, callback }) {
