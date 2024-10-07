@@ -3,6 +3,10 @@ export class TableManager {
     this.table = table;
   }
 
+  /**
+   * Ordenar la tabla dependiendo del valor del dataset: `colIndex` y `sortOrder`
+   * @param {HTMLElement} target
+   */
   #sortTable(target) {
     try {
       if (!this.table) {
@@ -41,6 +45,16 @@ export class TableManager {
     }
   }
 
+  /**
+   * Verifica el elemento HTML y
+   *
+   * cambia los atributos `title`, `sortOrder` y `ariaSort`
+   *
+   * Si `title` es igual a `ordenado ascendente` lo cambia  a `ordenado descendente`
+   *
+   * invirtiendo los valores segun sea el caso
+   * @param {HTMLElement} target
+   */
   #onClickChangeIndicator(target) {
     if (!target) {
       throw new Error('Error:[handleClick]: No se encotro el elemento "target"');
@@ -73,6 +87,12 @@ export class TableManager {
     }
   }
 
+  /**
+   * Maneja el evento click de la `table`
+   *
+   * y verifica que el elemento clickeado se un `nodeName` `th`
+   * @param {Event} e
+   */
   #handleClick(e) {
     const { target } = e;
 
@@ -88,7 +108,10 @@ export class TableManager {
     }
   }
 
-  #setEventListener() {
+  /**
+   * Agrega un event listener de tipo `click` a `this.table`
+   */
+  #setEventClick() {
     try {
       if (!this.table) {
         throw new Error('Error:[setEventListener]: No se encontró la tabla');
@@ -102,7 +125,7 @@ export class TableManager {
 
   init() {
     try {
-      this.#setEventListener();
+      this.#setEventClick();
     } catch (error) {
       console.error('Error initializing [TableManager]:', error);
     }

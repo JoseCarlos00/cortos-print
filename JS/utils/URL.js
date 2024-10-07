@@ -81,8 +81,10 @@ export class UrlManager {
     }
   }
 
+  /**
+   * Añade un event listener `change` a cada `input[name="ordenar"]`
+   */
   #setEventListener() {
-    // Añade un event listener para cambios en los inputs de orden
     const inputsOrdenar = document.querySelectorAll('input[name="ordenar"]');
 
     if (inputsOrdenar.length === 0) {
