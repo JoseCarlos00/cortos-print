@@ -1,7 +1,6 @@
-import { parametrosDeLaUrl } from '../funcionesGlobales.js';
-
 import { FileUpload } from '../Classes/FileUpload.js';
 import { FileManagerInventory } from '../fileProcessing/FileManagerInventory.js';
+import { UrlManager } from '../utils/URL.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   const fileManagerInventory = new FileManagerInventory();
@@ -9,5 +8,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const fileUpload = new FileUpload({ FileManager: fileManagerInventory });
   fileUpload.init();
 
-  parametrosDeLaUrl();
+  const urlmanager = new UrlManager();
+  urlmanager.init();
 });
