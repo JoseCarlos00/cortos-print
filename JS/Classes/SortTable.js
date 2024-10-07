@@ -21,3 +21,7 @@ export function sortTable(colIndex) {
   // Volver a añadir las filas ordenadas
   sortedRows.forEach(row => tbody.appendChild(row));
 }
+
+class SortTable {
+  constructor() {}
+}

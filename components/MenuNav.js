@@ -10,8 +10,8 @@ export default class MenuNav extends HTMLElement {
 
     this.active = '';
     this.hrefs = [
-      { text: 'Cortos', href: './cortos.html?ordenar=BODEGA' },
-      { text: 'Trabajos Activos', href: './trabajosActivos.html?ordenar=SHIP_TO' },
+      { text: 'Cortos', href: './cortos.html?ordenar=NoOrdenar' },
+      { text: 'Trabajos Activos', href: './trabajosActivos.html?ordenar=NoOrdenar' },
       { text: 'Inventory', href: './inventory.html?ordenar=NoOrdenar' },
       { text: 'Secuencia', href: './secuence.html?ordenar=NoOrdenar' },
     ];

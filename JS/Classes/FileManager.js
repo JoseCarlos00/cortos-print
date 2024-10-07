@@ -11,6 +11,12 @@ export class FileManager {
     // Intanciar classes manejadoras
     this.checkBoxMananger = new CheckBoxManangerColumn();
     this.tableManager = new TableManager({ table: this.tablePreview });
+
+    this.columnIndex = {
+      status1: -1,
+    };
+    this.mapIndex = [{ key: 'status1', values: ['status 1'] }];
+
     this.tableManager.init();
   }
 
@@ -163,10 +169,55 @@ export class FileManager {
     }
   }
 
+  /**
+   * Verifica si es un Number y si es >= 0
+   * @param {Number} index
+   * @returns Bolean
+   */
+  async verifyIndexNumber(index) {
+    return new Promise(resolve => resolve(!isNaN(index) && index >= 0));
+  }
+
+  async setColumnIndex() {
+    const { tablePreview } = this;
+
+    if (!tablePreview) {
+      console.error('No se encontró el elemento <table>');
+      return;
+    }
+
+    const headerRows = tablePreview.rows[0] ? Array.from(tablePreview.rows[0].cells) : [];
+
+    if (headerRows.length === 0) {
+      console.error('No hay filas en Header Rows');
+      return;
+    }
+
+    // Reiniciar índices de columnas a -1
+    Object.keys(this.columnIndex).forEach(key => {
+      this.columnIndex[key] = -1;
+    });
+
+    const cloneMapIndex = structuredClone(this.mapIndex);
+
+    // Buscar los índices de las columnas
+    headerRows.forEach((th, indexPosition) => {
+      const text = th.textContent.trim().toLowerCase();
+
+      cloneMapIndex.forEach(({ key, values } = item, index) => {
+        if (values.includes(text)) {
+          this.columnIndex[key] = indexPosition;
+          delete cloneMapIndex[index];
+        }
+      });
+    });
+  }
+
   async processFile() {
     try {
       await this.render();
       await this.checkBoxColumn();
+      await this.setColumnIndex();
     } catch (error) {
       console.error('Error: [FileMananger]:[proccesFile]', error);
       this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
