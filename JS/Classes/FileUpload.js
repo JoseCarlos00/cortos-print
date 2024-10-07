@@ -11,6 +11,8 @@ export class FileUpload {
     this.form = document.querySelector('.container-file-upload-form > form');
     this.nameFile = document.getElementById('nombreArchivo');
     this.nameFileElement = document.querySelector('.nombre-de-archivo');
+
+    this.init();
   }
 
   init() {

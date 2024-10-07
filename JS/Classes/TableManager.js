@@ -1,6 +1,8 @@
 export class TableManager {
   constructor({ table }) {
     this.table = table;
+
+    this.init();
   }
 
   /**

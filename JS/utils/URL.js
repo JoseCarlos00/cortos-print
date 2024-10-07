@@ -50,6 +50,8 @@ export class UrlManager {
     this.#selectedValueURL = urlParameters.getQueryParamValue('ordenar');
     this.#updateQueryParamInURL = urlParameters.updateQueryParamInURL;
     this.#isParamOrdenar = urlParameters.isQueryParamInUrl('ordenar');
+
+    this.init();
   }
 
   init() {

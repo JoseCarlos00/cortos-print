@@ -5,9 +5,6 @@ import { UrlManager } from '../utils/URL.js';
 window.addEventListener('DOMContentLoaded', () => {
   const fileManagerTrabajosActivos = new FileManagerTrabajosActivos();
 
-  const fileUpload = new FileUpload({ FileManager: fileManagerTrabajosActivos });
-  fileUpload.init();
-
-  const urlmanager = new UrlManager();
-  urlmanager.init();
+  new FileUpload({ FileManager: fileManagerTrabajosActivos });
+  new UrlManager();
 });
