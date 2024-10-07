@@ -1,4 +1,4 @@
-const urlParameters = {
+export const urlParameters = {
   /**
    * Actualiza el valor de un parámetro de consulta específico en la URL
    *
@@ -39,7 +39,7 @@ const urlParameters = {
   },
 };
 
-class UrlManager {
+export class UrlManager {
   #queryParams;
   #selectedValueURL;
   #updateQueryParamInURL;
