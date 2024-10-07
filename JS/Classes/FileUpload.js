@@ -1,10 +1,10 @@
 export class FileUpload {
   /**Clase manejadora de upload file
    *
-   * @param { Class } FileMananger Clase manejadora de archivo
+   * @param { Class } FileManager Clase manejadora de archivo
    */
-  constructor({ FileMananger }) {
-    this.FileMananger = FileMananger;
+  constructor({ FileManager }) {
+    this.FileManager = FileManager;
     this.container = document.querySelector('.container-file-upload-form');
     this.fileInput = document.getElementById('fileInput');
 
@@ -15,7 +15,7 @@ export class FileUpload {
 
   init() {
     try {
-      const { container, fileInput, FileMananger } = this;
+      const { container, fileInput, FileManager } = this;
 
       if (!container) {
         throw new Error('Container element not found.');
@@ -25,8 +25,8 @@ export class FileUpload {
         throw new Error('File input element not found.');
       }
 
-      if (!FileMananger) {
-        throw new Error('FileMananger class not provided.');
+      if (!FileManager) {
+        throw new Error('FileManager class not provided.');
       }
 
       this.#setUpEventListener();
@@ -120,6 +120,6 @@ export class FileUpload {
       return;
     }
 
-    this.FileMananger.handleFile({ file, callback: this.showFileName });
+    this.FileManager.handleFile({ file, callback: this.showFileName });
   }
 }

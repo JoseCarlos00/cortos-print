@@ -6,8 +6,8 @@ import { FileManagerCortos } from '../fileProcessing/FileManagerCortos.js';
 window.addEventListener('DOMContentLoaded', () => {
   const fileManagerCortos = new FileManagerCortos();
 
-  const fileUpload = new FileUpload({ FileMananger: fileManagerCortos });
+  const fileUpload = new FileUpload({ FileManager: fileManagerCortos });
   fileUpload.init();
 
-  parametrosDeLaUrl();
+  // parametrosDeLaUrl();
 });
