@@ -1,11 +1,16 @@
-// import { urlParameters } from '../utils/URL.js';
+import { SortTable } from './SortTable.js';
+import { InsertPageBreak } from './InsertPageBreak.js';
+import { urlParameters } from '../utils/URL.js';
 
-export class SortByManager {
+export class SortTableManager {
   constructor({ table }) {
     this.table = table;
     this.sortBy = {};
     this.handleInputChange = this.#handleInputChange.bind(this);
     this.handleSortByChange = this.#handleSortByChange.bind(this);
+
+    this.SortTable = new SortTable({ table });
+    this.InsertPageBreak = new InsertPageBreak({ table });
 
     this.init();
   }

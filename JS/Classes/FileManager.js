@@ -1,6 +1,6 @@
 import { CheckBoxManangerColumn } from '../Classes/checkbox/CheckBoxManangerColumn.js';
 import { TableManager } from '../Classes/TableManager.js';
-import { SortByManager } from './SortByManager.js';
+import { SortTableManager } from './SortByManager.js';
 
 import { urlParameters } from '../utils/URL.js';
 
@@ -14,7 +14,7 @@ export class FileManager {
     // Intanciar classes manejadoras
     this.checkBoxMananger = new CheckBoxManangerColumn();
     this.tableManager = new TableManager({ table: this.tablePreview });
-    this.SortByManager = new SortByManager({ table: this.tableManager });
+    this.SortByManager = new SortTableManager({ table: this.tablePreview });
 
     this.columnIndex = {
       status1: -1,
@@ -23,7 +23,7 @@ export class FileManager {
   }
 
   get valueOrderBy() {
-    return urlParameters.getQueryParamValue('ordenar');
+    return urlParameters.getQueryParamValue('ordenar').toLowerCase();
   }
 
   handleFile({ file, callback }) {
@@ -51,9 +51,26 @@ export class FileManager {
     }
   }
 
+  async verifySortTable() {
+    return new Promise((resolve, reject) => {
+      const valueOrderBy = this.valueOrderBy;
+      if (valueOrderBy === 'no ordenar') {
+        resolve(false);
+        return;
+      }
+
+      resolve(true);
+    });
+  }
+
+  async handleSortTable() {
+    this.showTable();
+  }
+
   async render() {
     // Mostrar la animación de carga
     await this.showLoaderTable();
+    this.tablePreview.innerHTML = '';
 
     if (!this.tablePreview) {
       throw new Error("[proccesFile]: 'tablePreview' is null");
@@ -66,10 +83,6 @@ export class FileManager {
     }
 
     this.tablePreview.innerHTML = tableContent;
-
-    // Mostrar la tabla y ocultar la animación de carga
-    this.tablePreview.classList.remove('hidden');
-    await this.fadeLoaderTable();
   }
 
   /**
@@ -154,14 +167,27 @@ export class FileManager {
     }
   }
 
+  /**
+   * TODO: verificar si necesito los 4 metodos
+   */
   async showLoaderTable() {
     this.loadingContainer.classList.remove('hidden');
-    this.tablePreview.innerHTML = '';
+    this.tablePreview.classList.add('hidden');
   }
 
   async fadeLoaderTable() {
     this.loadingContainer.classList.add('hidden');
     this.tablePreview.classList.remove('hidden');
+  }
+
+  async showTable() {
+    this.tablePreview.classList.remove('hidden');
+    this.loadingContainer.classList.add('hidden');
+  }
+
+  async fadeTable() {
+    this.tablePreview.classList.add('hidden');
+    this.loadingContainer.classList.remove('hidden');
   }
 
   async checkBoxColumn() {
@@ -224,6 +250,15 @@ export class FileManager {
       await this.render();
       await this.checkBoxColumn();
       await this.setColumnIndex();
+
+      const sortTable = await this.verifySortTable();
+
+      if (!sortTable) {
+        // Mostrar la tabla y ocultar la animación de carga
+        this.showTable();
+      } else {
+        this.handleSortTable();
+      }
     } catch (error) {
       console.error('Error: [FileMananger]:[proccesFile]', error);
       this.tablePreview.innerHTML = '<tr><td>Error al cargar el archivo</td></tr>';
