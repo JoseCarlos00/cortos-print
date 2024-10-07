@@ -28,24 +28,4 @@ export class FileManagerCortos extends FileManager {
       console.error('Error:[FileManagerCortos]:[proccesFile]:', error);
     }
   }
-
-  async handleSortTable() {
-    try {
-      const valueOrderBy = this.valueOrderBy;
-      const columnIndex = this.columnIndex[valueOrderBy];
-
-      if (columnIndex < 0) {
-        this.showTable();
-      }
-
-      console.warn('Ordenar Tabla', columnIndex);
-      await this.SortByManager.SortTable.sortTableByStringValue(columnIndex);
-      await this.SortByManager.InsertPageBreak.insertPageBreak(columnIndex + 1);
-
-      this.showTable();
-    } catch (error) {
-      console.error('Error:[FileManagerCortos]:[handleSortTable]:', error);
-      this.showTable();
-    }
-  }
 }

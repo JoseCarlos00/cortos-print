@@ -1,12 +1,11 @@
 import { SortTable } from './SortTable.js';
 import { InsertPageBreak } from './InsertPageBreak.js';
-import { urlParameters } from '../utils/URL.js';
 
 export class SortTableManager {
-  constructor({ table }) {
+  constructor({ table, handleInputChange }) {
     this.table = table;
-    this.sortBy = {};
-    this.handleInputChange = this.#handleInputChange.bind(this);
+
+    this.handleInputChange = handleInputChange;
     this.handleSortByChange = this.#handleSortByChange.bind(this);
 
     this.SortTable = new SortTable({ table });
@@ -29,18 +28,6 @@ export class SortTableManager {
     inputsOrdenar.forEach(input => {
       input.addEventListener('change', this.handleInputChange);
     });
-  }
-
-  #handleInputChange(e) {
-    const { target } = e;
-
-    if (!target) {
-      console.warn('[handleInputChange]: No se encontró "target"');
-    }
-
-    const { value } = target;
-
-    console.log(`value: ${value}\nElement: ${target}`);
   }
 
   #handleSortByChange(e) {

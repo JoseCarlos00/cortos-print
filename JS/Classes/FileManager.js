@@ -14,12 +14,19 @@ export class FileManager {
     // Intanciar classes manejadoras
     this.checkBoxMananger = new CheckBoxManangerColumn();
     this.tableManager = new TableManager({ table: this.tablePreview });
-    this.SortByManager = new SortTableManager({ table: this.tablePreview });
+    this.SortByManager = new SortTableManager({
+      table: this.tablePreview,
+      handleInputChange: this.handleInputChange.bind(this),
+    });
 
     this.columnIndex = {
       status1: -1,
     };
     this.mapIndex = [{ key: 'status1', values: ['status 1'] }];
+  }
+
+  delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
   }
 
   get valueOrderBy() {
@@ -204,7 +211,7 @@ export class FileManager {
   /**
    * Verifica si es un Number y si es >= 0
    * @param {Number} index
-   * @returns Bolean
+   * @returns {Bolean} - retorna `true` si es un indice valido  y `false` si no es nuemero o es negativo
    */
   async verifyIndexNumber(index) {
     return new Promise(resolve => resolve(!isNaN(index) && index >= 0));
@@ -243,6 +250,55 @@ export class FileManager {
         }
       });
     });
+  }
+
+  async sortTableAndInsertBreak(columnIndex) {
+    await this.SortByManager.SortTable.sortTableByStringValue(columnIndex);
+    await this.SortByManager.InsertPageBreak.insertPageBreak(columnIndex + 1);
+  }
+
+  async handleInputChange(e) {
+    const { target } = e;
+
+    if (!target) {
+      console.warn('[handleInputChange]: No se encontró "target"');
+    }
+
+    const { value } = target;
+    const columnIndex = this.columnIndex[value?.toLowerCase()];
+
+    const isIndexValide = await this.verifyIndexNumber(columnIndex);
+
+    if (isIndexValide) {
+      await this.fadeTable();
+      await this.delay(20);
+      await this.sortTableAndInsertBreak();
+      await this.showTable();
+    } else {
+      /**
+       * TODO: mandar alerta al USUARIO
+       */
+      console.error('No es un idice valido:isIndexValide:', isIndexValide);
+    }
+  }
+
+  async handleSortTable() {
+    try {
+      const valueOrderBy = this.valueOrderBy;
+      const columnIndex = this.columnIndex[valueOrderBy];
+
+      const isIndexValide = await this.verifyIndexNumber(columnIndex);
+
+      if (isIndexValide) {
+        console.warn('Ordenar Tabla', columnIndex);
+        await this.sortTableAndInsertBreak();
+      }
+
+      this.showTable();
+    } catch (error) {
+      console.error('Error:[FileManagerCortos]:[handleSortTable]:', error);
+      this.showTable();
+    }
   }
 
   async processFile() {
