@@ -1,63 +1,171 @@
 table {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  border: 1px solid;
-  border-collapse: collapse;
-  font-size: 14px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+		"Helvetica Neue", sans-serif;
+	border: 1px solid;
+	border-collapse: collapse;
+	font-size: 14px;
 
-  animation: entradaElemento 0.5s ease-in-out;
+	animation: entradaElemento 0.5s ease-in-out;
 }
 
 th,
 td {
-  text-align: left;
-  vertical-align: top;
-  border: 1px solid #000;
-  padding: 0.3em;
+	text-align: left;
+	vertical-align: top;
+	border: 1px solid #000;
+	padding: 0.3em;
 }
 
 th {
-  background-color: #bebebe;
+	background-color: #bebebe;
 }
 
 table a {
-  text-decoration: none;
-  color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 
 table thead td {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 table .caption {
-  margin-bottom: 12px;
+	margin-bottom: 12px;
 
-  input {
-    width: 100%;
-    text-align: center;
-    border: none;
-    font-weight: bold;
-    font-size: 16px;
-  }
+	input {
+		width: 100%;
+		text-align: center;
+		border: none;
+		font-weight: bold;
+		font-size: 16px;
+	}
 }
 
 @media print {
-  .page-break {
-    page-break-after: always;
-  }
+	.page-break {
+		page-break-after: always;
+	}
 
-  table {
-    font-size: 13px;
-  }
+	table {
+		font-size: 13px;
+	}
 }
 
 @keyframes entradaElemento {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+thead td {
+	background-color: #958e8e;
+}
+
+th,
+td {
+	padding: 4px;
+	position: relative;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 40px;
+}
+
+.resizer {
+	width: 5px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: col-resize;
+	user-select: none;
+	background-color: red;
+}
+
+tr td:nth-child(1) {
+	width: var(--width-col-1, auto);
+	max-width: var(--width-col-1);
+	max-width: var(--width-col-1);
+	text-wrap: var(--text-wrap-col-1, initial);
+}
+
+tr td:nth-child(2) {
+	width: var(--width-col-2, auto);
+	max-width: var(--width-col-2);
+	text-wrap: var(--text-wrap-col-2, initial);
+}
+
+tr td:nth-child(3) {
+	width: var(--width-col-3, auto);
+	max-width: var(--width-col-3);
+	text-wrap: var(--text-wrap-col-3, initial);
+}
+
+tr td:nth-child(4) {
+	width: var(--width-col-4, auto);
+	max-width: var(--width-col-4);
+	text-wrap: var(--text-wrap-col-4, initial);
+}
+
+tr td:nth-child(5) {
+	width: var(--width-col-5, auto);
+	max-width: var(--width-col-5);
+	text-wrap: var(--text-wrap-col-5, initial);
+}
+
+tr td:nth-child(6) {
+	width: var(--width-col-6, auto);
+	max-width: var(--width-col-6);
+	text-wrap: var(--text-wrap-col-6, initial);
+}
+
+tr td:nth-child(7) {
+	width: var(--width-col-7, auto);
+	max-width: var(--width-col-7);
+	text-wrap: var(--text-wrap-col-7, initial);
+}
+
+tr td:nth-child(8) {
+	width: var(--width-col-8, auto);
+	max-width: var(--width-col-8);
+	text-wrap: var(--text-wrap-col-8, initial);
+}
+
+tr td:nth-child(9) {
+	width: var(--width-col-9, auto);
+	max-width: var(--width-col-9);
+	text-wrap: var(--text-wrap-col-9, initial);
+}
+
+tr td:nth-child(10) {
+	width: var(--width-col-10, auto);
+	max-width: var(--width-col-10);
+	text-wrap: var(--text-wrap-col-10, initial);
+}
+
+tr td:nth-child(11) {
+	width: var(--width-col-11, auto);
+	max-width: var(--width-col-11);
+	text-wrap: var(--text-wrap-col-11, initial);
+}
+
+tr td:nth-child(12) {
+	width: var(--width-col-12, auto);
+	max-width: var(--width-col-12);
+	text-wrap: var(--text-wrap-col-12, initial);
+}
+
+@media print {
+	thead td {
+		background-color: #fff;
+	}
+
+	.resizer {
+		display: none;
+	}
 }
