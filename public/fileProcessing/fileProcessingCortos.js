@@ -241,32 +241,38 @@ function tranformarTotalQty() {
 
 function insertStylesSheet() {
 	const headers = tablePreview.querySelectorAll('thead tr td');
-
 	const indexDescription = Array.from(headers).findIndex((th) => {
 		const headerValue = th?.textContent?.trim()?.toLowerCase();
 		return ['descripción', 'description', 'item_desc', 'descripcion', 'descripción'].includes(headerValue);
 	});
+	const styleDescriptionE = document.querySelector('#custom-styles-description');
 
 	if (indexDescription !== -1) {
 		console.log('Índice de la descripción:', indexDescription);
+		const styles = `
+			@media print {
+				table tr td:nth-child(${indexDescription + 1}) {
+					overflow: hidden;
+					max-width: 180px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+		`;
+		if (styleDescriptionE) {
+			// Si el estilo ya existe, actualiza su contenido
+			styleDescriptionE.innerHTML = styles;
+		} else {
+			// Si no existe, crea un nuevo elemento de estilo
+			const newStyles = document.createElement('style');
+			newStyles.id = 'custom-styles-description';
+			newStyles.innerHTML = styles;
+			document.head.appendChild(newStyles);
+		}
 	} else {
 		console.log('No se encontró la descripción.');
 		return;
 	}
-
-	const styles = document.createElement('style');
-	styles.innerHTML = `
-    @media print {
-      table tr td:nth-child(${indexDescription + 1}) {
-        overflow: hidden;
-        max-width: 180px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }  
-  `;
-
-	document.head.appendChild(styles);
 }
 
 function eventoDeOrdenarPorParametro() {
