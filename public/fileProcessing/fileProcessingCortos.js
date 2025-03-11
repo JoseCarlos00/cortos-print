@@ -271,6 +271,9 @@ function insertStylesSheet() {
 		}
 	} else {
 		console.log('No se encontró la descripción.');
+		if (styleDescriptionE) {
+			styleDescriptionE.innerHTML = '';
+		}
 		return;
 	}
 }
