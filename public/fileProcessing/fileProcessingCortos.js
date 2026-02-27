@@ -253,7 +253,7 @@ function insertStylesSheet() {
 			@media print {
 				table tr td:nth-child(${indexDescription + 1}) {
 					overflow: hidden;
-					max-width: 180px;
+					max-width: 150px;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
