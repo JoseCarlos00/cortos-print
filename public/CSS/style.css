@@ -585,6 +585,10 @@ footer {
   main {
     overflow: hidden !important;
   }
+
+   @page {
+    margin: 10mm;
+  }
 }
 
 .mostrar {
