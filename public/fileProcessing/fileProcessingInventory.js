@@ -14,28 +14,39 @@ async function procesarArchivo(file) {
   mostrarAnimacionDeCarga(loadingContainer);
 
   try {
-    const data = await file.arrayBuffer();
+		const data = await file.arrayBuffer();
 
-    // Parse and load first worksheet
-    const wb = XLSX.read(data);
-    const ws = wb.Sheets[wb.SheetNames[0]];
+		// Crear worker
+		const worker = new Worker('./public/excelWorker.js');
+		console.log('Worker init:', worker);
 
-    // Create HTML table
-    const html = XLSX.utils.sheet_to_html(ws);
-    tablePreview.innerHTML = html;
+		worker.postMessage({ fileData: data });
 
-    // Asumimos que setTitleTable es una función asíncrona
-    const tableWithTittle = await setTitleTable(tablePreview);
+		worker.onmessage = function (e) {
+			const { success, html, error } = e.data;
 
-    // Actualizar dataTable basado en el resultado de setTitleTable
-    dataTable = tableWithTittle || html;
+			if (success) {
+				tablePreview.innerHTML = html;
+				dataTable = html;
 
-    // Mostrar la tabla y ocultar la animación de carga
-    ocultarAnimacionDeCarga(loadingContainer);
+				ocultarAnimacionDeCarga(loadingContainer);
 
-    modifyTable();
-    setEventForTittleTable();
-  } catch (error) {
+				modifyTable();
+			} else {
+				console.error('Error en worker:', error);
+				ocultarAnimacionDeCarga(loadingContainer);
+			}
+
+			worker.terminate();
+		};
+
+		worker.onerror = function (err) {
+			console.error('Worker error:', err);
+			ocultarAnimacionDeCarga(loadingContainer);
+			worker.terminate();
+			alert('Ocurrió un error al procesar el archivo. Por favor, inténtalo de nuevo.');
+		};
+	} catch (error) {
     console.error('Error al procesar el archivo:', error);
 
     // Ocultar la animación de carga en caso de error
