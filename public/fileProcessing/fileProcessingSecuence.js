@@ -15,6 +15,8 @@ const columnIndex = {
   pickingSeqPosition: -1,
 };
 
+let dataTable = '';
+
 async function procesarArchivo(file) {
   console.log('[Procesar Archivo]');
   const loadingContainer = document.getElementById('loading-container');
@@ -26,7 +28,7 @@ async function procesarArchivo(file) {
 		const data = await file.arrayBuffer();
 
 		// Crear worker
-		const worker = new Worker('./public/excelWorker.js');
+		const worker = new Worker('/public/excelWorker.js');
 		console.log('Worker init:', worker);
 
 		worker.postMessage({ fileData: data });
