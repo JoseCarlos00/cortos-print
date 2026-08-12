@@ -280,7 +280,7 @@ async function ordenarTabla({ orderValue: orderValueParam }) {
 
 function eventoDeOrdenarPorParametro() {
   // Event listener para los cambios en los inputs
-  document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+  document.querySelectorAll('.filters input[name="ordenar"]').forEach(input => {
     input.addEventListener('change', handleChangeInputRadio);
   });
 }

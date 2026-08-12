@@ -220,7 +220,7 @@ function ordenarTabla() {
 /**
  * resolve() si se inserta el salto de pagina
  *
- * reject() si no existe la tabla o el parametro de la URL a ordernar
+ * reject() si no existe la tabla o el parametro de la URL a ordenar
  * @returns Una promesa
  */
 function insertarPageBreakPorLocation(positionElement) {
@@ -453,7 +453,7 @@ function eventoDeOrdenarPorParametro() {
     }
 
     // Event listener para los cambios en los inputs
-    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+    document.querySelectorAll('.filters input[name="ordenar"]').forEach(input => {
       input.addEventListener('change', function () {
         const selectedValue = this.value;
 

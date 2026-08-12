@@ -74,7 +74,7 @@ export function parametrosDeLaUrl() {
   }
 
   // Event listener para los cambios en los inputs
-  document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+  document.querySelectorAll('.filters input[name="ordenar"]').forEach(input => {
     input.addEventListener('change', function () {
       updateURL(this.value);
     });
@@ -83,9 +83,9 @@ export function parametrosDeLaUrl() {
   const selectedValue = getSelectedValueFromURL('ordenar');
 
   if (selectedValue) {
-    document.querySelector(`input[name="ordernar"][value="${selectedValue}"]`).checked = true;
+    document.querySelector(`input[name="ordenar"][value="${selectedValue}"]`).checked = true;
   } else {
-    document.querySelectorAll('.filters input[name="ordernar"]').forEach(input => {
+    document.querySelectorAll('.filters input[name="ordenar"]').forEach(input => {
       if (input.checked) {
         updateURL(input.value);
       }
@@ -96,7 +96,7 @@ export function parametrosDeLaUrl() {
 /**
  * resolve() si se inserta el salto de pagina
  *
- * reject() si no existe la tabla o el parametro de la URL a ordernar
+ * reject() si no existe la tabla o el parametro de la URL a ordenar
  * @returns Una promesa
  */
 export function insertarPageBreak(positionElement) {
