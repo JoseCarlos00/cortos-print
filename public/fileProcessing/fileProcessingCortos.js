@@ -1,5 +1,5 @@
 // fileProcessing.js
-import { insertarThead, mostrarNombreArchivo, getHeaderPosition } from '../JS/operations.js';
+import { insertarThead, mostrarNombreArchivo, getHeaderPosition, getHeaderPositionLasted } from '../JS/operations.js';
 import { getSelectedValueFromURL, insertarPageBreak } from '../JS/funcionesGlobales.js';
 import { createFiltersCheckbox } from '../JS/checkBox.js';
 import { sortValueNumeric, ordenarPorBodega, ordenarPorPiso } from '../JS/sortTable.js';
@@ -127,8 +127,8 @@ function modifyTable() {
 
 							createFiltersCheckbox();
 						} else if (header.toLowerCase().trim() === 'por piso' && position) {
-							console.log('[Ordenar pos piso]');
-							insertarPageBreakPorPiso(position)
+							console.log('[Ordenar por piso]');
+							insertarPageBreak(position)
 								.then((value) => console.log(value))
 								.catch((err) => {
 									console.error('Error al insertar el salto de página:', err);
@@ -210,7 +210,7 @@ function ordenarTabla() {
 					});
 			}
 		} else if (valorDeLaURL.toLowerCase().trim() === 'por piso') {
-			headerPositionElement = getHeaderPosition(headerRow.cells, ['bodega', 'zona', 'work_zone']);
+			headerPositionElement = getHeaderPositionLasted(headerRow.cells, ['zona']);
 
 			if (headerPositionElement) {
 				ordenarPorPiso(rows, table, headerPositionElement)

@@ -76,3 +76,19 @@ export function getHeaderPosition(headerRow, values) {
   }
   return null; // Si no se encuentra ninguna coincidencia
 }
+
+export function getHeaderPositionLasted(headerRow, values) {
+	console.log('[Get Header Position]', headerRow.length);
+
+	for (let i = headerRow.length - 1; i >= 0; i--) {
+		const header = headerRow[i].innerHTML.toLowerCase().trim();
+		for (let j = 0; j < values.length; j++) {
+			const value = values[j].toLowerCase().trim();
+			if (header === value) {
+				const positionElement = i + 1;
+				return positionElement;
+			}
+		}
+	}
+	return null; // Si no se encuentra ninguna coincidencia
+}

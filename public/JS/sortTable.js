@@ -102,9 +102,9 @@ export function ordenarPorBodega(rows, table, headerPositionElement) {
   });
 }
 
-export function ordenarPorPiso(rows, table, headerPositionElement) {
+export function ordenarPorPisoOld(rows, table, headerPositionElement) {
   const primerPiso = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'W-Mar Vinil', 'W-Mar Mayoreo'];
-  const segundoPiso = ['10', '11', '12', '13', '14', '15', '16', '17', 'W-Mar No Banda'];
+  const segundoPiso = ['10', '11', '12', '13', '14', '15', '16', '17', '20', '21', 'W-Mar No Banda'];
 
   const getIndex = value => {
     if (primerPiso.includes(value)) {
@@ -154,4 +154,42 @@ export function ordenarPorPiso(rows, table, headerPositionElement) {
       reject(`Error al ordenar la tabla: ${error.message}`);
     }
   });
+}
+
+export function ordenarPorPiso(rows, table, headerPositionElement) {
+	return new Promise((resolve, reject) => {
+		try {
+			// Ordenar las filas
+			rows.sort((a, b) => {
+				let aValue = a.querySelector(`td:nth-child(${headerPositionElement})`).innerText.trim();
+				let bValue = b.querySelector(`td:nth-child(${headerPositionElement})`).innerText.trim();
+
+       // ordenar por otro valor, Piso 1, luego por Piso 2
+
+       
+      // Verificar si los valores son numéricos
+        const aValueNumeric = !isNaN(parseFloat(aValue)) && isFinite(aValue);
+        const bValueNumeric = !isNaN(parseFloat(bValue)) && isFinite(bValue);
+
+        // Comparar los valores numéricos
+        if (aValueNumeric && bValueNumeric) {
+          return parseFloat(aValue) - parseFloat(bValue);
+        } else {
+          // Si al menos uno de los valores no es numérico, comparar como cadenas
+          return aValue.localeCompare(bValue);
+        }
+				
+			});
+
+			// Reinsertar las filas ordenadas en la tabla
+			const tbody = table.querySelector('tbody');
+			rows.forEach((row) => {
+				tbody.appendChild(row);
+			});
+
+			resolve('Ordenar tabla por valor PISO correcto');
+		} catch (error) {
+			reject(`Error al ordenar la tabla: ${error.message}`);
+		}
+	});
 }
