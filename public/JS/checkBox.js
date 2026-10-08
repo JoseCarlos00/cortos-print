@@ -122,6 +122,9 @@ export function createFiltersCheckbox(columnsToShow = [], showColumns = true) {
 
       if (toggleButton) {
         toggleButton.removeAttribute('disabled');
+
+        checkboxContainer.classList.remove('hidden');
+        checkboxContainer.classList.add('mostrar');
       }
     })
     .catch(err => {

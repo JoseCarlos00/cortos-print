@@ -7,10 +7,14 @@ self.onmessage = function (e) {
   const { fileData } = e.data;
 
   try {
-    const wb = XLSX.read(fileData);
-    const ws = wb.Sheets[wb.SheetNames[0]];
+   const wb = XLSX.read(fileData, {
+			raw: true,
+			cellDates: false,
+		});
 
-    const html = XLSX.utils.sheet_to_html(ws);
+		const ws = wb.Sheets[wb.SheetNames[0]];
+
+		const html = XLSX.utils.sheet_to_html(ws);
 
     console.log('[Worker] procesado OK');
 
